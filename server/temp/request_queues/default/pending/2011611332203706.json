@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/candide_316/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/candide_316/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "HOHoJ4lslkyKWLY"
+}

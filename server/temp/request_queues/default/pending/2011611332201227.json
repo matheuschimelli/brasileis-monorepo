@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/lumberjanes-vol-3-a-terrible-plan-lumberjanes-9-12_905/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/lumberjanes-vol-3-a-terrible-plan-lumberjanes-9-12_905/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "T13HhLpmMiePHc3"
+}

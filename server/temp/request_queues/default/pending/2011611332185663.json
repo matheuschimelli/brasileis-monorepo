@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/category/books/christian_43/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/christian_43/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "vz23aWv84Gz8vAh"
+}

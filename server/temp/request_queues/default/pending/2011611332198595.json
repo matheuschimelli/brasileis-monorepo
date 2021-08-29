@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/the-constant-princess-the-tudor-court-1_493/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/the-constant-princess-the-tudor-court-1_493/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "A37y0TCrqKjDyPk"
+}

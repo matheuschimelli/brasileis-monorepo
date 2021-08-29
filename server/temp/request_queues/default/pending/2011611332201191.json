@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/pop-gun-war-volume-1-gift_918/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/pop-gun-war-volume-1-gift_918/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "RCrkMVgRcQEU1ky"
+}

@@ -1,0 +1,11 @@
+node_modules
+elasticsearch
+*.pdf
+*.docx
+latest.dump
+articles.csv
+commands.md
+project.md
+workspace.code-workspace
+temp/request_queues
+temp/key_value_stores

@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/the-perfect-play-play-by-play-1_352/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/the-perfect-play-play-by-play-1_352/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "CO0ypHhujfeBp6z"
+}

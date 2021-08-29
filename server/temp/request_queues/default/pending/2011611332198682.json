@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/world-without-end-the-pillars-of-the-earth-2_420/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/world-without-end-the-pillars-of-the-earth-2_420/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "jzVacaB1oh5d55C"
+}

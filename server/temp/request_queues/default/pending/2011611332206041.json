@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/meditations_33/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/meditations_33/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "YW0c8lLVQAZJ4rK"
+}

@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/a-paris-apartment_612/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/a-paris-apartment_612/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "zwo3GaEYzm7nPSc"
+}

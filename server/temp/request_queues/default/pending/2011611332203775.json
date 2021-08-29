@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/the-little-prince_72/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/the-little-prince_72/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "5T0pHHR8ffRnSo9"
+}

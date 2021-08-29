@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/category/books/womens-fiction_9/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/womens-fiction_9/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "4ZkjkCSaORDCDDL"
+}

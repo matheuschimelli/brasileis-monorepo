@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/category/books/sequential-art_5/page-2.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/sequential-art_5/page-2.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "FhRT2wzy2a6QxQj"
+}

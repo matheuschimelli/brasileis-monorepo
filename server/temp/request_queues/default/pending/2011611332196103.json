@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/that-darkness-gardiner-and-renner-1_743/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/that-darkness-gardiner-and-renner-1_743/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "0AUDehd7gchg2G6"
+}

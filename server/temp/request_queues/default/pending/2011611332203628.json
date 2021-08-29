@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/the-secret-garden_413/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/the-secret-garden_413/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "yaLC0OejHHpqjnN"
+}

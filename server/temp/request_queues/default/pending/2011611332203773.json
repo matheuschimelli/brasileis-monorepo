@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/the-story-of-hong-gildong_84/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/the-story-of-hong-gildong_84/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "vOyh4ufVqz3VEPI"
+}

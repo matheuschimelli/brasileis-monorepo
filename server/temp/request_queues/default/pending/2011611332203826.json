@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/of-mice-and-men_37/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/of-mice-and-men_37/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "Lumj4qYrz1lSm33"
+}

@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/animal-farm_313/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/animal-farm_313/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "icEji5uNhfA8WlI"
+}

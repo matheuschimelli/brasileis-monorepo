@@ -1,0 +1,13 @@
+{
+    "id": "Yz6EdnZjourZ4C8",
+    "url": "https://books.toscrape.com/",
+    "loadedUrl": "https://books.toscrape.com/",
+    "uniqueKey": "https://books.toscrape.com",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "handledAt": "2021-01-22T16:16:26.024Z"
+}

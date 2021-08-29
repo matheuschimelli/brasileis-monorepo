@@ -1,0 +1,95 @@
+{
+	"settings": {
+		"index": {
+			"analysis": {
+				"analyzer": {
+					"brasileis_default_analyser": {
+						"type": "custom",
+						"tokenizer": "standard",
+						"char_filter": [
+							"html_strip"
+						],
+						"filter": [
+							"lowercase",
+							"trim",
+							"stop",
+							"br_stemmer",
+							"brazilian_stopwords",
+							"asciifolding",
+							"classic",
+							"filter_shingle"
+						]
+					},
+					"brasileis_search_analyser": {
+						"type": "custom",
+						"tokenizer": "standard",
+						"char_filter": [
+							"html_strip"
+						],
+						"filter": [
+							"lowercase",
+							"trim",
+							"stop",
+							"br_stemmer",
+							"brazilian_stopwords",
+							"asciifolding",
+							"classic"
+						]
+					}
+				},
+				"filter": {
+					"br_stemmer": {
+						"type": "stemmer",
+						"name": "brazilian"
+					},
+					"brazilian_stopwords": {
+						"type": "stop",
+						"stopwords": "_brazilian_"
+					},
+					"filter_shingle": {
+						"type": "shingle",
+						"output_unigrams": "true"
+					}
+				}
+			}
+		}
+	},
+	"mappings": {
+		"properties": {
+			"lawType": {
+				"type": "text"
+			},
+			"url": {
+				"type": "text"
+			},
+			"title": {
+				"type": "text"
+			},
+			"textContent": {
+				"type": "text",
+				"index_options": "offsets",
+				"term_vector": "with_positions_offsets",
+				"analyzer": "brasileis_default_analyser",
+				"search_analyzer": "brasileis_search_analyser"
+			},
+			"categories": {
+				"type": "keyword"
+			},
+			"subCategories": {
+				"type": "keyword"
+			},
+			"slug": {
+				"type": "text"
+			},
+			"lawCreationDate": {
+				"type": "date"
+			},
+			"lawCommencementDate": {
+				"type": "date"
+			},
+			"updatedAt": {
+				"type": "date"
+			}
+		}
+	}
+}

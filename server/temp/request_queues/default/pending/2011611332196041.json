@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/in-a-dark-dark-wood_963/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/in-a-dark-dark-wood_963/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "PkaUGKj0KT2KZij"
+}

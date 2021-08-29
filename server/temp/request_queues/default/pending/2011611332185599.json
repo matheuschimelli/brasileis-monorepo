@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/category/books/adult-fiction_29/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/adult-fiction_29/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "I2t2kBfC432sr9R"
+}

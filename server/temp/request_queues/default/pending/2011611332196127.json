@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/poisonous-max-revere-novels-3_627/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/poisonous-max-revere-novels-3_627/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "dRyhD6Iwd0IXWxP"
+}

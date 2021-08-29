@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/girl-in-the-blue-coat_160/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/girl-in-the-blue-coat_160/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "WSBLkpSXKSNDtEK"
+}

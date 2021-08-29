@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/shakespeares-sonnets_989/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/shakespeares-sonnets_989/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "TcJdh4roszA07a4"
+}

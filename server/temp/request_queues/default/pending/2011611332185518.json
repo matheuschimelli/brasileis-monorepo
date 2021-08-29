@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/category/books/science-fiction_16/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/science-fiction_16/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "VjTehplmYvwM17k"
+}

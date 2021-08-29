@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/category/books/default_15/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/default_15/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "296xD3A7vvW0uat"
+}

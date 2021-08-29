@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/a-summer-in-europe_458/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/a-summer-in-europe_458/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "MBKIi75Zjhy01mj"
+}

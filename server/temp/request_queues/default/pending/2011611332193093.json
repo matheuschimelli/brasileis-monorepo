@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/a-year-in-provence-provence-1_421/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/a-year-in-provence-provence-1_421/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "e4SHueIofPgvDPV"
+}

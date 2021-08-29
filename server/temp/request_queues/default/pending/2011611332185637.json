@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/category/books/biography_36/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/biography_36/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "Z6lQqyyre0Do3c5"
+}

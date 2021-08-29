@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/the-last-painting-of-sara-de-vos_259/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/the-last-painting-of-sara-de-vos_259/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "xxmb6nLTh6qjIDf"
+}

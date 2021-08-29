@@ -1,0 +1,13 @@
+{
+    "id": "SatQ8YwSUIMDEzr",
+    "url": "https://books.toscrape.com/catalogue/category/books/classics_6/index.html",
+    "loadedUrl": "https://books.toscrape.com/catalogue/category/books/classics_6/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/category/books/classics_6/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "handledAt": "2021-01-22T16:16:43.153Z"
+}

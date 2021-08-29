@@ -1,7 +1,10 @@
-import express from 'express';
+import express from 'express'
+import { AuthService } from './modules/auth'
 
-const routes = express.Router();
+const routes = express.Router()
 
-routes.get('/api', (req, res) => res.send('<pre>ola</pre>'));
+routes.get('/', (req, res) => { return res.redirect('https://brasileis.com.br') })
+routes.post('/api/v1/user/verify', AuthService.verifyToken)
+routes.get('/api/v1/user', AuthService.getUser)/// isAuthenticated
 
-export default routes;
+export default routes

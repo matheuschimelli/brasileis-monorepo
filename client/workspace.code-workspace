@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "..\\server"
+    },
+    {
+      "path": "..\\admin"
+    }
+  ],
+  "settings": {
+    "git.ignoreLimitWarning": true
+  }
+}

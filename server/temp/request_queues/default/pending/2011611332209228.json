@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/the-wedding-dress_864/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/the-wedding-dress_864/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "2TiIgTnPuVjiAru"
+}

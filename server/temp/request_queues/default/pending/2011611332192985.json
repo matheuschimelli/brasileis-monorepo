@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/under-the-tuscan-sun_504/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/under-the-tuscan-sun_504/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "d4NVfiy3E74ZU35"
+}

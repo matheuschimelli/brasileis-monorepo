@@ -1,0 +1,11 @@
+{
+    "url": "https://books.toscrape.com/catalogue/something-more-than-this_834/index.html",
+    "uniqueKey": "https://books.toscrape.com/catalogue/something-more-than-this_834/index.html",
+    "method": "GET",
+    "noRetry": false,
+    "retryCount": 0,
+    "errorMessages": [],
+    "headers": {},
+    "userData": {},
+    "id": "Q23YF50Ct2MPXMl"
+}

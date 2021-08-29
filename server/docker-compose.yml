@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+    crawler:
+        container_name: crawler
+        build: .
+        command: node start
+        ports:
+            - "8080:8080"
+        environment:
+            - MONGODB_URI=mongodb+srv://matheus:hl3vmAkfZorR8FOT@cluster0.vgbsc.mongodb.net/newBrasileis?retryWrites=true&w=majority
+            - TOKEN_SECRET=Nv4lQ1OH1nqnfiQLVbrPvt0Fu73VgToDjCDVNfXTBFq29SwlVdGaZ8maO7JFbn8zaRKyieoLYq1bGv9AKXLPHaFWInE5fqEemZsfaBBuYIhfgoTTWUEDMnu4mRR33OMIb17sRP1koS0pncCmhs1QvnTnEEAjqje/OYqsWwFEy/3ObbnW9LqW4B3i7Sf6hYR+nKr4uPnE5Ty+YNMJRNQGqsZNvXCT61Mnr1DxcxNZWPbgg2fdOvZsyp9pJRoSlSlnS90AtcayxeMVUkCR3FyTBxn6nJyap1UZSw/HYlH0UBBpva9MalHazWecs34sWZniqrplPm0Vgc4Og0ikN2UiJQ==
+            - SESSION_SECRET=Nv4lQ1OH1nqnfiQLVbrPvt0Fu73VgToDjCDVNfXTBFq29SwlVdGaZ8maO7JFbn8zaRKyieoLYq1bGv9AKXLPHaFWInE5fqEemZsfaBBuYIhfgoTTWUEDMnu4mRR33OMIb17sRP1koS0pncCmhs1QvnTnEEAjqje/OYqsWwFEy/3ObbnW9LqW4B3i7Sf6hYR+nKr4uPnE5Ty+YNMJRNQGqsZNvXCT61Mnr1DxcxNZWPbgg2fdOvZsyp9pJRoSlSlnS90AtcayxeMVUkCR3FyTBxn6nJyap1UZSw/HYlH0UBBpva9MalHazWecs34sWZniqrplPm0Vgc4Og0ikN2UiJQ==
+            - REDIS_HOST=redis://redisCrawler
+            - REDIS_PASSWORD=SenhaSecreta1
+            - REDIS_PORT=6379
+        volumes: 
+            - .:/app
+            - /app/node-modules
+        restart: unless-stopped
+
+    redis:
+        image: redis
+        container_name: redisCrawler
+        command: redis-server --requirepass SenhaSecreta1
+        ports:
+            - "6379:6379"
