@@ -26,6 +26,10 @@ export default {
 
     return queue!.bull.add(data, queue!.options);
   },
+  sendToMainServer(data: any) {
+    const mainServer = new Queue('MainServer')
+    mainServer.add(data)
+  },
   process() {
     signale.success('🐂 Bull running');
     signale.await('Waiting job queues');

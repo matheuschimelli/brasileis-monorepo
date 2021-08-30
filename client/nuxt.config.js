@@ -189,7 +189,7 @@ export default {
           logout: `${process.env.CLIENT_URL}/logout`,
         },
         token: {
-          property: 'id_token',
+          property: 'auth_token',
           type: 'Bearer',
           maxAge: 60 * 60 * 24 * 30,
         },
@@ -200,7 +200,7 @@ export default {
         responseType: 'code',
         grantType: 'authorization_code',
         accessType: 'offline',
-        redirectUri: undefined, // 'http://localhost:3000/auth/verify',
+        redirectUri: undefined, // 'http://localhost:3000/painel',
         logoutRedirectUri: '/',
         clientId:
           '333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com',
@@ -218,63 +218,3 @@ export default {
     transpile: ['@vue/apollo-composable'],
   },
 }
-// apollo: {
-//   // Sets up the apollo client endpoints
-//   clientConfigs: {
-//     // recommended: use a file to declare the client configuration (see below for example)
-//     // default: '~/plugins/my-alternative-apollo-config.js',
-
-//     // you can setup multiple clients with arbitrary names
-//     alternativeClient: {
-//       // required
-//       httpEndpoint: process.env.SERVER_URL,
-
-//       // override HTTP endpoint in browser only
-//       browserHttpEndpoint: '/graphql',
-
-//       // See https://www.apollographql.com/docs/link/links/http.html#options
-//       httpLinkOptions: {
-//         credentials: 'same-origin',
-//       },
-
-//       // You can use `wss` for secure connection (recommended in production)
-//       // Use `null` to disable subscriptions
-//       wsEndpoint: `${process.env.GRAPHQL_SERVER_URL}/graphql`,
-
-//       // LocalStorage token
-//       tokenName: 'apollo-token',
-
-//       // Enable Automatic Query persisting with Apollo Engine
-//       persisting: false,
-
-//       // Use websockets for everything (no HTTP)
-//       // You need to pass a `wsEndpoint` for this to work
-//       websocketsOnly: false,
-//     },
-//   },
-
-//   /**
-//    * default 'apollo' definition
-//    */
-//   defaultOptions: {
-//     // See 'apollo' definition
-//     // For example: default query options
-//     $query: {
-//       loadingKey: 'loading',
-//       fetchPolicy: 'cache-and-network',
-//     },
-//   },
-
-//   // Sets the authentication type for any authorized request.
-//   authenticationType: 'Bearer',
-
-//   // Token name for the cookie which will be set in case of authentication
-//   tokenName: 'apollo-token',
-
-//   // [deprecated] Enable the graphql-tag/loader to parse *.gql/*.graphql files
-//   includeNodeModules: true,
-// },
-
-// Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
-
-// Build Configuration (https://go.nuxtjs.dev/config-build)

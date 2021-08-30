@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { OAuth2Client } from 'google-auth-library'
 import { Request, Response } from 'express'
 import dotenv from 'dotenv'
@@ -23,7 +24,7 @@ declare var process: {
   }
 }
 
-const client = new OAuth2Client(process.env.GOOGLE_ID)
+const client = new OAuth2Client(process.env.GOOGLE_ID, process.env.GOOGLE_SECRET)
 const tokenExpirationTime = '7d'
 
 export default class AuthService {
@@ -39,47 +40,18 @@ export default class AuthService {
   }
 
   static async verifyToken(req: Request, res: Response) {
-    const authTokens = req.body
-    // const authTokens = {
-    //   account: {
-    //     provider: 'google',
-    //     type: 'oauth',
-    //     id: '113793537492653216563',
-    //     accessToken: 'ya29.a0ARrdaM83CrxygXwzE227OSITg-9JA_-rXtQulC_FKdUY1q2wbijlmzH2-Uvkznwf4cVjfLTobX5oANroAIPSCBvFXhfsbLWcP3EndVaEa7oBZ3ApgG8A9cwKjbY5Z0aMZnqOGBIZBDoNjdmIlJbPIvCrrfoe',
-    //     accessTokenExpires: null,
-    //     idToken: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjgxOWQxZTYxNDI5ZGQzZDNjYWVmMTI5YzBhYzJiYWU4YzZkNDZmYmMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEzNzkzNTM3NDkyNjUzMjE2NTYzIiwiZW1haWwiOiJtYXRoZXVzY2hpbWVsbGk3QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiMWV3NEdKOEJ4VjgyYzI1NVA3S2pJUSIsImlhdCI6MTYzMDA4MjEwNywiZXhwIjoxNjMwMDg1NzA3fQ.Y_elu8emKphvwLNHJz6rqgdXowiM06Oh7-JhR4MwD-6byciWT9cqwlMcvcA0mROZ44wrSYBp46sh5LxUv1R0-XrRjHKrtOqsJesruHXMv6wuKpvRfUESRWohOD-kH6HKawxWDyBF0qrJEzAV90faB_Wta9Hd1sKvmtQHgs3ujj03mEqxf4xz9cxM8K6hMKKQbcUh9nV085WpuCRfrG8nQLApN6gqnhWCwaTy8er2GOKS0xF7NOZ6RC8aMDMCdls8zLqhn-XAAboZZCKvrJ8z1TXNa3tW4Ud8_BYGvphhmqt5bhXHGbEVioKt__Y83MuTmt2hAtYCjJ72FWn1-AAqnQ',
-    //     access_token: 'ya29.a0ARrdaM83CrxygXwzE227OSITg-9JA_-rXtQulC_FKdUY1q2wbijlmzH2-Uvkznwf4cVjfLTobX5oANroAIPSCBvFXhfsbLWcP3EndVaEa7oBZ3ApgG8A9cwKjbY5Z0aMZnqOGBIZBDoNjdmIlJbPIvCrrfoe',
-    //     expires_in: 3599,
-    //     scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid',
-    //     token_type: 'Bearer',
-    //     id_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjgxOWQxZTYxNDI5ZGQzZDNjYWVmMTI5YzBhYzJiYWU4YzZkNDZmYmMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEzNzkzNTM3NDkyNjUzMjE2NTYzIiwiZW1haWwiOiJtYXRoZXVzY2hpbWVsbGk3QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiMWV3NEdKOEJ4VjgyYzI1NVA3S2pJUSIsImlhdCI6MTYzMDA4MjEwNywiZXhwIjoxNjMwMDg1NzA3fQ.Y_elu8emKphvwLNHJz6rqgdXowiM06Oh7-JhR4MwD-6byciWT9cqwlMcvcA0mROZ44wrSYBp46sh5LxUv1R0-XrRjHKrtOqsJesruHXMv6wuKpvRfUESRWohOD-kH6HKawxWDyBF0qrJEzAV90faB_Wta9Hd1sKvmtQHgs3ujj03mEqxf4xz9cxM8K6hMKKQbcUh9nV085WpuCRfrG8nQLApN6gqnhWCwaTy8er2GOKS0xF7NOZ6RC8aMDMCdls8zLqhn-XAAboZZCKvrJ8z1TXNa3tW4Ud8_BYGvphhmqt5bhXHGbEVioKt__Y83MuTmt2hAtYCjJ72FWn1-AAqnQ'
-    //   },
-    //   profile: {
-    //     id: '113793537492653216563',
-    //     email: 'matheuschimelli7@gmail.com',
-    //     verified_email: true,
-    //     name: 'Matheus',
-    //     given_name: 'Matheus',
-    //     picture: 'https://lh3.googleusercontent.com/a-/AOh14GizpBN_3-3d6RSkauioHkLUXSbl3hBTL2o39bUd71c=s96-c',
-    //     locale: 'pt-BR'
-    //   },
-    //   user: {
-    //     id: '113793537492653216563',
-    //     name: 'Matheus',
-    //     email: 'matheuschimelli7@gmail.com',
-    //     image: 'https://lh3.googleusercontent.com/a-/AOh14GizpBN_3-3d6RSkauioHkLUXSbl3hBTL2o39bUd71c=s96-c'
-    //   }
-    // }
-    console.log('token', authTokens)
+    const authToken = req.body
+
+    console.log('token', authToken)
     try {
-      // const { data: tokenid } = await axios.post('https://oauth2.googleapis.com/token', {
-      //   authTokens.account.id_token,
-      //   client_secret: process.env.GOOGLE_SECRET
-      // })
-      // console.log('tokenid', tokenid)
+      const { data: tokenid } = await axios.post('https://oauth2.googleapis.com/token', {
+        ...authToken,
+        client_secret: process.env.GOOGLE_SECRET
+      })
+      console.log('tokenid', tokenid)
 
       const ticket = await client.verifyIdToken({
-        idToken: authTokens.account.id_token,
+        idToken: tokenid.id_token,
         audience: process.env.GOOGLE_ID
       })
 
@@ -109,8 +81,8 @@ export default class AuthService {
               const newUser = User.create()
               newUser.email = payload.email
               newUser.google = payload.sub
-              newUser.profilePicture = payload.picture || authTokens.profile.picture
-              newUser.name = payload.name || authTokens.profile.name
+              newUser.profilePicture = payload.picture || ''
+              newUser.name = payload.name || ''
 
               await User.save(newUser)
 
@@ -135,3 +107,38 @@ export default class AuthService {
  * o client seta os dados da sessão
  *
  */
+
+/**
+ * Nextjs auth clinet test
+ *
+ */
+// const authTokens = {
+//   account: {
+//     provider: 'google',
+//     type: 'oauth',
+//     id: '113793537492653216563',
+//     accessToken: 'ya29.a0ARrdaM83CrxygXwzE227OSITg-9JA_-rXtQulC_FKdUY1q2wbijlmzH2-Uvkznwf4cVjfLTobX5oANroAIPSCBvFXhfsbLWcP3EndVaEa7oBZ3ApgG8A9cwKjbY5Z0aMZnqOGBIZBDoNjdmIlJbPIvCrrfoe',
+//     accessTokenExpires: null,
+//     idToken: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjgxOWQxZTYxNDI5ZGQzZDNjYWVmMTI5YzBhYzJiYWU4YzZkNDZmYmMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEzNzkzNTM3NDkyNjUzMjE2NTYzIiwiZW1haWwiOiJtYXRoZXVzY2hpbWVsbGk3QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiMWV3NEdKOEJ4VjgyYzI1NVA3S2pJUSIsImlhdCI6MTYzMDA4MjEwNywiZXhwIjoxNjMwMDg1NzA3fQ.Y_elu8emKphvwLNHJz6rqgdXowiM06Oh7-JhR4MwD-6byciWT9cqwlMcvcA0mROZ44wrSYBp46sh5LxUv1R0-XrRjHKrtOqsJesruHXMv6wuKpvRfUESRWohOD-kH6HKawxWDyBF0qrJEzAV90faB_Wta9Hd1sKvmtQHgs3ujj03mEqxf4xz9cxM8K6hMKKQbcUh9nV085WpuCRfrG8nQLApN6gqnhWCwaTy8er2GOKS0xF7NOZ6RC8aMDMCdls8zLqhn-XAAboZZCKvrJ8z1TXNa3tW4Ud8_BYGvphhmqt5bhXHGbEVioKt__Y83MuTmt2hAtYCjJ72FWn1-AAqnQ',
+//     access_token: 'ya29.a0ARrdaM83CrxygXwzE227OSITg-9JA_-rXtQulC_FKdUY1q2wbijlmzH2-Uvkznwf4cVjfLTobX5oANroAIPSCBvFXhfsbLWcP3EndVaEa7oBZ3ApgG8A9cwKjbY5Z0aMZnqOGBIZBDoNjdmIlJbPIvCrrfoe',
+//     expires_in: 3599,
+//     scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid',
+//     token_type: 'Bearer',
+//     id_token: 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjgxOWQxZTYxNDI5ZGQzZDNjYWVmMTI5YzBhYzJiYWU4YzZkNDZmYmMiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJhY2NvdW50cy5nb29nbGUuY29tIiwiYXpwIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwiYXVkIjoiMzMzMTE2MDkzOTI5LWp1cWFtaWpwYnVwN2p1OWV1dGoyYzNpcjltcm1mc3Z0LmFwcHMuZ29vZ2xldXNlcmNvbnRlbnQuY29tIiwic3ViIjoiMTEzNzkzNTM3NDkyNjUzMjE2NTYzIiwiZW1haWwiOiJtYXRoZXVzY2hpbWVsbGk3QGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJhdF9oYXNoIjoiMWV3NEdKOEJ4VjgyYzI1NVA3S2pJUSIsImlhdCI6MTYzMDA4MjEwNywiZXhwIjoxNjMwMDg1NzA3fQ.Y_elu8emKphvwLNHJz6rqgdXowiM06Oh7-JhR4MwD-6byciWT9cqwlMcvcA0mROZ44wrSYBp46sh5LxUv1R0-XrRjHKrtOqsJesruHXMv6wuKpvRfUESRWohOD-kH6HKawxWDyBF0qrJEzAV90faB_Wta9Hd1sKvmtQHgs3ujj03mEqxf4xz9cxM8K6hMKKQbcUh9nV085WpuCRfrG8nQLApN6gqnhWCwaTy8er2GOKS0xF7NOZ6RC8aMDMCdls8zLqhn-XAAboZZCKvrJ8z1TXNa3tW4Ud8_BYGvphhmqt5bhXHGbEVioKt__Y83MuTmt2hAtYCjJ72FWn1-AAqnQ'
+//   },
+//   profile: {
+//     id: '113793537492653216563',
+//     email: 'matheuschimelli7@gmail.com',
+//     verified_email: true,
+//     name: 'Matheus',
+//     given_name: 'Matheus',
+//     picture: 'https://lh3.googleusercontent.com/a-/AOh14GizpBN_3-3d6RSkauioHkLUXSbl3hBTL2o39bUd71c=s96-c',
+//     locale: 'pt-BR'
+//   },
+//   user: {
+//     id: '113793537492653216563',
+//     name: 'Matheus',
+//     email: 'matheuschimelli7@gmail.com',
+//     image: 'https://lh3.googleusercontent.com/a-/AOh14GizpBN_3-3d6RSkauioHkLUXSbl3hBTL2o39bUd71c=s96-c'
+//   }
+// }

@@ -39,3 +39,5 @@ export { default as SinglePdf } from './Crawlers/SinglePDF'
 export { default as SinglePdfConversorRunner } from './Crawlers/SinglePDF/workers/runner'
 
 export { default as PrevCrawler } from './Crawlers/PrevCrawler'
+
+export { default as FromWorkerServer } from './FromWorkerServer'

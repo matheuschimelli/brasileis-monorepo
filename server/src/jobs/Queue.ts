@@ -13,26 +13,31 @@ const queues = Object.values(BullJobs).map(job => ({
 
 export default {
   queues,
-  processSandBox (queue: any) {
+  processSandBox(queue: any) {
     // this.add(queue.name, null)
     queue.bull.process(queue.sandBoxFile)
   },
 
-  add (name: any, data: any) {
+  add(name: any, data: any) {
     const queue = this.queues.find(queue => queue.name === name)
     if (queue) {
       return queue.bull.add(data, queue.options)
     }
   },
 
-  runNow (name: any, data: any) {
+  runNow(name: any, data: any) {
     const queue = this.queues.find(queue => queue.name === name)
     if (queue) {
       return queue.bull.add(data, queue.options)
     }
   },
 
-  async cleanAll () {
+  sendToWorkerServer(data: any) {
+    const workerServer = new Queue('WorkerServer')
+    workerServer.add(data)
+  },
+
+  async cleanAll() {
     try {
       // if (process.env.NODE_ENV === 'development') {
       for (const queue of this.queues) {
@@ -66,7 +71,7 @@ export default {
     }
   },
 
-  process () {
+  process() {
     console.log('PROCESSING JOBS')
 
     this.queues.forEach(queue => {

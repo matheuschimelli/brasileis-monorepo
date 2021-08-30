@@ -4,6 +4,7 @@ import Server from '../lib/server'
 import connectDB from './database/connection'
 import routes from './routes'
 import jwtAuth from './middlewares/jwtAuth'
+import Queue from './jobs/Queue'
 
 import {
   ArticleResolver,
@@ -17,6 +18,9 @@ import {
 } from './modules'
 
 dotenv.config({ path: '.env' })
+
+Queue.process()
+Queue.sendToWorkerServer({ msg: 'DATA SENT FROM MAIN SERVER' })
 
 const server = new Server({
   host: process.env.host,
