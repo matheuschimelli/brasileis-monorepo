@@ -2,7 +2,7 @@ import axios from 'axios'
 import { OAuth2Client } from 'google-auth-library'
 import { Request, Response } from 'express'
 import dotenv from 'dotenv'
-import User from '../../models/User'
+import User, { UserRole } from '../../models/User'
 import { generateToken } from '../../utils/jwt'
 dotenv.config({ path: '.env' })
 
@@ -29,6 +29,7 @@ const tokenExpirationTime = '7d'
 
 export default class AuthService {
   static getUser(req: Request, res: Response) {
+    // @ts-ignore
     if (req.isAuthenticated()) {
       const user = req.user
 
@@ -67,6 +68,12 @@ export default class AuthService {
       if (payload) {
         if (payload.sub) {
           const existingUser = await User.findOne({ google: payload.sub })
+
+          if (existingUser?.email == 'matheuschimelli7@gmail.com') {
+            existingUser.admin = true
+            existingUser.role = UserRole.ADMIN
+            await existingUser.save()
+          }
 
           if (existingUser) {
             return res.send({ auth_token: generateToken({ id: existingUser.id, name: existingUser.name, email: existingUser.email }, tokenExpirationTime) })

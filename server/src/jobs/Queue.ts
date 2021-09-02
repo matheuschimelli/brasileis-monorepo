@@ -1,6 +1,7 @@
 import Queue from 'bull'
 import redisConfig from '../config/redis'
 import * as BullJobs from '.'
+import WorkerJobs from './WorkerJobs'
 
 const queues = Object.values(BullJobs).map(job => ({
   bull: new Queue(job.key, redisConfig.options),
@@ -11,7 +12,9 @@ const queues = Object.values(BullJobs).map(job => ({
   sandBoxFile: job.sandBoxFile
 }))
 
+
 export default {
+  ...WorkerJobs,
   queues,
   processSandBox(queue: any) {
     // this.add(queue.name, null)
@@ -30,11 +33,6 @@ export default {
     if (queue) {
       return queue.bull.add(data, queue.options)
     }
-  },
-
-  sendToWorkerServer(data: any) {
-    const workerServer = new Queue('WorkerServer')
-    workerServer.add(data)
   },
 
   async cleanAll() {

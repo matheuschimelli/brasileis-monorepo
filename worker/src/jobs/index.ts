@@ -1,3 +1,8 @@
-/* eslint-disable import/prefer-default-export */
-//export { default as ErrorJob } from './ErrorJob';
-export { default as FromMainServer } from './FromMainServer';
+//import jobTest from './jobtest'
+import WorkerServer from './WorkerServer'
+
+const jobQueues = [
+    //jobTest,
+    WorkerServer
+]
+export default jobQueues

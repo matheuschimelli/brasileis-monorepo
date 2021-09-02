@@ -1,12 +1,12 @@
 // import dotenv from 'dotenv'
 // dotenv.config({ path: '.env' })
 
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:8080/api'
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:8080/api/v1'
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000'
 
 export default {
   publicRuntimeConfig: {
-    SERVER_URL: process.env.SERVER_URL || 'http://localhost:8080/api',
+    SERVER_URL: process.env.SERVER_URL || 'http://localhost:8080/api/v1',
     CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:3000',
   },
   ssr: false,
@@ -165,12 +165,12 @@ export default {
         scheme: 'oauth2',
         endpoints: {
           authorization: 'https://accounts.google.com/o/oauth2/auth',
-          token: `${SERVER_URL}/v1/user/verify`,
-          userInfo: `${SERVER_URL}/v1/user`, // 'https://www.googleapis.com/oauth2/v3/userinfo',
+          token: `${SERVER_URL}/user/verify`,
+          userInfo: `${SERVER_URL}/user`, // 'https://www.googleapis.com/oauth2/v3/userinfo',
           logout: `${CLIENT_URL}/logout`,
         },
         token: {
-          property: 'id_token',
+          property: 'auth_token',
           type: 'Bearer',
           maxAge: 1800,
         },

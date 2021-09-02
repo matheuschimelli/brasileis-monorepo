@@ -20,7 +20,8 @@ import {
 dotenv.config({ path: '.env' })
 
 Queue.process()
-Queue.sendToWorkerServer({ msg: 'DATA SENT FROM MAIN SERVER' })
+Queue.workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
+Queue.jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
 
 const server = new Server({
   host: process.env.host,

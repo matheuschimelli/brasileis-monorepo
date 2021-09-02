@@ -1,5 +1,4 @@
 import 'dotenv/config';
+import { startProcess } from './lib/Queue';
 
-import Queue from './lib/Queue';
-
-Queue.process();
+startProcess()

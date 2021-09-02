@@ -13,7 +13,7 @@ import createBaseService from '../../lib/ServiceBase'
 const CrawlerServiceBase = createBaseService<Crawler>(Crawler)
 
 export default class CrawlerService extends CrawlerServiceBase {
-  static async index (page: number) {
+  static async index(page: number) {
     const crawlers = await Crawler.find({
       order: {
         createdAt: 'DESC'
@@ -33,7 +33,7 @@ export default class CrawlerService extends CrawlerServiceBase {
     throw new Error('Nada encontrado')
   }
 
-  static async show (id: string) {
+  static async show(id: string) {
     const crawler = await Crawler.findOne(id,
       {
         relations: [
@@ -50,7 +50,7 @@ export default class CrawlerService extends CrawlerServiceBase {
     throw new Error('Nada encontrado')
   }
 
-  static async create (data: CreateCrawlerInput) {
+  static async create(data: CreateCrawlerInput) {
     const categories = await Category.findByIds(data.categories!)
     const subCategories = await SubCategory.findByIds(data.categories!)
     const crawlerType = await CrawlerType.findOne(data.crawlerType!)
@@ -79,7 +79,7 @@ export default class CrawlerService extends CrawlerServiceBase {
     throw new Error('Não foi criar um novo crawler. Tente Mais tarde')
   }
 
-  static async update (id: string, data: UpdateCrawlerInput) {
+  static async update(id: string, data: UpdateCrawlerInput) {
     const categories = await Category.findByIds(data.categories!)
     const subCategories = await SubCategory.findByIds(data.categories!)
     const crawlerType = await CrawlerType.findOne(data.crawlerType!)
@@ -108,7 +108,7 @@ export default class CrawlerService extends CrawlerServiceBase {
     throw new Error('Não foi possível atualizar. Tente mais tarde.')
   }
 
-  static async delete (id: string) {
+  static async delete(id: string) {
     const crawler = await Crawler.findOne(id)
     if (crawler) {
       await Queue.add('DeleteCrawler', { id })
@@ -117,7 +117,7 @@ export default class CrawlerService extends CrawlerServiceBase {
     throw new Error('Nenhum crawler encontrado com o id para ser removido')
   }
 
-  static async runCrawler (id: string) {
+  static async runCrawler(id: string) {
     console.log('Running Crawler')
     const crawler = await Crawler.createQueryBuilder('crawler')
       .leftJoinAndSelect('crawler.categories', 'categories')
@@ -130,9 +130,13 @@ export default class CrawlerService extends CrawlerServiceBase {
 
     if (crawler) {
       if (!crawler.crawlerType) {
-        await Queue.add('DefaultCrawler', crawler)
+        // await Queue.anotherNade.add({ data: 'sample' })
+        await Queue.workerServer.add({ data: 'sample' })
       } else {
-        await Queue.add(crawler.crawlerType.name, crawler)
+        //  await Queue.add(crawler.crawlerType.name, crawler)
+        // await Queue.anotherNade.add({ data: 'sample' })
+        await Queue.workerServer.add({ data: 'sample' })
+
       }
       return crawler
     }
