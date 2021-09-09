@@ -1,3 +1,14 @@
+
+export { default as Monday } from './Continuous/Monday'
+export { default as Tuesday } from './Continuous/Tuesday'
+export { default as Wednesday } from './Continuous/Wednesday'
+export { default as Thursday } from './Continuous/Thursday'
+export { default as Friday } from './Continuous/Friday'
+export { default as Saturday } from './Continuous/Saturday'
+export { default as Sunday } from './Continuous/Sunday'
+export { default as FromWorkerServer } from './FromWorkerServer'
+// export { default as JobProcessor } from './JobProcessor'
+
 // export { default as JobTest } from './JobTest'
 // export { default as SandBox } from './SandBox'
 // export { default as DefaultCrawler } from './Crawlers/DefaultCrawler'
@@ -6,13 +17,7 @@
 // /**
 //  * Continous jobs. They run everyday
 //  */
-// export { default as Monday } from './Continuous/Monday'
-// export { default as Tuesday } from './Continuous/Tuesday'
-// export { default as Wednesday } from './Continuous/Wednesday'
-// export { default as Thursday } from './Continuous/Thursday'
-// export { default as Friday } from './Continuous/Friday'
-// export { default as Saturday } from './Continuous/Saturday'
-// export { default as Sunday } from './Continuous/Sunday'
+
 
 // /**
 //  * Test Jobs
@@ -39,6 +44,3 @@
 // export { default as SinglePdfConversorRunner } from './Crawlers/SinglePDF/workers/runner'
 
 // export { default as PrevCrawler } from './Crawlers/PrevCrawler'
-
-export { default as FromWorkerServer } from './FromWorkerServer'
-export { default as JobProcessor } from './JobProcessor'

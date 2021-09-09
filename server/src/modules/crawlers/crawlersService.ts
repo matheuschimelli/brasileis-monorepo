@@ -131,12 +131,9 @@ export default class CrawlerService extends CrawlerServiceBase {
     if (crawler) {
       if (!crawler.crawlerType) {
         // await Queue.anotherNade.add({ data: 'sample' })
-        await Queue.workerServer.add({ data: 'sample' })
+        await Queue.workerServer.add({ queue: 'DefaultCrawler', jobData: crawler })
       } else {
-        //  await Queue.add(crawler.crawlerType.name, crawler)
-        // await Queue.anotherNade.add({ data: 'sample' })
-        await Queue.workerServer.add({ data: 'sample' })
-
+        await Queue.workerServer.add({ queue: 'DefaultCrawler', jobData: crawler })
       }
       return crawler
     }
