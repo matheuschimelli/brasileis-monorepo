@@ -28,7 +28,7 @@ export default {
     continuous: true,
     repeat
   },
-  async handle (job: Job) {
+  async handle(job: Job) {
     console.log(`Checking Saturday Jobs ${dayjs().format('HH:mm')}`)
 
     try {
@@ -54,9 +54,9 @@ export default {
       for (const crawler of crawlers) {
         console.log(crawler)
         if (!crawler.crawlerType) {
-          await Queue.add('DefaultCrawler', crawler)
+          await Queue.workerServer.add({ queue: 'DefaultCrawler', jobData: crawler })
         } else {
-          await Queue.add(crawler.crawlerType.name, crawler)
+          await Queue.workerServer.add({ queue: crawler.crawlerType.name, jobData: crawler })
         }
       }
       job.progress(100)

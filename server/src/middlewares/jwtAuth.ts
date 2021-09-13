@@ -30,7 +30,7 @@ export default async function jwtAuth(req: Request, res: Response, next: any) {
       return false
     }
   }
-
+  //@ts-ignore
   if (req.isAuthenticated()) {
     const payload = req.isAuthenticated()
     try {
@@ -62,6 +62,7 @@ export default async function jwtAuth(req: Request, res: Response, next: any) {
 }
 
 export function isAuthenticated(req: Request, res: Response, next: any) {
+  //@ts-ignore
   if (req.isAuthenticated()) {
     console.log('user IS authenticated')
     return next()
@@ -71,6 +72,7 @@ export function isAuthenticated(req: Request, res: Response, next: any) {
 };
 
 export function isAdmin(req: Request, res: Response, next: any) {
+  //@ts-ignore
   const { admin }: any = req.user
   if (admin) {
     return next()

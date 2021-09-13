@@ -29,8 +29,6 @@
             dense
             flat
             hide-details
-            rounded
-            solo-inverted
             placeholder="Pesquisar"
           ></v-text-field>
         </v-responsive>

@@ -12,6 +12,7 @@ export default class PeticaoController {
      * @param res
      */
   async escritorioIndex (req: Request, res: Response) {
+    // @ts-ignore
     const { user } = req
 
     const userRepo = getRepository(User)
@@ -45,6 +46,7 @@ export default class PeticaoController {
   }
 
   async show (req:Request, res:Response) {
+    // @ts-ignore
     const { user } = req
     const { id: peticaoId } = req.params
 
@@ -87,6 +89,7 @@ export default class PeticaoController {
   }
 
   async createBlank (req: Request, res: Response) {
+    // @ts-ignore
     const { user } = req
 
     try {
@@ -121,6 +124,7 @@ export default class PeticaoController {
   }
 
   async update (req:Request, res:Response) {
+    // @ts-ignore
     const { user } = req
     const { id: peticaoId } = req.params
     const {
@@ -170,6 +174,7 @@ export default class PeticaoController {
   }
 
   async delete (req:Request, res:Response) {
+    // @ts-ignore
     const { user } = req
     const { id: peticaoId } = req.params
 
@@ -212,6 +217,7 @@ export default class PeticaoController {
   }
 
   async generateDocx (req:Request, res:Response) {
+    // @ts-ignore
     const { user } = req
     const { id: peticaoId } = req.params
 

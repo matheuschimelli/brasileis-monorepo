@@ -9,6 +9,7 @@ const ServiceBase = createBaseService<User>(User)
 
 export default class UserServiceBase extends ServiceBase {
   public static async findConnectecUser (ctx: AppContext) {
+    //@ts-ignore
     console.log(ctx.req.user)
     // @ts-ignore
     const authUser = ctx.req.user as User
@@ -33,6 +34,7 @@ export default class UserServiceBase extends ServiceBase {
   public static async search (term:string, page:number, ctx: AppContext) {
     console.log('term', term)
     console.log('page', page)
+    //@ts-ignore
     const authUser = ctx.req.user as User
     console.log(authUser)
     const peticoes = await Peticao.find({

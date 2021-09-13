@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import morgan from 'morgan'
-import Server from '../lib/server'
+import Server from './lib/server'
 import connectDB from './database/connection'
 import routes from './routes'
 import jwtAuth from './middlewares/jwtAuth'

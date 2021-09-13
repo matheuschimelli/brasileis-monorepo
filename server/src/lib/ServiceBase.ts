@@ -1,8 +1,8 @@
 import { BaseEntity } from 'typeorm'
 
-function createServiceBase<T extends BaseEntity> (model: any) {
+function createServiceBase<T extends BaseEntity>(model: any) {
   abstract class BaseService {
-    public static async index (page: number): Promise<T[]> {
+    public static async index(page: number): Promise<T[]> {
       const allItems = await model.find({
         order: {
           updatedAt: 'DESC'
@@ -17,7 +17,7 @@ function createServiceBase<T extends BaseEntity> (model: any) {
       throw new Error('Nada encontrado')
     }
 
-    public static async fullIndex (orderBy: object, selectFields:string[]): Promise<T[]> {
+    public static async fullIndex(orderBy: object, selectFields: string[]): Promise<T[]> {
       const allItems = await model.find({
         order: {
           ...orderBy
@@ -30,7 +30,7 @@ function createServiceBase<T extends BaseEntity> (model: any) {
       throw new Error('Nada encontrado')
     }
 
-    public static async count () {
+    public static async count() {
       const allItemsCount = await model.count()
 
       if (allItemsCount) {
@@ -39,7 +39,7 @@ function createServiceBase<T extends BaseEntity> (model: any) {
       throw new Error('0 páginas')
     }
 
-    public static async findOneBySlug (slug:string, relations?: string[]) {
+    public static async findOneBySlug(slug: string, relations?: string[]) {
       let item
       if (relations) {
         item = await model.findOne({
@@ -62,7 +62,7 @@ function createServiceBase<T extends BaseEntity> (model: any) {
       throw new Error('Nada encontrado')
     }
 
-    public static async findOneById (id:string, relations?: string[]) {
+    public static async findOneById(id: string, relations?: string[]) {
       let item
       if (relations) {
         item = await model.findOne({
@@ -85,7 +85,7 @@ function createServiceBase<T extends BaseEntity> (model: any) {
       throw new Error('Nada encontrado')
     }
 
-    public static async create (data?: any) {
+    public static async create(data?: any) {
       console.log('CREATE DATA', data)
       const newItem = model.create({
         ...data
@@ -94,7 +94,7 @@ function createServiceBase<T extends BaseEntity> (model: any) {
       return newItem
     }
 
-    public static async update (id?:string, data?:any) {
+    public static async update(id?: string, data?: any) {
       const item = await model.findOne(id)
 
       if (item) {
@@ -104,7 +104,7 @@ function createServiceBase<T extends BaseEntity> (model: any) {
       throw new Error('Nada encontrado para atualizar')
     }
 
-    public static async delete (id:string): Promise<string> {
+    public static async delete(id: string): Promise<string> {
       const item = await model.findOne(id)
 
       if (item) {

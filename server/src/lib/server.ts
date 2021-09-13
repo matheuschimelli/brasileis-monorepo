@@ -2,7 +2,7 @@
 import 'reflect-metadata'
 import http from 'http'
 import express, { Express, Request, Response, NextFunction } from 'express'
-import { ApolloServer, NonEmptyArray } from 'apollo-server-express'
+import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import compression from 'compression'
 import helmet from 'helmet'
@@ -10,7 +10,7 @@ import errorHandler from 'errorhandler'
 import cors from 'cors'
 import signale from 'signale'
 
-declare var process : {
+declare var process: {
   env: {
     SESSION_SECRET: string
     HOST: string,
@@ -23,7 +23,7 @@ interface ServerParams {
   port?: number | string;
   host?: string;
   postgresql?: string;
-  debugGraphql?:boolean;
+  debugGraphql?: boolean;
   graphqlResolvers?: any[];
   cors?: string[];
 }
@@ -52,7 +52,7 @@ class Server {
 
   private cors?: string[]
 
-  constructor (params?:ServerParams) {
+  constructor(params?: ServerParams) {
     this.host = params?.host || '0.0.0.0.0'
     this.port = params?.port || 8080
     this.postgresql = params?.postgresql || undefined
@@ -64,7 +64,7 @@ class Server {
     this.init()
   }
 
-  init () {
+  init() {
     this.app = express()
     this.server = http.createServer(this.app)
     this.app.disable('x-powered-by')
@@ -73,8 +73,8 @@ class Server {
     this.app.get('/tired', ({ res }: Middleware) => res!.send('Tired?'))
     this.app.use(helmet({
       contentSecurityPolicy:
-     (process.env.NODE_ENV === 'production')
-       ? undefined : false
+        (process.env.NODE_ENV === 'production')
+          ? undefined : false
     }))
     this.app.use(cors())
     this.app.use(express.urlencoded({ extended: true }))
@@ -85,14 +85,14 @@ class Server {
     return this
   }
 
-  useMiddleware (middleware: Middleware) {
+  useMiddleware(middleware: Middleware) {
     this.app?.use(middleware)
     return this
   }
 
-  useCors () {
+  useCors() {
     const corsList = this.cors
-    const corsOptionsDelegate = function (req:any, callback:any) {
+    const corsOptionsDelegate = function (req: any, callback: any) {
       let corsOptions
       if (corsList?.indexOf(req.header('Origin')) !== -1) {
         corsOptions = { origin: true, credentials: true } // reflect (enable) the requested origin in the CORS response
@@ -105,22 +105,23 @@ class Server {
     return this
   }
 
-  useRunOnBoostrap (boostrapFunction: () => void) {
+  useRunOnBoostrap(boostrapFunction: () => void) {
     boostrapFunction()
     return this
   }
 
-  async useAsyncRunOnBoostrap (boostrapFunction: () => Promise<void>) {
+  async useAsyncRunOnBoostrap(boostrapFunction: () => Promise<void>) {
     await boostrapFunction()
     return this
   }
 
-  async useApolloServer () {
+  async useApolloServer() {
     if (this.graphqlResolvers! && this.graphqlResolvers?.length !== 0) {
       this.apolloServer = new ApolloServer({
         debug: this.debugGraphql || false,
         schema: await buildSchema({
-          resolvers: this.graphqlResolvers as NonEmptyArray<Function> | NonEmptyArray<string>,
+          // @ts-ignore
+          resolvers: this.graphqlResolvers,
           validate: true
         }),
         context: ({ req }) => ({
@@ -134,7 +135,7 @@ class Server {
     }
   }
 
-  handleErrors () {
+  handleErrors() {
     if (process.env.NODE_ENV === 'development') {
       this.app!.use(errorHandler())
     } else {
@@ -147,8 +148,8 @@ class Server {
     }
   }
 
-  async boostrap () {
-    if (this.cors && this.cors.lenght !== 0) this.useCors(this.cors)
+  async boostrap() {
+    if (this.cors && this.cors.length !== 0) this.useCors()
     await this.useApolloServer()
     this.handleErrors()
     this.server?.listen(this.port, () => {

@@ -31,6 +31,7 @@ export default class AuthService {
   static getUser(req: Request, res: Response) {
     // @ts-ignore
     if (req.isAuthenticated()) {
+      //@ts-ignore
       const user = req.user
 
       // res.cookie('auth_token', generateToken(user, tokenExpirationTime), { expires: new Date(Date.now() + 900000) })
@@ -93,7 +94,7 @@ export default class AuthService {
 
               await User.save(newUser)
 
-              return res.send({ auth_token: generateToken({ id: newUser.id, name: newUser.name, email: newUser.email }, authTokens.profile.picture) })
+              return res.send({ auth_token: generateToken({ id: newUser.id, name: newUser.name, email: newUser.email }, authToken.profile.picture) })
             } else {
               return res.status(400).json({ message: 'Cannot find a valid email for the given Google Account. Please, try again later or contact our support.' })
             }

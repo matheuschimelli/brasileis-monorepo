@@ -8,6 +8,7 @@ const ServiceBase = createBaseService<Peticao>(Peticao)
 
 export default class PeticaoService extends ServiceBase {
   public static async findPeticaoById (id:number|string, ctx: AppContext) {
+    //@ts-ignore
     if (ctx.req.user) {
       const peticao = await Peticao.findOne({
         where: {
@@ -25,6 +26,7 @@ export default class PeticaoService extends ServiceBase {
   }
 
   public static async allUserPeticoes (page:number, ctx: AppContext) {
+    //@ts-ignore
     if (ctx.req.user) {
       const peticoes = await Peticao.find({
         where: {
@@ -47,6 +49,7 @@ export default class PeticaoService extends ServiceBase {
   }
 
   public static async allUserPeticoesCount (ctx: AppContext) {
+    //@ts-ignore
     if (ctx.req.user) {
       const peticoes = await Peticao.count({
         where: {
@@ -63,6 +66,7 @@ export default class PeticaoService extends ServiceBase {
   }
 
   public static async createNewPeticao (ctx: AppContext) {
+    //@ts-ignore
     if (ctx.req.user) {
       // @ts-ignore
       const authUser = ctx.req.user as User
@@ -85,6 +89,7 @@ export default class PeticaoService extends ServiceBase {
   }
 
   public static async updatePeticao (id:string, ctx: AppContext, data:UpdatePeticaoInput) {
+    //@ts-ignore
     if (ctx.req.user) {
       // @ts-ignore
       const authUser = ctx.req.user as User
@@ -112,6 +117,7 @@ export default class PeticaoService extends ServiceBase {
   }
 
   public static async deletePeticao (id:string, ctx:AppContext) {
+    //@ts-ignore
     if (ctx.req.user) {
       // @ts-ignore
       const authUser = ctx.req.user as User

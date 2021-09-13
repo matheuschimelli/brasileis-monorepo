@@ -6,6 +6,7 @@ import Escritorio from '../../models/EscritorioVirtual/Escritorio'
 
 export default class escritorioController {
   async index (req:Request, res: Response) {
+    // @ts-ignore
     const { user } = req
     const userRepo = getRepository(User)
 
@@ -33,6 +34,7 @@ export default class escritorioController {
   }
 
   async create (req:Request, res: Response) {
+    // @ts-ignore
     const { user } = req
 
     const {

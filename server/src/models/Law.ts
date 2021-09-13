@@ -54,7 +54,7 @@ class Law extends BaseEntity {
   textContent!: string;
 
   @Column({ nullable: true })
-  contentHtmlSelector!: string;
+  contentHtmlSelector?: string;
 
   @Field()
   @Column({ nullable: true })
@@ -68,23 +68,23 @@ class Law extends BaseEntity {
 
   @Field()
   @Column({ nullable: true })
-  tipo!: string
+  tipo?: string
 
   @Field()
   @Column({ nullable: true })
-  numero!: string
+  numero?: string
 
   @Field()
   @Column({ nullable: true })
-  orgao!: string
+  orgao?: string
 
   @Field()
   @Column({ nullable: true, type: 'date' })
-  dataPublicacao!: Date
+  dataPublicacao?: Date
 
   @Field()
   @Column({ nullable: true })
-  ementa!: string
+  ementa?: string
 
   /*
   @Column({ nullable: true })
@@ -123,7 +123,7 @@ class Law extends BaseEntity {
   updatedAt!: Date;
 
   @BeforeInsert()
-  public createSlug (): void {
+  public createSlug(): void {
     const randomId = nanoid(5)
     this.slug = `${limaxSlug(this.title)}-${randomId}`
   }
