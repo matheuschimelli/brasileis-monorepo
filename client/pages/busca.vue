@@ -1,70 +1,86 @@
 <template>
-  <div>
+  <v-main>
+    <v-container>
+      <v-form ref="form" action="/busca" method="GET">
+        <v-text-field
+          v-if="notFoundError"
+          name="q"
+          placeholder="Pesquise leis, jurisprudência entre outros"
+          filled
+          solo-inverted
+          flat
+          filed
+          single-line
+          append-icon="mdi-magnify"
+          @click:append="$refs.form.submit()"
+        />
+      </v-form>
+    </v-container>
     <v-container>
       <span class="resultsInfo">Resultados: {{ resultsLenght }}</span>
-    </v-container>
-    <v-row>
-      <v-col cols="12" sm="12" md="9" lg="9">
-        <v-container v-if="notFoundError">
-          <v-card outlined class="p-bottom">
-            <v-card-title>Nada encontrado</v-card-title>
+      <v-row>
+        <v-col cols="12" sm="12" md="9" lg="9">
+          <v-container v-if="notFoundError">
+            <v-card class="p-bottom" elevation="0" color="#385F73" dark>
+              <v-card-title>Nada encontrado</v-card-title>
 
-            <v-card-text class="textResult">
-              <p>
-                Não foi possível encontrar nenhum resultado para a pesquisa
-                realizada. Verifique e tente novamente.
-              </p>
-            </v-card-text>
-          </v-card>
-        </v-container>
-        <v-container v-if="!notFoundError">
-          <v-card
-            v-for="result of searchResults"
-            :key="result._source.docId"
-            :to="'/legislacao/' + result._source.slug"
-            outlined
-            class="p-bottom"
-          >
-            <v-card-title>{{ result._source.title }}</v-card-title>
-            <div class="categories">
-              <v-chip
-                v-for="category of result._source.categories"
-                :key="category"
-                :to="'/c/' + category"
-                outlined
-                color="#b82f00"
-                small
-                class="ma-2"
-                label
-                >{{ category }}
-              </v-chip>
-            </div>
-
-            <v-card-text v-if="result.highlight" class="textResult">
-              <p v-html="result.highlight.textContent[0]"></p>
-            </v-card-text>
-          </v-card>
-          <div class="pagination">
-            <v-btn
-              v-if="currentPage >= 2"
-              link
-              :to="routePath + previousPage"
-              color="#b82f00"
+              <v-card-text class="textResult">
+                <p>
+                  Não foi possível encontrar nenhum resultado para a pesquisa
+                  realizada. Verifique e tente novamente.
+                </p>
+              </v-card-text>
+            </v-card>
+          </v-container>
+          <v-container v-if="!notFoundError">
+            <v-card
+              v-for="result of searchResults"
+              :key="result._source.docId"
+              :to="'/legislacao/' + result._source.slug"
               outlined
+              class="p-bottom"
             >
-              Anterior
-              <v-icon right>mdi-arrow-left-bold-circle-outline</v-icon></v-btn
-            >
+              <v-card-title>{{ result._source.title }}</v-card-title>
+              <div class="categories">
+                <v-chip
+                  v-for="category of result._source.categories"
+                  :key="category"
+                  :to="'/c/' + category"
+                  outlined
+                  color="#b82f00"
+                  small
+                  class="ma-2"
+                  label
+                  >{{ category }}
+                </v-chip>
+              </div>
 
-            <v-btn link :to="routePath + nextPage" color="#b82f00" outlined
-              >Próxima página
-              <v-icon right>mdi-arrow-right-circle-outline</v-icon></v-btn
-            >
-          </div>
-        </v-container>
-      </v-col>
-    </v-row>
-  </div>
+              <v-card-text v-if="result.highlight" class="textResult">
+                <p v-html="result.highlight.textContent[0]"></p>
+              </v-card-text>
+            </v-card>
+            <div class="pagination">
+              <v-btn
+                v-if="currentPage >= 2"
+                link
+                :to="routePath + previousPage"
+                color="#b82f00"
+                outlined
+              >
+                Anterior
+                <v-icon right>mdi-arrow-left-bold-circle-outline</v-icon></v-btn
+              >
+
+              <v-btn link :to="routePath + nextPage" color="#b82f00" outlined
+                >Próxima página
+                <v-icon right>mdi-arrow-right-circle-outline</v-icon></v-btn
+              >
+            </div>
+          </v-container>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-main>
 </template>
 <script>
 import dayjs from 'dayjs'
@@ -86,7 +102,6 @@ dayjs.locale({
 })
 
 export default {
-  watchQuery: ['q', 'page', 'categories', 'subcategories'],
   async asyncData({ query, $axios, route }) {
     const page = query.page || 1
     const nextPage = parseInt(page) + parseInt(1)
@@ -129,24 +144,6 @@ export default {
       }
     }
   },
-  computed: {
-    routePath() {
-      if (!this.$route.fullPath.includes('&page=')) {
-        return `${this.$route.fullPath}&page=`
-      }
-      return this.$route.fullPath.replace(/(&page=\d+)/, '&page=')
-    },
-  },
-  methods: {
-    formatDate(datetime) {
-      return dayjs(datetime).format('l LT')
-    },
-    fixHightligh(str) {
-      const htmlString = str
-      const plainText = htmlString.replace(/<[^>]+>/g, '')
-      return plainText
-    },
-  },
   head() {
     return {
       title: `${this.searchQuery}  | Pesquisa Brasileis `,
@@ -161,6 +158,25 @@ export default {
         },
       ],
     }
+  },
+  computed: {
+    routePath() {
+      if (!this.$route.fullPath.includes('&page=')) {
+        return `${this.$route.fullPath}&page=`
+      }
+      return this.$route.fullPath.replace(/(&page=\d+)/, '&page=')
+    },
+  },
+  watchQuery: ['q', 'page', 'categories', 'subcategories'],
+  methods: {
+    formatDate(datetime) {
+      return dayjs(datetime).format('l LT')
+    },
+    fixHightligh(str) {
+      const htmlString = str
+      const plainText = htmlString.replace(/<[^>]+>/g, '')
+      return plainText
+    },
   },
 }
 </script>

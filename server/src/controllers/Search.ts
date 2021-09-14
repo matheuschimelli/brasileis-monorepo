@@ -8,7 +8,7 @@ import SubCategory from '../models/SubCategory'
 const search = new SearchService()
 
 export default class SearchController {
-  async search(req: Request, res: Response) {
+  static async search(req: Request, res: Response) {
     let {
       page,
       q,
@@ -44,7 +44,7 @@ export default class SearchController {
     }
   }
 
-  async create(req: Request, res: Response) {
+  static async create(req: Request, res: Response) {
     const {
       lawId,
       url,
@@ -80,7 +80,7 @@ export default class SearchController {
     }
   }
 
-  async update(req: Request, res: Response) {
+  static async update(req: Request, res: Response) {
     const {
       lawId,
       url,
@@ -116,7 +116,7 @@ export default class SearchController {
     }
   }
 
-  async categoriesFilter(req: Request, res: Response) {
+  static async categoriesFilter(req: Request, res: Response) {
     try {
       const categoryRepo = getRepository(Category)
       const categories = await categoryRepo.find({
@@ -135,7 +135,7 @@ export default class SearchController {
     }
   }
 
-  async subCategoriesFilter(req: Request, res: Response) {
+  static async subCategoriesFilter(req: Request, res: Response) {
     try {
       const subCategoryRepo = getRepository(SubCategory)
       const subCategories = await subCategoryRepo.find({

@@ -2,8 +2,8 @@
   <div>
     <v-app-bar app color="white" flat>
       <v-container class="py-0 fill-height">
-        <v-avatar class="mr-10" color="blue " size="32">
-          <v-icon>mdi-book</v-icon>
+        <v-avatar class="mr-10" size="32">
+          <v-icon color="primary">mdi-book</v-icon>
         </v-avatar>
         <v-btn to="/" link text>Brasileis</v-btn>
 
@@ -23,14 +23,19 @@
         </div>
         <v-responsive
           v-show="!$vuetify.breakpoint.xs && !$vuetify.breakpoint.sm"
+          v-if="$route.path != '/painel'"
           max-width="260"
+          class="ml-5"
         >
-          <v-text-field
-            dense
-            flat
-            hide-details
-            placeholder="Pesquisar"
-          ></v-text-field>
+          <v-form action="/busca">
+            <v-text-field
+              hide-details
+              solo-inverted
+              flat
+              placeholder="Pesquisar"
+              name="q"
+            ></v-text-field>
+          </v-form>
         </v-responsive>
 
         <v-menu offset-y>
@@ -66,20 +71,13 @@
           v-model="group"
           active-class="deep-purple--text text--accent-4"
         >
-          <v-list-item>
-            <v-list-item-title>Foo</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Bar</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Fizz</v-list-item-title>
-          </v-list-item>
-
-          <v-list-item>
-            <v-list-item-title>Buzz</v-list-item-title>
+          <v-list-item
+            v-for="link of links"
+            v-show="link.authenticated == authenticated"
+            :key="link.href"
+            :to="'/' + link.href"
+          >
+            <v-list-item-title>{{ link.title }}</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
@@ -100,7 +98,7 @@ export default defineComponent({
   setup(props) {
     const links = ref<any[]>([
       { title: 'Início', href: '/', authenticated: true },
-      { title: 'Legislação', href: '/legislacao', authenticated: true },
+      // { title: 'Legislação', href: '/legislacao', authenticated: true },
       { title: 'Preço', href: '/', authenticated: false },
       { title: 'Ajuda', href: '/ajuda', authenticated: true },
     ])
