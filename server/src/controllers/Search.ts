@@ -33,7 +33,7 @@ export default class SearchController {
       }, { from: fromPage(Number(page)), size: 15 })
 
       // @ts-ignore
-      const filteredResults = searchResults.results.body.hits.hits.map(({ _index, _type, _id, _score, ...keepAttrs }) => keepAttrs)
+      const filteredResults = searchResults.results.body.hits.hits.map(({ _index, _type, _score, ...keepAttrs }) => keepAttrs)
       if (searchResults) {
         return res.json({ results: filteredResults, total: searchResults.results.body.hits.total.value })
       }

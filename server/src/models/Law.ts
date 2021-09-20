@@ -58,7 +58,7 @@ class Law extends BaseEntity {
 
   @Field()
   @Column({ nullable: true })
-  updateDiff!: string;
+  updateDiff?: string;
 
   @Column({ default: true })
   published!: boolean;

@@ -368,10 +368,6 @@ export default class SearchService {
     }
   }
 
-  /**
-   *  Add or update a document on ElasticSearch
-   * @param addDocParams
-   */
   async upsertDoc(addDocParams: AddDocParams) {
     try {
       const esIndex = process.env.NODE_ENV === 'development' ? 'development' : addDocParams.indexName
@@ -409,7 +405,7 @@ export default class SearchService {
         }
       })
       console.log(doc)
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
       throw new Error(error)
     }

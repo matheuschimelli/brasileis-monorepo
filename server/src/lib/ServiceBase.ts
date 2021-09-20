@@ -98,7 +98,7 @@ function createServiceBase<T extends BaseEntity>(model: any) {
       const item = await model.findOne(id)
 
       if (item) {
-        await item.save({ ...data })
+        await item.save({ data: data })
         return item
       }
       throw new Error('Nada encontrado para atualizar')
