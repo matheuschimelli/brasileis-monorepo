@@ -5,7 +5,7 @@ import { getRepository } from 'typeorm'
 import Cliente from '../../models/EscritorioVirtual/Cliente'
 
 export default class escritorioController {
-  async index (req:Request, res: Response) {
+  async index(req: Request, res: Response) {
     // @ts-ignore
     const { user } = req
 
@@ -30,7 +30,7 @@ export default class escritorioController {
     }
   }
 
-  async show (req:Request, res: Response) {
+  async show(req: Request, res: Response) {
     // @ts-ignore
     const { user } = req
     const { id: clienteId } = req.params
@@ -55,11 +55,10 @@ export default class escritorioController {
     }
   }
 
-  async create (req:Request, res: Response) {
+  async create(req: Request, res: Response) {
     // @ts-ignore
     const { user: authenticatedUser } = req
     console.log('request user')
-    console.log(req.user)
     const {
       nome,
       cpf,
@@ -106,7 +105,7 @@ export default class escritorioController {
     }
   }
 
-  async update (req:Request, res: Response) {
+  async update(req: Request, res: Response) {
     // @ts-ignore
     const { user: authenticatedUser } = req
     const { id: clienteId } = req.params
@@ -140,7 +139,7 @@ export default class escritorioController {
           }
         })
         if (updateCliente) {
-        // @ts-ignore
+          // @ts-ignore
           updateCliente.nome = nome
           updateCliente.cpf = cpf
           updateCliente.rg = rg
@@ -164,7 +163,7 @@ export default class escritorioController {
     }
   }
 
-  async delete (req:Request, res: Response) {
+  async delete(req: Request, res: Response) {
     // @ts-ignore
     const { user: authenticatedUser } = req
     const { id: clienteId } = req.params

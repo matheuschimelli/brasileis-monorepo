@@ -30,3 +30,9 @@ cd worker
 yarn dev
 yarn dev:queue # run job queues
 ```
+
+## Elasticsearch  urls
+```shell
+http://localhost/development/_search - search
+
+```

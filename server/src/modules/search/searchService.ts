@@ -54,8 +54,37 @@ export interface PaginationOptions {
 }
 
 export class SearchService {
+  static async findOneById(id: string, index: string, type: string) {
+    const esIndex = process.env.NODE_ENV === 'development' ? 'development' : index
+    const doc = await client.get({ index: esIndex, id, type })
+    if (doc) {
+      return doc.body
+    } else {
+      return null
+    }
+  }
+  static async getAllDocs(index: string, type: string): Promise<any[] | null> {
+    const esIndex = process.env.NODE_ENV === 'development' ? 'development' : index
+    const docs = await client.search({
+      index: esIndex,
+      body: {
+        "size": 10000,
+        "query": {
+          "match_all": {}
+        },
+        "_source": [
+          "_id"
+        ]
 
-
+      }
+    })
+    const docsResult = docs.body.hits.hits as any[]
+    if (docs.body) {
+      return docsResult
+    } else {
+      return null
+    }
+  }
   async search(searchParams: SearchParams, paginationOption: PaginationOptions) {
     try {
       const esIndex = process.env.NODE_ENV === 'development' ? 'development' : searchParams.index
@@ -113,7 +142,7 @@ export class SearchService {
     }
   }
 
-  async remove(removeDocParams: RemoveDocParams) {
+  static async remove(removeDocParams: RemoveDocParams) {
     const esIndex = process.env.NODE_ENV === 'development' ? 'development' : removeDocParams.index
 
     try {

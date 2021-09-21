@@ -10,6 +10,7 @@ import {
 } from './crawlersInputs'
 
 import createBaseService from '../../lib/ServiceBase'
+import { workerServer } from '../../jobs/WorkerJobs'
 const CrawlerServiceBase = createBaseService<Crawler>(Crawler)
 
 export default class CrawlerService extends CrawlerServiceBase {
@@ -131,9 +132,9 @@ export default class CrawlerService extends CrawlerServiceBase {
 
     if (crawler) {
       if (!crawler.crawlerType) {
-        await Queue.workerServer.add({ queue: 'DefaultCrawler', jobData: crawler })
+        await workerServer.add({ queue: 'DefaultCrawler', jobData: crawler })
       } else {
-        await Queue.workerServer.add({ queue: crawler.crawlerType.name, jobData: crawler })
+        await workerServer.add({ queue: crawler.crawlerType.name, jobData: crawler })
       }
       return crawler
     }

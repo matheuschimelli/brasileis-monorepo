@@ -1,7 +1,7 @@
 import Queue from 'bull'
 import redisConfig from '../config/redis'
 import * as BullJobs from '.'
-import WorkerJobs from './WorkerJobs'
+import { jobQueues } from './WorkerJobs'
 
 const queues = Object.values(BullJobs).map(job => ({
   bull: new Queue(job.key, redisConfig.options),
@@ -14,7 +14,7 @@ const queues = Object.values(BullJobs).map(job => ({
 
 
 export default {
-  ...WorkerJobs,
+  jobQueues,
   queues,
   processSandBox(queue: any) {
     // this.add(queue.name, null)

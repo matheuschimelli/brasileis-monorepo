@@ -10,9 +10,9 @@ export default class RedisCache {
   private host: string;
   private port: number;
   public sessionId?: string;
-  public redisClient?: redis.RedisClient
+  public redisClient?: any
 
-  constructor (settings: RedisCacheSettings) {
+  constructor(settings: RedisCacheSettings) {
     this.host = settings.host || '127.0.0.1'
     this.port = settings.port || 6379
     this.sessionId = settings.sessionId
@@ -21,12 +21,12 @@ export default class RedisCache {
     this.init()
   }
 
-  init () {
+  init() {
     this.redisClient = redis.createClient({ host: this.host, port: this.port })
     return Promise.resolve()
   }
 
-  clear () {
+  clear() {
     return new Promise<void>((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.flushdb((error: any) => {
@@ -40,12 +40,12 @@ export default class RedisCache {
     })
   }
 
-  close () {
+  close() {
     if (this.redisClient) { this.redisClient.quit() }
     return Promise.resolve()
   }
 
-  getNextUrlFromListToVisit (): Promise <string> {
+  getNextUrlFromListToVisit(): Promise<string> {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.brpop('URLS_TO_VISIT', '1', (err: any, data: any) => {
@@ -59,7 +59,7 @@ export default class RedisCache {
     })
   }
 
-  checkIfHasUrlToVisit () {
+  checkIfHasUrlToVisit() {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.brpop('URLS_TO_VISIT', '1', (err: any, data: any) => {
@@ -77,7 +77,7 @@ export default class RedisCache {
     })
   }
 
-  checkIfVisitedUrlsIncludes (url: string) {
+  checkIfVisitedUrlsIncludes(url: string) {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.lrange('VISITED_URLS', 0, -1, (err: any, data: any) => {
@@ -92,7 +92,7 @@ export default class RedisCache {
     })
   }
 
-  checkIfUrlsToVisitincludes (url: string) {
+  checkIfUrlsToVisitincludes(url: string) {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.lrange('URLS_TO_VISIT', 0, -1, (err: any, data: any) => {
@@ -107,7 +107,7 @@ export default class RedisCache {
     })
   }
 
-  addUrlToVisit (url: string) {
+  addUrlToVisit(url: string) {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.lpush('URLS_TO_VISIT', url, (err: any, data: any) => {
@@ -121,7 +121,7 @@ export default class RedisCache {
     })
   }
 
-  addUrlToVisited (url: string) {
+  addUrlToVisited(url: string) {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.lpush('VISITED_URLS', url, (err: any, data: any) => {
@@ -135,7 +135,7 @@ export default class RedisCache {
     })
   }
 
-  visitedUrlsSize (): Promise<number> {
+  visitedUrlsSize(): Promise<number> {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.llen('VISITED_URLS', (err: any, data: any) => {
@@ -149,7 +149,7 @@ export default class RedisCache {
     })
   }
 
-  urlsToVisitSize (): Promise <number> {
+  urlsToVisitSize(): Promise<number> {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.llen('URLS_TO_VISIT', (err: any, data: any) => {
@@ -166,7 +166,7 @@ export default class RedisCache {
   /**
    * For paginatons, set the current page in case of fails to avoid start from beginning again
    */
-  setCurrentPageFromPagination (pageNumber: string) {
+  setCurrentPageFromPagination(pageNumber: string) {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.set('CURRENT_PAGE', pageNumber, (err: any, data: any) => {
@@ -180,7 +180,7 @@ export default class RedisCache {
     })
   }
 
-  getCurrentPageFromPagination () {
+  getCurrentPageFromPagination() {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.get('CURRENT_PAGE', (err: any, data: any) => {
@@ -198,7 +198,7 @@ export default class RedisCache {
    *
    * @param {Number} pageNumber
    */
-  setFailError (error: string) {
+  setFailError(error: string) {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.set('ERROR', error, (err: any, data: any) => {
@@ -212,7 +212,7 @@ export default class RedisCache {
     })
   }
 
-  getFailError () {
+  getFailError() {
     return new Promise((resolve, reject) => {
       if (this.redisClient) {
         this.redisClient.get('ERROR', (err: any, data: any) => {
@@ -226,12 +226,12 @@ export default class RedisCache {
     })
   }
 
-  async checkIfLinkAlreadyIsToVisit (link: string) {
+  async checkIfLinkAlreadyIsToVisit(link: string) {
     const includes = await this.checkIfUrlsToVisitincludes(link)
     return includes
   }
 
-  async checkIfLinkAlreadyIsVisited (link: string) {
+  async checkIfLinkAlreadyIsVisited(link: string) {
     const includes = await this.checkIfVisitedUrlsIncludes(link)
     return includes
   }

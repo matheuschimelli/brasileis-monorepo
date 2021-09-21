@@ -5,6 +5,11 @@ import { ExpressAdapter } from '@bull-board/express';
 import signale from 'signale';
 import { queues as BullQueue } from './lib/Queue';
 
+import 'dotenv/config';
+import { startProcess } from './lib/Queue';
+
+startProcess()
+
 //import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 //import BullMQ from './bullmq';
 //BullMQ.queues.map((queue) => new BullMQAdapter(queue)),

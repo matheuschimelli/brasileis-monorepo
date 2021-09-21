@@ -3,9 +3,9 @@ import crawlerTest from "../crawlers/testCrawler1";
 import defaultcrawler from "../crawlers/defaultCrawler";
 
 const queue = createJob("WorkerServer")
+
 const process = () => {
     queue.process(async (job) => {
-        console.log('WorkerServer Sandbox')
         console.log(job.id)
         console.log(job.data)
         try {
@@ -19,15 +19,12 @@ const process = () => {
                 default:
                     break;
             }
-
             job.progress(100)
-            return Promise.resolve({ data: 'WorkerServer Sandbox' })
+            return Promise.resolve()
         } catch (error) {
             console.log(error)
             return Promise.reject(new Error(error as string))
         }
-
-
     })
 }
 

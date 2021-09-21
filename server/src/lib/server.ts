@@ -90,6 +90,11 @@ class Server {
     return this
   }
 
+  useMiddleware2(path: string, middleware: Middleware) {
+    this.app?.use(path, middleware)
+    return this
+  }
+
   useCors() {
     const corsList = this.cors
     const corsOptionsDelegate = function (req: any, callback: any) {

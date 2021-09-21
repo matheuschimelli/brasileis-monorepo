@@ -41,7 +41,7 @@
     "ts-node-dev": "^1.0.0-pre.56"
   },
   "dependencies": {
-    "@bull-board/express": "^3.2.7",
+    "@bull-board/express": "^3.5.5",
     "@elastic/elasticsearch": "^7.10.0",
     "@mozilla/readability": "^0.4.1",
     "apify": "^0.21.8",

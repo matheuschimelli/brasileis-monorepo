@@ -5,6 +5,10 @@ import connectDB from './database/connection'
 import routes from './routes'
 import jwtAuth from './middlewares/jwtAuth'
 import Queue from './jobs/Queue'
+import { createBullBoard } from '@bull-board/api'
+import { BullAdapter } from '@bull-board/api/bullAdapter'
+import { ExpressAdapter } from '@bull-board/express'
+const serverAdapter = new ExpressAdapter()
 
 import {
   ArticleResolver,
@@ -20,8 +24,15 @@ import {
 dotenv.config({ path: '.env' })
 
 Queue.process()
-Queue.workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
-Queue.jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
+// Queue.WorkerJobs.workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
+// Queue.WorkerJobs.jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
+
+createBullBoard({
+  queues: Queue.queues.map(queue => new BullAdapter(queue.bull))
+    .concat(Queue.jobQueues.map(queue => new BullAdapter(queue))),
+  serverAdapter: serverAdapter
+})
+serverAdapter.setBasePath('/admin/queues')
 
 const server = new Server({
   host: process.env.host,
@@ -54,6 +65,7 @@ connectDB().then(() => {
     morgan(':method :url :req[header] :status - :response-time ms')
   )
     .useMiddleware(jwtAuth)
+    .useMiddleware2('/admin/queues', serverAdapter.getRouter())
     .useMiddleware(routes).boostrap()
 }).catch((err) => { throw new Error(err) })
 

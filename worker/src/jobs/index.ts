@@ -10,5 +10,5 @@ const jobQueues = [
     jobResults,
     defaultcrawler,
     crawlerTest
-]
-export default jobQueues
+];
+export default jobQueues;

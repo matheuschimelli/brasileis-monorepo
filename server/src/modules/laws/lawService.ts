@@ -130,7 +130,7 @@ class LawService extends ServiceBase {
       }
     })
     if (law) {
-      await searchService.remove({
+      await SearchService.remove({
         index: 'law',
         documentId: law.id
       })

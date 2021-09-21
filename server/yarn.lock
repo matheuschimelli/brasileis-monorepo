@@ -87,29 +87,29 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@bull-board/api@3.2.7":
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-3.2.7.tgz#d18809e80b4787525403cf0997f583f2d6fd748f"
-  integrity sha512-tBvOnTxNZW9QO0eSF8UpwMBp0X8Dmk383V7KaDqj5Zp75gD0NclJFvqbAWKe413OTITIyBWPw4JA7nTJM8B4og==
+"@bull-board/api@3.5.5":
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-3.5.5.tgz#46a180aff46254410b4e5ab5f81c67d3878dd358"
+  integrity sha512-KJr56WRvBStTWyUP9zwlr/yiQZZAxfmq79liJ2QIy6B7XoamWlJRdrlbd1iz4RxcRtPOlTfNe4Wtsst1GswYyg==
   dependencies:
     redis-info "^3.0.8"
 
-"@bull-board/express@^3.2.7":
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/@bull-board/express/-/express-3.2.7.tgz#c613eb694e85c8e444f69e8916fcefd72a901a3f"
-  integrity sha512-on8Kggzuza29P5VIbvdRWtpV/TwRe3RIeQU4lSra6outsyzQsWVRgvBmp11NFdcQrBOAxvnpK3FrlVS7vM4niQ==
+"@bull-board/express@^3.5.5":
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/@bull-board/express/-/express-3.5.5.tgz#bcfa6fa8e752851c54e4f0964bd2b953540d0471"
+  integrity sha512-DpP5FCvfesCh3Ll9pko0gAhrMx9fWpPPXWZaPffBdNnmFsIvz6MDqvQQ7YPdyZdoNu9zvJyAAXe4YucpkCoqBA==
   dependencies:
-    "@bull-board/api" "3.2.7"
-    "@bull-board/ui" "3.2.7"
+    "@bull-board/api" "3.5.5"
+    "@bull-board/ui" "3.5.5"
     ejs "3.1.6"
     express "4.17.1"
 
-"@bull-board/ui@3.2.7":
-  version "3.2.7"
-  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-3.2.7.tgz#32b1aab64e8eb6a8515907e83d9949f25b3ca0d1"
-  integrity sha512-93kVRqY4T3Oiubc/e1yGecVVhrNHXft5Rh7J+ajiim8z9Ab/+jWSfXFm0LL+2Qoa1ny1uFL3jjYfNhqdkfkkhA==
+"@bull-board/ui@3.5.5":
+  version "3.5.5"
+  resolved "https://registry.yarnpkg.com/@bull-board/ui/-/ui-3.5.5.tgz#e86f511e6b13a250aeff09bce08ef22287fbae91"
+  integrity sha512-4rcbinmD+eaqqI8T4WoO+6Q9CCcpY+zlcurYuh9rY+ukAqW1cozaLUIkJs5V3yf011a/4gbgsSiYBbLdbqat/A==
   dependencies:
-    "@bull-board/api" "3.2.7"
+    "@bull-board/api" "3.5.5"
 
 "@elastic/elasticsearch@^7.10.0":
   version "7.10.0"

@@ -32,6 +32,7 @@ export default async function jwtAuth(req: Request, res: Response, next: any) {
   }
   //@ts-ignore
   if (req.isAuthenticated()) {
+    //@ts-ignore
     const payload = req.isAuthenticated()
     try {
       const userRepo = getRepository(User)

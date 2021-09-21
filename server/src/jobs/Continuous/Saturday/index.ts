@@ -7,7 +7,7 @@ import weekday from 'dayjs/plugin/weekday'
 import en from 'dayjs/locale/en'
 
 import Crawler from '../../../models/Crawler'
-import Queue from '../../Queue'
+import { workerServer } from '../../WorkerJobs'
 
 dayjs.extend(utc)
 dayjs.extend(timezone)
@@ -54,15 +54,15 @@ export default {
       for (const crawler of crawlers) {
         console.log(crawler)
         if (!crawler.crawlerType) {
-          await Queue.workerServer.add({ queue: 'DefaultCrawler', jobData: crawler })
+          await workerServer.add({ queue: 'DefaultCrawler', jobData: crawler })
         } else {
-          await Queue.workerServer.add({ queue: crawler.crawlerType.name, jobData: crawler })
+          await workerServer.add({ queue: crawler.crawlerType.name, jobData: crawler })
         }
       }
       job.progress(100)
 
       return Promise.resolve({ done: true, message: 'All pending jobs for Saturday were queued ' })
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
       throw new Error(error)
     }
