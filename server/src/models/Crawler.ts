@@ -100,6 +100,7 @@ class Crawler extends BaseEntity {
   @JoinTable()
   subCategories!: SubCategory[];
 
+  @Field(() => [Law])
   @OneToMany(() => Law, law => law.crawler, {
     cascade: true
   })
@@ -119,12 +120,12 @@ class Crawler extends BaseEntity {
   updatedAt!: Date;
 
   @BeforeInsert()
-  public updateDateCreation () {
+  public updateDateCreation() {
     this.createdAt = new Date()
   }
 
   @BeforeUpdate()
-  updateDateUpdate () {
+  updateDateUpdate() {
     this.updatedAt = new Date()
   }
 }

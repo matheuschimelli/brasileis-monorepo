@@ -1,9 +1,9 @@
 {
-  "usableSessionsCount": 12,
+  "usableSessionsCount": 2,
   "retiredSessionsCount": 0,
   "sessions": [
     {
-      "id": "session_cbvSxuVR6X",
+      "id": "session_N2F0qg7x22",
       "cookieJar": {
         "version": "tough-cookie@4.0.0",
         "storeType": "MemoryCookieStore",
@@ -13,239 +13,49 @@
       "userData": {},
       "maxErrorScore": 3,
       "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T20:43:07.546Z",
-      "createdAt": "2021-09-13T19:53:07.546Z",
+      "expiresAt": "2021-09-21T15:15:12.227Z",
+      "createdAt": "2021-09-21T14:25:12.227Z",
       "usageCount": 1,
       "maxUsageCount": 50,
       "errorScore": 0
     },
     {
-      "id": "session_ezwAlHkCUm",
+      "id": "session_XxmY8VN94m",
       "cookieJar": {
         "version": "tough-cookie@4.0.0",
         "storeType": "MemoryCookieStore",
         "rejectPublicSuffixes": true,
         "cookies": [
           {
-            "key": "TS01bca3bd",
-            "value": "0150f80db1e377f02d27e1998eed074221d9ba31e066c89d7d3e4462775ef8af4bc046c046b9c89f053afc411d6e48c2ccc253d27d",
-            "expires": "2021-09-13T20:43:19.916Z",
-            "domain": "www.planalto.gov.br",
+            "key": "NID",
+            "value": "511=X1VxkKy-aF1oy9wDa1_sNr6CyrXedFa70_7jnlaIN5C1TcpDBx70rvBa2-JPIa0Xte9KExdPuXKQvKo3cAau24pDEpiE0auNnuUJYDIuxFmUP-96Wj5lYE9aNXDbjOUhoHscGQmdTX4ehdGFvvAFSKiyooBXhdS7skuX87AYiME",
+            "expires": "2022-03-23T14:25:23.542Z",
+            "domain": "google.com",
             "path": "/",
+            "secure": true,
+            "httpOnly": true,
             "hostOnly": false,
-            "creation": "2021-09-13T19:53:17.570Z",
-            "lastAccessed": "2021-09-13T19:53:19.916Z"
-          }
-        ]
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T20:43:07.557Z",
-      "createdAt": "2021-09-13T19:53:07.557Z",
-      "usageCount": 2,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_MgCPTJOozP",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T20:43:07.560Z",
-      "createdAt": "2021-09-13T19:53:07.560Z",
-      "usageCount": 1,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_nY16Kga81b",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:04:36.210Z",
-      "createdAt": "2021-09-13T20:14:36.210Z",
-      "usageCount": 1,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_kzh4YyZRCj",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": [
+            "creation": "2021-09-21T14:25:26.206Z",
+            "lastAccessed": "2021-09-21T14:25:26.206Z"
+          },
           {
-            "key": "TS01bca3bd",
-            "value": "0150f80db14c201f3b8793d4df6a98f2b21986ae87da2d2ca155446b4034cf9060fb09f602004475162e1b7306362d6c59d5ae8d16",
-            "expires": "2021-09-13T21:04:41.151Z",
-            "domain": "www.planalto.gov.br",
+            "key": "1P_JAR",
+            "value": "2021-09-21-14",
+            "expires": "2021-10-21T14:25:25.993Z",
+            "domain": "google.com",
             "path": "/",
+            "secure": true,
             "hostOnly": false,
-            "creation": "2021-09-13T20:14:40.684Z",
-            "lastAccessed": "2021-09-13T20:14:41.151Z"
+            "creation": "2021-09-21T14:25:26.224Z",
+            "lastAccessed": "2021-09-21T14:25:26.224Z"
           }
         ]
       },
       "userData": {},
       "maxErrorScore": 3,
       "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:04:36.218Z",
-      "createdAt": "2021-09-13T20:14:36.218Z",
-      "usageCount": 2,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_jrwXCQVLw2",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:04:36.222Z",
-      "createdAt": "2021-09-13T20:14:36.222Z",
-      "usageCount": 1,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_XBAu4MoOjN",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:06:16.760Z",
-      "createdAt": "2021-09-13T20:16:16.760Z",
-      "usageCount": 1,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_RzUgFxgdSk",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": [
-          {
-            "key": "TS01bca3bd",
-            "value": "0150f80db1bdb330ce91980dd5ec3fff56838c327e79162c2b2a43552d3f1a66267482a949c636c51bd957ce7a4ad8c0de0cafbb5e",
-            "expires": "2021-09-13T21:06:22.035Z",
-            "domain": "www.planalto.gov.br",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2021-09-13T20:16:20.684Z",
-            "lastAccessed": "2021-09-13T20:16:22.036Z"
-          }
-        ]
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:06:16.765Z",
-      "createdAt": "2021-09-13T20:16:16.765Z",
-      "usageCount": 2,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_2cYO7d29eU",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:06:16.768Z",
-      "createdAt": "2021-09-13T20:16:16.768Z",
-      "usageCount": 1,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_HH4lCnH6Bc",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:16:39.589Z",
-      "createdAt": "2021-09-13T20:26:39.589Z",
-      "usageCount": 1,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_egAyHZW0Ts",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": [
-          {
-            "key": "TS01bca3bd",
-            "value": "0150f80db183302366a437f34e25c0544aeef36f8328f9882928f3ae10fee9b0402353e37fa19d5ca7e6d634dc7bde5517459021da",
-            "expires": "2021-09-13T21:16:43.328Z",
-            "domain": "www.planalto.gov.br",
-            "path": "/",
-            "hostOnly": false,
-            "creation": "2021-09-13T20:26:43.250Z",
-            "lastAccessed": "2021-09-13T20:26:43.329Z"
-          }
-        ]
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:16:39.593Z",
-      "createdAt": "2021-09-13T20:26:39.593Z",
-      "usageCount": 2,
-      "maxUsageCount": 50,
-      "errorScore": 0
-    },
-    {
-      "id": "session_Hi61Kb4stc",
-      "cookieJar": {
-        "version": "tough-cookie@4.0.0",
-        "storeType": "MemoryCookieStore",
-        "rejectPublicSuffixes": true,
-        "cookies": []
-      },
-      "userData": {},
-      "maxErrorScore": 3,
-      "errorScoreDecrement": 0.5,
-      "expiresAt": "2021-09-13T21:16:39.596Z",
-      "createdAt": "2021-09-13T20:26:39.596Z",
+      "expiresAt": "2021-09-21T15:15:12.243Z",
+      "createdAt": "2021-09-21T14:25:12.243Z",
       "usageCount": 1,
       "maxUsageCount": 50,
       "errorScore": 0

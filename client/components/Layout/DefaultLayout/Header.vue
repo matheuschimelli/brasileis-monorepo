@@ -38,7 +38,7 @@
           </v-form>
         </v-responsive>
 
-        <v-menu offset-y>
+        <v-menu v-if="user" offset-y>
           <template #activator="{ on, attrs }">
             <v-btn color="primary" link icon v-bind="attrs" v-on="on">
               <v-avatar size="36">

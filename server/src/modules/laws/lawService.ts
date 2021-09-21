@@ -1,6 +1,7 @@
 import { title } from 'process'
 import createBaseService from '../../lib/ServiceBase'
 import Category from '../../models/Category'
+import Crawler from '../../models/Crawler'
 import Law from '../../models/Law'
 import SubCategory from '../../models/SubCategory'
 import { SearchService } from '../search/searchService'
@@ -51,6 +52,10 @@ class LawService extends ServiceBase {
     throw new Error("Nada encontrado")
   }
   static async create(data: CreateLawInput) {
+
+    const crawler = await Crawler.findOne(data.crawlerId)
+    if (!crawler) throw new Error("Crawler não encontrado com o id")
+
     const newLaw = new Law()
     newLaw.title = data.title
     newLaw.url = data.url
@@ -59,6 +64,9 @@ class LawService extends ServiceBase {
     newLaw.contentHtmlSelector = data.contentHtmlSelector
     newLaw.categories = await Category.findByIds(data.categories)
     newLaw.subCategories = await SubCategory.findByIds(data.subCategories)
+    newLaw.crawler = crawler
+
+
 
     const savedLaw = await newLaw.save()
     await searchService.upsert({
@@ -127,6 +135,8 @@ class LawService extends ServiceBase {
         documentId: law.id
       })
       return await law.remove()
+    } else {
+      throw new Error("Não encontrado para remover")
     }
   }
 

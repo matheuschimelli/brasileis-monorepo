@@ -23,7 +23,8 @@ export default class CrawlerService extends CrawlerServiceBase {
         'subCategories',
         'htmlSelectors',
         'updateTime',
-        'crawlerType'
+        'crawlerType',
+        'laws'
       ],
       take: 10,
       skip: (page - 1) * 10

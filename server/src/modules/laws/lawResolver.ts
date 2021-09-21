@@ -86,8 +86,8 @@ export class LawResolver {
   }
 
   @UseMiddleware([isAuth, isAdmin])
-  @Mutation(() => Law)
-  async remoteLaw(
+  @Mutation(() => String)
+  async removeLaw(
     @Arg('id') id: number
   ): Promise<String> {
     await LawService.deleteById(id)

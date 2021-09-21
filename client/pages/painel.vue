@@ -14,6 +14,7 @@
               filed
               single-line
               append-icon="mdi-magnify"
+              autocomplete="off"
               @click:append="$refs.form.submit()"
             />
           </v-form>

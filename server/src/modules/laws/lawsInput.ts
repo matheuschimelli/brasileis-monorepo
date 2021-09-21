@@ -49,6 +49,9 @@ export class CreateLawInput {
     @Field({ nullable: true })
     contentHtmlSelector!: string;
 
+    @Field({ nullable: false })
+    crawlerId!: string;
+
     @Field(() => [String], { nullable: false })
     @ArrayMinSize(1)
     categories!: string[];
