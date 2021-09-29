@@ -56,36 +56,68 @@ class LawService extends ServiceBase {
     const crawler = await Crawler.findOne(data.crawlerId)
     if (!crawler) throw new Error("Crawler não encontrado com o id")
 
-    const newLaw = new Law()
-    newLaw.title = data.title
-    newLaw.url = data.url
-    newLaw.htmlContent = data.htmlContent
-    newLaw.textContent = data.textContent
-    newLaw.contentHtmlSelector = data.contentHtmlSelector
-    newLaw.categories = await Category.findByIds(data.categories)
-    newLaw.subCategories = await SubCategory.findByIds(data.subCategories)
-    newLaw.crawler = crawler
-
-
-
-    const savedLaw = await newLaw.save()
-    await searchService.upsert({
-      indexName: 'law',
-      document: {
-        docId: savedLaw.id.toString(),
-        lawId: savedLaw.id,
-        docType: 'law',
-        title: savedLaw.title,
-        url: savedLaw.url,
-        slug: savedLaw.slug,
-        textContent: savedLaw.textContent,
-        categories: LawService.getCategoriesNames(savedLaw.categories),
-        subCategories: LawService.getSubCategoriesNames(savedLaw.subCategories),
-        categoriesIds: LawService.getCategoriesIds(savedLaw.categories),
-        subCategoriesIds: LawService.getSubCategoriesIds(savedLaw.subCategories),
-      }
+    const existLaw = await Law.findOne({
+      where: { url: data.url }
     })
-    return savedLaw
+
+    if (!existLaw) {
+
+      const newLaw = new Law()
+      newLaw.title = data.title
+      newLaw.url = data.url
+      newLaw.htmlContent = data.htmlContent
+      newLaw.textContent = data.textContent
+      newLaw.contentHtmlSelector = data.contentHtmlSelector
+      newLaw.categories = await Category.findByIds(data.categories)
+      newLaw.subCategories = await SubCategory.findByIds(data.subCategories)
+      newLaw.crawler = crawler
+
+      const savedLaw = await newLaw.save()
+      await searchService.upsert({
+        indexName: 'law',
+        document: {
+          docId: savedLaw.id.toString(),
+          lawId: savedLaw.id,
+          docType: 'law',
+          title: savedLaw.title,
+          url: savedLaw.url,
+          slug: savedLaw.slug,
+          textContent: savedLaw.textContent,
+          categories: LawService.getCategoriesNames(savedLaw.categories),
+          subCategories: LawService.getSubCategoriesNames(savedLaw.subCategories),
+          categoriesIds: LawService.getCategoriesIds(savedLaw.categories),
+          subCategoriesIds: LawService.getSubCategoriesIds(savedLaw.subCategories),
+        }
+      })
+      return savedLaw
+    } else {
+      existLaw.title = data.title
+      existLaw.url = data.url
+      existLaw.htmlContent = data.htmlContent
+      existLaw.textContent = data.textContent
+      existLaw.contentHtmlSelector = data.contentHtmlSelector
+      existLaw.categories = await Category.findByIds(data.categories)
+      existLaw.subCategories = await SubCategory.findByIds(data.subCategories)
+      existLaw.crawler = crawler
+
+      await searchService.upsert({
+        indexName: 'law',
+        document: {
+          docId: existLaw.id.toString(),
+          lawId: existLaw.id,
+          docType: 'law',
+          title: existLaw.title,
+          url: existLaw.url,
+          slug: existLaw.slug,
+          textContent: existLaw.textContent,
+          categories: LawService.getCategoriesNames(existLaw.categories),
+          subCategories: LawService.getSubCategoriesNames(existLaw.subCategories),
+          categoriesIds: LawService.getCategoriesIds(existLaw.categories),
+          subCategoriesIds: LawService.getSubCategoriesIds(existLaw.subCategories),
+        }
+      })
+      return await existLaw.save()
+    }
   }
 
   static async update(url: string, data: CreateLawInput) {

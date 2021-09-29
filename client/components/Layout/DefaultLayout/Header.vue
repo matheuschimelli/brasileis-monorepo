@@ -5,7 +5,11 @@
         <v-avatar class="mr-10" size="32">
           <v-icon color="primary">mdi-book</v-icon>
         </v-avatar>
-        <v-btn to="/" link text>Brasileis</v-btn>
+        <v-toolbar-title>
+          <span class="font-bold uppercase">
+            <NuxtLink to="/">Brasileis</NuxtLink></span
+          >
+        </v-toolbar-title>
 
         <v-spacer></v-spacer>
 
@@ -13,7 +17,7 @@
           <v-btn
             v-for="link in links"
             v-show="link.authenticated == authenticated"
-            :key="link"
+            :key="link.id"
             text
             :to="link.href"
             class="hidden-sm-and-down"
@@ -23,7 +27,7 @@
         </div>
         <v-responsive
           v-show="!$vuetify.breakpoint.xs && !$vuetify.breakpoint.sm"
-          v-if="$route.path != '/painel'"
+          v-if="$route.path != '/painel' && !!$auth.user"
           max-width="260"
           class="ml-5"
         >
@@ -38,11 +42,11 @@
           </v-form>
         </v-responsive>
 
-        <v-menu v-if="user" offset-y>
+        <v-menu v-if="$auth.user" offset-y>
           <template #activator="{ on, attrs }">
             <v-btn color="primary" link icon v-bind="attrs" v-on="on">
               <v-avatar size="36">
-                <img :src="user.profilePicture" alt="John" />
+                <img :src="$auth.user.profilePicture" alt="John" />
               </v-avatar>
             </v-btn>
           </template>
@@ -51,7 +55,7 @@
               <v-list-item to="/minhaconta">
                 <v-list-item-title>Minha Conta</v-list-item-title>
               </v-list-item>
-              <v-list-item to="/logout">
+              <v-list-item @click="$auth.logout()">
                 <v-list-item-title>Sair</v-list-item-title>
               </v-list-item>
             </v-list>
@@ -67,14 +71,11 @@
 
     <v-navigation-drawer v-model="drawer" absolute bottom temporary>
       <v-list nav dense>
-        <v-list-item-group
-          v-model="group"
-          active-class="deep-purple--text text--accent-4"
-        >
+        <v-list-item-group active-class="deep-purple--text text--accent-4">
           <v-list-item
             v-for="link of links"
             v-show="link.authenticated == authenticated"
-            :key="link.href"
+            :key="link.id"
             :to="'/' + link.href"
           >
             <v-list-item-title>{{ link.title }}</v-list-item-title>
@@ -97,10 +98,11 @@ export default defineComponent({
   },
   setup(props) {
     const links = ref<any[]>([
-      { title: 'Início', href: '/', authenticated: true },
-      // { title: 'Legislação', href: '/legislacao', authenticated: true },
-      { title: 'Preço', href: '/', authenticated: false },
-      { title: 'Ajuda', href: '/ajuda', authenticated: true },
+      { id: 1, title: 'Início', href: '/', authenticated: true },
+      // { id:2, title: 'Legislação', href: '/legislacao', authenticated: true },
+      { id: 3, title: 'Preço', href: '/preco', authenticated: false },
+      { id: 4, title: 'Ajuda', href: '/ajuda', authenticated: false },
+      { id: 5, title: 'Login', href: '/login', authenticated: false },
     ])
     const authenticated = ref<boolean>(false)
     const drawer = ref<boolean>(false)

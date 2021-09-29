@@ -4,11 +4,13 @@ import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { ExpressAdapter } from '@bull-board/express';
 import signale from 'signale';
 import { queues as BullQueue } from './lib/Queue';
-
-import 'dotenv/config';
 import { startProcess } from './lib/Queue';
 
-startProcess()
+import 'dotenv/config';
+if (process.env.NODE_ENV == 'production') {
+
+  startProcess()
+}
 
 //import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 //import BullMQ from './bullmq';

@@ -1,0 +1,53 @@
+{
+  "usableSessionsCount": 2,
+  "retiredSessionsCount": 0,
+  "sessions": [
+    {
+      "id": "session_P3nLE21R0O",
+      "cookieJar": {
+        "version": "tough-cookie@4.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "cookies": []
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2021-09-29T01:58:32.372Z",
+      "createdAt": "2021-09-29T01:08:32.372Z",
+      "usageCount": 1,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    },
+    {
+      "id": "session_ct2MIBWnzO",
+      "cookieJar": {
+        "version": "tough-cookie@4.0.0",
+        "storeType": "MemoryCookieStore",
+        "rejectPublicSuffixes": true,
+        "cookies": [
+          {
+            "key": "JSESSIONID",
+            "value": "f189d42a1b3e51750b133469fb19",
+            "expires": "2021-09-29T01:58:37.903Z",
+            "domain": "portal.tjpr.jus.br",
+            "path": "/jurisprudencia",
+            "secure": true,
+            "httpOnly": true,
+            "hostOnly": false,
+            "creation": "2021-09-29T01:08:37.908Z",
+            "lastAccessed": "2021-09-29T01:08:37.908Z"
+          }
+        ]
+      },
+      "userData": {},
+      "maxErrorScore": 3,
+      "errorScoreDecrement": 0.5,
+      "expiresAt": "2021-09-29T01:58:32.383Z",
+      "createdAt": "2021-09-29T01:08:32.383Z",
+      "usageCount": 1,
+      "maxUsageCount": 50,
+      "errorScore": 0
+    }
+  ]
+}

@@ -49,7 +49,7 @@ export class LawResolver {
   //   return searchResults
   // }
 
-  @UseMiddleware([isAuth, isAdmin])
+  //@UseMiddleware([isAuth, isAdmin])
   @Query(() => Law)
   async Law(
     @Arg('slug') slug: string

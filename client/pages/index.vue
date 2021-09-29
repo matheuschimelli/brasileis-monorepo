@@ -74,9 +74,9 @@
             <v-btn depressed color="#1d4ed8" dark class="mt-10 sm:mt-2"
               >Criar uma conta</v-btn
             >
-            <v-btn depressed color="#1d4ed8" outlined class="mt-10 sm:mt-2"
+            <!-- <v-btn depressed color="#1d4ed8" outlined class="mt-10 sm:mt-2"
               >Saiba mais</v-btn
-            >
+            > -->
           </div>
         </div>
         <div class="lg:max-w-lg lg:w-full md:w-1/2 w-5/6">

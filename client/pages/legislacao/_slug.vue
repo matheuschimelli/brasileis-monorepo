@@ -1,5 +1,15 @@
 <template>
-  <div>
+  <v-container>
+    <v-row>
+      <v-col cols="12" sm="12" md="3" lg="3"></v-col>
+      <v-col cols="12" sm="12" md="6" lg="6">
+        <h1 class="text-center text-lg">{{ result.title }}</h1>
+        <p>{{ result.textContent }}</p>
+      </v-col>
+      <v-col cols="12" sm="12" md="3" lg="3"></v-col>
+    </v-row>
+  </v-container>
+  <!-- <div>
     <v-container v-if="$vuetify.breakpoint.mdAndUp">
       <div v-if="law.htmlContent">
         <LawReference
@@ -22,8 +32,105 @@
       :law="law"
       :html-content="htmlContent"
     />
-  </div>
+  </div> -->
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+import gql from 'graphql-tag'
+
+export default Vue.extend({
+  // @ts-ignore
+  async asyncData({ app: { apolloProvider }, params }) {
+    const query = gql`
+      query ($slug: String!) {
+        Law(slug: $slug) {
+          title
+          url
+          htmlContent
+          updatedAt
+          categories {
+            name
+            slug
+          }
+          subCategories {
+            name
+            slug
+          }
+        }
+      }
+    `
+    const variables = { slug: params.slug }
+    try {
+      const { data } = await apolloProvider.clients.defaultClient.query({
+        query,
+        variables,
+      })
+      console.log(data.Law)
+
+      return {
+        result: data.Law,
+      }
+    } catch (err) {
+      return {
+        result: null,
+      }
+    }
+  },
+  data() {
+    return {}
+  },
+  head: {
+    title: 'Brasileis',
+  },
+})
+</script>
+
+<!--
+<script lang="ts">
+import gql from 'graphql-tag'
+import Vue from 'vue'
+export default Vue.extend({
+  async asyncData({ app: { apolloProvider }, params }) {
+    const query = gql`
+      query ($slug: String!) {
+        Law(slug: $slug) {
+          title
+          url
+          htmlContent
+          updatedAt
+          categories {
+            name
+            slug
+          }
+          subCategories {
+            name
+            slug
+          }
+        }
+      }
+    `
+    const variables = { slug: params.slug }
+    try {
+      const { data } = await apolloProvider.clients.defaultClient.query({
+        query,
+        variables,
+      })
+      console.log(data.Law)
+
+      return {
+        result: data.Law,
+      }
+    } catch (err) {
+      return {
+        result: null,
+      }
+    }
+  },
+})
+</script>
+-->
+<!--
 <script>
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
@@ -161,3 +268,4 @@ h1 {
   z-index: 1000;
 }
 </style>
+-->

@@ -40,7 +40,9 @@ export default class AuthService {
       return res
     }
   }
-
+  static logout(req: Request, res: Response) {
+    return res.send('ok')
+  }
   static async verifyToken(req: Request, res: Response) {
     const authToken = req.body
 

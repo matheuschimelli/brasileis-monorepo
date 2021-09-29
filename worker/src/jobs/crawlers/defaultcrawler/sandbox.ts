@@ -37,7 +37,8 @@ export default async function (job: Job) {
                 const title = await page.title();
                 const url = page.url()
                 const content = await page.content();
-                const body = await page.$eval('body', (el => el.textContent))
+                const body = await page.evaluate(() => document.querySelector("body")?.innerText)
+
                 const h1s = await page.$$eval('h1', (els => els.map(h1 => h1.textContent)))
                 const bs = await page.$$eval('b', (els => els.map(b => b.textContent)))
                 const paragraphs = await page.$$eval('p', (els => els.map(p => p.textContent)))
