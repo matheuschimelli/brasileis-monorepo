@@ -35,8 +35,8 @@ createBullBoard({
 serverAdapter.setBasePath('/admin/queues')
 
 const server = new Server({
-  host: process.env.host,
-  port: process.env.port,
+  host: process.env.HOST || '0.0.0.0',
+  port: process.env.PORT || 8080,
   debugGraphql: true,
   postgresql: process.env.POSTGRESQL_URL,
   graphqlResolvers: [
