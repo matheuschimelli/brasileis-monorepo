@@ -3,7 +3,7 @@ import CronJobs from './Cronjobs'
 import jobResults from './jobResults'
 import testCrawler1 from './crawlers/testCrawler1'
 
-import defaultCrawler from './crawlers/defaultCrawler'
+import defaultCrawler from './crawlers/defaultcrawler'
 
 const jobQueues = [
     WorkerServer,

@@ -1,6 +1,6 @@
 import { createJob } from "../../lib/jobUtils";
 import testCrawler1 from "../crawlers/testCrawler1";
-import defaultCrawler from "../crawlers/defaultCrawler";
+import defaultCrawler from "../crawlers/defaultcrawler";
 
 const queue = createJob("WorkerServer")
 
