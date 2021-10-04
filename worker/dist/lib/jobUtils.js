@@ -6,7 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.createJob = exports.sandboxFile = void 0;
 const path_1 = __importDefault(require("path"));
 const bull_1 = __importDefault(require("bull"));
-const redis_1 = __importDefault(require("../config/redis"));
 function sandboxFile(dirname, fileName) {
     const ext = path_1.default.extname(__filename);
     const file = path_1.default.resolve(dirname, `${fileName}${ext}`);
@@ -17,7 +16,9 @@ function createJob(name, options) {
     //@ts-ignore
     const queue = new bull_1.default(name, {
         redis: {
-            ...redis_1.default.options
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT,
+            password: process.env.REDIS_PASSWORD
         },
         defaultJobOptions: { ...options }
     });

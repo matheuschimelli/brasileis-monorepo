@@ -12,7 +12,9 @@ export function createJob(name: string, options?: Queue.JobOptions) {
     const queue = new Queue(name, {
         redis:
         {
-            ...redisConfig.options
+            host: process.env.REDIS_HOST,
+            port: process.env.REDIS_PORT,
+            password: process.env.REDIS_PASSWORD
         },
         defaultJobOptions: { ...options }
     })

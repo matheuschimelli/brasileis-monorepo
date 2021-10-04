@@ -13,9 +13,9 @@ const Queue_2 = require("./lib/Queue");
 require("dotenv/config");
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 8080;
-if (process.env.NODE_ENV == 'production') {
-    (0, Queue_2.startProcess)();
-}
+//if (process.env.NODE_ENV == 'production') {
+(0, Queue_2.startProcess)();
+//}
 //import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 //import BullMQ from './bullmq';
 //BullMQ.queues.map((queue) => new BullMQAdapter(queue)),
