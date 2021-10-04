@@ -9,6 +9,12 @@ export function sandboxFile(dirname: string, fileName: string) {
 }
 export function createJob(name: string, options?: Queue.JobOptions) {
     //@ts-ignore
-    const queue = new Queue(name, { redis: { ...redisConfig }, defaultJobOptions: { ...options } })
+    const queue = new Queue(name, {
+        redis:
+        {
+            ...redisConfig.options
+        },
+        defaultJobOptions: { ...options }
+    })
     return queue
 }

@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const jobUtils_1 = require("../../lib/jobUtils");
 const testCrawler1_1 = __importDefault(require("../crawlers/testCrawler1"));
-const defaultCrawler_1 = __importDefault(require("../crawlers/defaultCrawler"));
+const defaultcrawler_1 = __importDefault(require("../crawlers/defaultcrawler"));
 const queue = (0, jobUtils_1.createJob)("WorkerServer");
 const process = () => {
     queue.process(async (job) => {
@@ -14,7 +14,7 @@ const process = () => {
         try {
             switch (job.data.queue) {
                 case "DefaultCrawler":
-                    defaultCrawler_1.default.queue.add({ ...job.data.jobData });
+                    defaultcrawler_1.default.queue.add({ ...job.data.jobData });
                     break;
                 case "CrawlerTest":
                     testCrawler1_1.default.queue.add({ ...job.data.jobData });

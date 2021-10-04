@@ -15,7 +15,12 @@ function sandboxFile(dirname, fileName) {
 exports.sandboxFile = sandboxFile;
 function createJob(name, options) {
     //@ts-ignore
-    const queue = new bull_1.default(name, { redis: { ...redis_1.default }, defaultJobOptions: { ...options } });
+    const queue = new bull_1.default(name, {
+        redis: {
+            ...redis_1.default.options
+        },
+        defaultJobOptions: { ...options }
+    });
     return queue;
 }
 exports.createJob = createJob;
