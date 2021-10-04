@@ -1,6 +1,6 @@
 import { createJob } from "../../lib/jobUtils";
-import crawlerTest from "../crawlers/testCrawler1";
-import defaultcrawler from "../crawlers/defaultCrawler";
+import testCrawler1 from "../crawlers/testCrawler1";
+import defaultCrawler from "../crawlers/defaultCrawler";
 
 const queue = createJob("WorkerServer")
 
@@ -11,10 +11,10 @@ const process = () => {
         try {
             switch (job.data.queue) {
                 case "DefaultCrawler":
-                    defaultcrawler.queue.add({ ...job.data.jobData })
+                    defaultCrawler.queue.add({ ...job.data.jobData })
                     break;
                 case "CrawlerTest":
-                    crawlerTest.queue.add({ ...job.data.jobData })
+                    testCrawler1.queue.add({ ...job.data.jobData })
                     break;
                 default:
                     break;

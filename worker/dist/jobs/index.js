@@ -12,8 +12,8 @@ var jobQueues = [
     WorkerServer_1.default,
     Cronjobs_1.default,
     jobResults_1.default,
-    testCrawler1_1.default,
-    defaultCrawler_1.default
+    defaultCrawler_1.default,
+    testCrawler1_1.default
 ];
 exports.default = jobQueues;
 //# sourceMappingURL=index.js.map
