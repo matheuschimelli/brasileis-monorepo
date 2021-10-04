@@ -14,6 +14,17 @@ Os crawlers estão dentro da pasta `jobs/crawlers`. Como criar um novo crawler:
                     
 ```
 
+```json
+  "scripts": {
+    "dev": "ts-node-dev --respawn --ignore-watch node_modules --transpile-only ./src",
+    "dev:admin": "ts-node-dev --respawn --ignore-watch node_modules --transpile-only ./src",
+    "dev:queue": "nodemon",
+    "start": "node dist/index.js",
+    "start:queue": "node dist/queue.js",
+    "build": "tsc -p ."
+  },
+  ```
+
 ## TODO
 
 [ ] mover lógica dos crawlers para uma pasta separada invés de deixar dentro da pasta `jobs`
