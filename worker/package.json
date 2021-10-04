@@ -8,7 +8,8 @@
     "dev:admin": "ts-node-dev --respawn --ignore-watch node_modules --transpile-only ./src",
     "dev:queue": "nodemon",
     "start": "node dist/index.js",
-    "start:queue": "node dist/queue.js"
+    "start:queue": "node dist/queue.js",
+    "build": "tsc -p ."
   },
   "devDependencies": {
     "@types/bull": "^3.15.3",

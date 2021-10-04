@@ -11,6 +11,8 @@ var signale_1 = __importDefault(require("signale"));
 var Queue_1 = require("./lib/Queue");
 var Queue_2 = require("./lib/Queue");
 require("dotenv/config");
+var host = process.env.HOST || '0.0.0.0';
+var port = process.env.PORT || 8080;
 if (process.env.NODE_ENV == 'production') {
     (0, Queue_2.startProcess)();
 }
@@ -25,7 +27,9 @@ var serverAdapter = new express_2.ExpressAdapter();
 var app = (0, express_1.default)();
 serverAdapter.setBasePath('/admin/queues');
 app.use('/admin/queues', serverAdapter.getRouter());
-app.listen(8081, function () {
+app.set('host', host);
+app.set('port', port);
+app.listen(port, function () {
     signale_1.default.success('Server listening on port 8080');
 });
 //# sourceMappingURL=index.js.map
