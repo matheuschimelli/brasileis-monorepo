@@ -8,10 +8,10 @@ import { startProcess } from './lib/Queue';
 import 'dotenv/config';
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 8080
-if (process.env.NODE_ENV == 'production') {
+//if (process.env.NODE_ENV == 'production') {
 
-  startProcess()
-}
+startProcess()
+//}
 
 //import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 //import BullMQ from './bullmq';
