@@ -3,13 +3,15 @@
 Deplyment follows this: [StackOverflow: Automated heroku deploy from subfolder](https://stackoverflow.com/questions/39197334/automated-heroku-deploy-from-subfolder)
 ## Folder structure
 ```shell
-admin - administration panel built with Nuxt.js
+admin - administration panel built with Nuxt.js runs on vercel
 
-client - client UI built with Nuxt.js
+client - client UI built with Nuxt.js - runs on vercel
 
-server - Node express server
+server - Node express server - runs on heroku
 
-worker - Bull.js job queues 
+worker - Bull.js job queues - runs on heroku
+
+
 
 ```
 ## How to run
