@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.queues = exports.startProcess = void 0;
-var signale_1 = __importDefault(require("signale"));
-var jobs_1 = __importDefault(require("../jobs"));
-var startProcess = function () {
+const signale_1 = __importDefault(require("signale"));
+const jobs_1 = __importDefault(require("../jobs"));
+const startProcess = () => {
     signale_1.default.success('🐂 Bull running');
-    jobs_1.default.map(function (job) {
+    jobs_1.default.map((job) => {
         job.process();
     });
 };
