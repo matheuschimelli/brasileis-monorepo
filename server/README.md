@@ -81,3 +81,23 @@ curl --request GET \
 	}
 }'
 ```
+
+## scripts
+Signin as postgres user
+```shell
+$ sudo -i -u postgres
+$ psql
+$ \c database_name;
+```
+
+Drop all tables in a database
+```sql
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO public;
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+
+```

@@ -119,6 +119,7 @@ elasticSearchIndexVerifierProcessor.process(async job => {
 function start() {
     internalCrawler.add({}, { repeat: { cron: "12 12 * * 3" } })
     elasticSearchIndexVerifier.add({}, { repeat: { cron: "12 12 * * 3" } })
+
 }
 start()
 

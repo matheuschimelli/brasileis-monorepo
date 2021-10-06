@@ -70,14 +70,14 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@bull-board/api@3.6.0", "@bull-board/api@^3.5.0":
+"@bull-board/api@3.6.0", "@bull-board/api@^3.6.0":
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@bull-board/api/-/api-3.6.0.tgz#5f6e4e338502fa7971be08fb8a72f0d49f001a74"
   integrity sha512-x2Du+bJRl/Nz0hawub7Yo7Y2R3vR8K3kFzAyptbgmcT32CooR3u5tDIe8lUA0UO2NnZ4asoyFKamp+KVgS18KA==
   dependencies:
     redis-info "^3.0.8"
 
-"@bull-board/express@^3.5.0":
+"@bull-board/express@^3.6.0":
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@bull-board/express/-/express-3.6.0.tgz#d87e4d353a340547c66da4d0fa2cc061146e699f"
   integrity sha512-r7qifpNA7YGO3Lq4ptjPznUsV0gL1IouXiQoQ+uRbr0PdwrDNXKYh9LSh6QvxY6X5E73HOF4Rd96e2XKOoMfTQ==
@@ -740,6 +740,13 @@ base64id@2.0.0, base64id@~2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/base64id/-/base64id-2.0.0.tgz#2770ac6bc47d312af97a8bf9a634342e0cd25cb6"
   integrity sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==
+
+basic-auth@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/basic-auth/-/basic-auth-2.0.1.tgz#b998279bf47ce38344b4f3cf916d4679bbf51e3a"
+  integrity sha512-NF+epuEdnUYVlGuhaxbbq+dvJttwLnGY+YixlXlME5KpQ5W3CnXA5cVTneY3SPbPDRkcjMbifrwmFYcClgOZeg==
+  dependencies:
+    safe-buffer "5.1.2"
 
 better-sqlite3-with-prebuilds@^7.1.8:
   version "7.4.3"
@@ -1695,6 +1702,13 @@ expand-template@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/expand-template/-/expand-template-2.0.3.tgz#6e14b3fcee0f3a6340ecb57d2e8918692052a47c"
   integrity sha512-XYfuKMvj4O35f/pOXLObndIRvyQ+/+6AhODh+OKWj9S9498pHHn/IMszH+gt0fBCRWMNfk1ZSp5x3AifmnI2vg==
+
+express-basic-auth@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/express-basic-auth/-/express-basic-auth-1.2.0.tgz#a1d40b07721376ba916e73571a60969211224808"
+  integrity sha512-iJ0h1Gk6fZRrFmO7tP9nIbxwNgCUJASfNj5fb0Hy15lGtbqqsxpt7609+wq+0XlByZjXmC/rslWQtnuSTVRIcg==
+  dependencies:
+    basic-auth "^2.0.1"
 
 express@4.17.1, express@^4.17.1:
   version "4.17.1"

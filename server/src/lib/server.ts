@@ -90,8 +90,13 @@ class Server {
     return this
   }
 
-  useMiddleware2(path: string, middleware: Middleware) {
+  useMiddleware2(path: string, ...middleware: Array<any>) {
     this.app?.use(path, middleware)
+    return this
+  }
+
+  useGet(path: string, ...middleware: Array<any>) {
+    this.app?.get(path, middleware)
     return this
   }
 

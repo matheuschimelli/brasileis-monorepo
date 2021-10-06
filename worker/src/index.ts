@@ -8,10 +8,12 @@ import { startProcess } from './lib/Queue';
 import 'dotenv/config';
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 8080
-//if (process.env.NODE_ENV == 'production') {
+import basicAuth from 'express-basic-auth'
 
-startProcess()
-//}
+if (process.env.NODE_ENV == 'production') {
+  console.log("Running on production")
+  startProcess()
+}
 
 //import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
 //import BullMQ from './bullmq';
@@ -26,7 +28,10 @@ createBullBoard({
 const app = express();
 
 serverAdapter.setBasePath('/admin/queues');
-app.use('/admin/queues', serverAdapter.getRouter());
+app.use('/admin/queues', basicAuth({
+  users: { 'painel': 'decontrole' },
+  challenge: true,
+}), serverAdapter.getRouter())
 
 app.set('host', host)
 app.set('port', port)

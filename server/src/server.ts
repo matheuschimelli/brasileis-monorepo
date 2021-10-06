@@ -8,6 +8,9 @@ import Queue from './jobs/Queue'
 import { createBullBoard } from '@bull-board/api'
 import { BullAdapter } from '@bull-board/api/bullAdapter'
 import { ExpressAdapter } from '@bull-board/express'
+
+import basicAuth from 'express-basic-auth'
+
 const serverAdapter = new ExpressAdapter()
 
 import {
@@ -65,7 +68,14 @@ connectDB().then(() => {
     morgan(':method :url :req[header] :status - :response-time ms')
   )
     .useMiddleware(jwtAuth)
-    .useMiddleware2('/admin/queues', serverAdapter.getRouter())
+    // .useGet('/admin/queues', basicAuth({
+    //   users: { 'admin': 'supersecret' },
+    //   challenge: true,
+    // }), serverAdapter.getRouter())
+    .useMiddleware2('/admin/queues', basicAuth({
+      users: { 'painel': 'decontrole' },
+      challenge: true,
+    }), serverAdapter.getRouter())
     .useMiddleware(routes).boostrap()
 }).catch((err) => { throw new Error(err) })
 
