@@ -10,6 +10,6 @@ routes.get('/api/v1/user', AuthService.getUser)/// isAuthenticated
 routes.get('/api/v1/user/logout', AuthService.logout)
 
 routes.get('/api/v1/search', SearchController.search)/// isAuthenticated
-app.get('/ping', (req, res) => res.send("pong"))
+routes.get('/ping', (req, res) => res.send("pong"))
 
 export default routes
