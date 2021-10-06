@@ -1,4 +1,4 @@
-const GRAPHQL_API = 'http://localhost:8080/graphql' // 'https://api.brasileis.com.br/graphql'
+const GRAPHQL_API = 'https://api.brasileis.com.br/graphql' // 'http://localhost:8080/graphql' //
 // 'https://api.brasileis.com.br/graphql' //
 function getCookie(cookieName, stringCookie) {
   const strCookie = new RegExp('' + cookieName + '[^;]+')

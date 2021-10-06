@@ -1,9 +1,10 @@
 import dotenv from 'dotenv'
 dotenv.config({ path: '.env' })
+
 export default {
   publicRuntimeConfig: {
-    SERVER_URL: process.env.SERVER_URL || 'http://localhost:8080/api/v1',
-    CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:3000',
+    SERVER_URL: process.env.SERVER_URL,
+    CLIENT_URL: process.env.CLIENT_URL,
   },
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'server',
