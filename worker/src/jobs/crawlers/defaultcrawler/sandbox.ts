@@ -1,19 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import Apify, { PuppeteerHandlePage } from 'apify'
-import dotenv from 'dotenv'
+import Apify from 'apify'
 import { Job } from 'bull'
 import jobResults from '../../jobResults'
+import { cleanHtml, normalizeString } from '../../../lib/crawler/utils'
 
-const normalizeString = (str: string) => {
-    return str.toLowerCase()
-        .replace(/(\r\n|\n|\r)/gm, ' ')
-        .replace(/\s{2,}/g, ' ')
-        .replace(/[\u200B-\u200D\uFEFF]/g, '')
-        .replace(/[§:;,.]/g, '')
-        .replace(/[/()-]/g, ' ') // .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        .replace(/\s{2,}/g, ' ')
-        .trim()
-}
 
 export default async function (job: Job) {
     const jobData = job.data
@@ -23,7 +12,11 @@ export default async function (job: Job) {
 
     try {
         job.progress(10)
-        const requestQueue = await Apify.openRequestQueue();
+        const oldRequestQueue = await Apify.openRequestQueue("DefaultCrawler");
+        await oldRequestQueue.drop()
+
+        const requestQueue = await Apify.openRequestQueue("DefaultCrawler");
+
 
         for (const url of urlsToVisit) {
             await requestQueue.addRequest({ url: url });
@@ -43,6 +36,8 @@ export default async function (job: Job) {
                 const bs = await page.$$eval('b', (els => els.map(b => b.textContent)))
                 const paragraphs = await page.$$eval('p', (els => els.map(p => p.textContent)))
 
+                const { htmlContent } = cleanHtml(content, url)
+
                 await jobResults.queue.add({
                     queue: 'DefaultCrawler',
                     jobData: job.data,
@@ -52,7 +47,7 @@ export default async function (job: Job) {
                         page: {
                             title,
                             url,
-                            content,
+                            content: htmlContent,
                             bodyText: normalizeString(body!),
                             h1s: JSON.stringify(h1s),
                             bs: JSON.stringify(bs),
@@ -61,7 +56,7 @@ export default async function (job: Job) {
                     }
                 });
             },
-            maxRequestsPerCrawl: 10,
+            maxRequestsPerCrawl: 0,
             launchContext: {
                 stealth: true,
 

@@ -44,4 +44,5 @@ app.listen(port, () => {
   signale.success('Server listening on port 8080');
   pingmydyno('https://blws.herokuapp.com/ping');
   pingmydyno('https://brasileis-dev-main-server.herokuapp.com/ping');
+  pingmydyno('https://api.brasileis.com.br/ping');
 });
