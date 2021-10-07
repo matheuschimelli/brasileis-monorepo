@@ -4,7 +4,7 @@
       <v-col cols="12" sm="12" md="3" lg="3"></v-col>
       <v-col cols="12" sm="12" md="6" lg="6">
         <h1 class="text-center text-lg">{{ result.title }}</h1>
-        <p>{{ result.textContent }}</p>
+        <div v-html="result.htmlContent"></div>
       </v-col>
       <v-col cols="12" sm="12" md="3" lg="3"></v-col>
     </v-row>
@@ -42,6 +42,7 @@ import gql from 'graphql-tag'
 export default Vue.extend({
   // @ts-ignore
   async asyncData({ app: { apolloProvider }, params }) {
+    console.log('RUNNING ASYNCDATA')
     const query = gql`
       query ($slug: String!) {
         Law(slug: $slug) {
@@ -66,7 +67,7 @@ export default Vue.extend({
         query,
         variables,
       })
-      console.log(data.Law)
+      console.log(data)
 
       return {
         result: data.Law,
@@ -80,8 +81,10 @@ export default Vue.extend({
   data() {
     return {}
   },
-  head: {
-    title: 'Brasileis',
+  head() {
+    return {
+      title: this.result.title || 'Nada encontrado',
+    }
   },
 })
 </script>
