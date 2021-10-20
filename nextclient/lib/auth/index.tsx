@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useState, useContext, createContext, useEffect } from "react";
 import { useCookie } from "react-use";
 import { useRouter } from "next/router";
@@ -77,41 +78,48 @@ export function useProvideAuth() {
   };
 
   const initializeGoogleAuth = () => {
-    //@ts-ignore
-    google.accounts.id.initialize({
-      client_id: process.env.GOOGLE_CLIENT_ID,
-      callback: handleCallback,
-    });
+    if (window.google) {
+      google.accounts.id.initialize({
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        callback: handleCallback,
+      });
+    }
   };
 
   const showAuthPropmpt = () => {
-    delete_cookie("g_state");
+    if (window.google) {
+      delete_cookie("g_state");
 
-    //@ts-ignore
-    google.accounts.id.prompt((notification) => {
-      if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-        console.log("skipped");
-        console.log(notification);
-      }
-    });
+      //@ts-ignore
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          console.log("skipped");
+          console.log(notification);
+        }
+      });
+    }
   };
 
   const renderGoogleAuthBtn = () => {
-    //@ts-ignore
-    google.accounts.id.renderButton(
-      document.getElementById("buttonDiv"),
-      { theme: "outline", size: "large" } // customization attributes
-    );
+    if (window.google) {
+      //@ts-ignore
+      google.accounts.id.renderButton(
+        document.getElementById("buttonDiv"),
+        { theme: "outline", size: "large" } // customization attributes
+      );
+    }
   };
   const logout = () => {
-    //@ts-ignore
-    google.accounts.id.disableAutoSelect();
-    setUser(null);
-    setToken(null);
-    localStorage.removeItem("auth");
-    deleteCookie();
-    delete_cookie("g_state");
-    router.push("/");
+    if (window.google) {
+      //@ts-ignore
+      google.accounts.id.disableAutoSelect();
+      setUser(null);
+      setToken(null);
+      localStorage.removeItem("auth");
+      deleteCookie();
+      delete_cookie("g_state");
+      router.push("/");
+    }
   };
 
   useEffect(() => {
