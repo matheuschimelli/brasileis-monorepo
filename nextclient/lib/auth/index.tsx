@@ -3,6 +3,7 @@ import React, { useState, useContext, createContext, useEffect } from "react";
 import { useCookie } from "react-use";
 import { useRouter } from "next/router";
 
+const SERVER_URL = process.env.SERVER_URL || "https://api.brasileis.com.br";
 type Props = {
   children: React.ReactNode;
 };
@@ -25,7 +26,7 @@ function delete_cookie(name: string) {
 }
 
 const fetchUser = async (token: string) => {
-  const res = await fetch(`${process.env.SERVER_URL}/api/v1/user`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/user`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -39,7 +40,7 @@ const fetchUser = async (token: string) => {
 };
 
 const handleGoogleResponse = async (googleToken: any) => {
-  const res = await fetch(`${process.env.SERVER_URL}/api/v1/user/verify`, {
+  const res = await fetch(`${SERVER_URL}/api/v1/user/verify`, {
     method: "POST",
     body: JSON.stringify({
       ...googleToken,
@@ -80,7 +81,9 @@ export function useProvideAuth() {
   const initializeGoogleAuth = () => {
     if (window.google) {
       google.accounts.id.initialize({
-        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_id:
+          process.env.GOOGLE_CLIENT_ID ||
+          "333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com",
         callback: handleCallback,
       });
     }
