@@ -37,7 +37,7 @@ export default class AuthService {
       // res.cookie('auth_token', generateToken(user, tokenExpirationTime), { expires: new Date(Date.now() + 900000) })
       return res.json({ ...user })
     } else {
-      return res
+      return res.status(400).send({ msg: 'Must be logged' })
     }
   }
   static logout(req: Request, res: Response) {
@@ -46,18 +46,11 @@ export default class AuthService {
   static async verifyToken(req: Request, res: Response) {
     const authToken = req.body
 
-    console.log('token', authToken)
     try {
-      const { data: tokenid } = await axios.post('https://oauth2.googleapis.com/token', {
-        ...authToken,
-        client_secret: process.env.GOOGLE_SECRET
-      })
-      console.log('tokenid', tokenid)
-
       const ticket = await client.verifyIdToken({
-        idToken: tokenid.id_token,
-        audience: process.env.GOOGLE_ID
-      })
+        idToken: authToken.credential,
+        audience: process.env.GOOGLE_ID,
+      });
 
       const payload = ticket.getPayload()
       const userid = payload!.sub
@@ -65,9 +58,6 @@ export default class AuthService {
       console.log('PAYLOARD', payload)
       console.log('userid', userid)
 
-      // if (payload) {
-      //   return res.status(200).json({ auth_token: generateToken({ user: { id: 'user.id', name: 'user.name', email: ' user.email' } }, '7d') })
-      // } return res.status(400)
       if (payload) {
         if (payload.sub) {
           const existingUser = await User.findOne({ google: payload.sub })

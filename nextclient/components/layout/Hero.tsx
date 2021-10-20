@@ -1,7 +1,9 @@
 import { Box, Heading, Button, Text } from "@chakra-ui/react";
 import React from "react";
+import { useAuth } from "../../lib/auth";
 
 export default function Hero() {
+  const { showAuthPropmpt } = useAuth();
   return (
     <Box as="section">
       <Box
@@ -25,6 +27,7 @@ export default function Hero() {
           size="lg"
           colorScheme="blue"
           fontWeight="bold"
+          onClick={showAuthPropmpt}
         >
           Criar uma conta
         </Button>

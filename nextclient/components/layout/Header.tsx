@@ -1,12 +1,11 @@
-import React, { useCallback, useState } from "react";
-
+import React from "react";
+import Link from "next/link";
 import {
   Box,
   Flex,
   Heading,
   Button,
   Spacer,
-  Link,
   Stack,
   IconButton,
   useDisclosure,
@@ -15,9 +14,16 @@ import {
   useColorModeValue,
   Input,
   Slide,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import SearchForm from "./SearchForm";
+import { useAuth } from "../../lib/auth";
 
 type Props = {
   searchQuery?: string;
@@ -31,6 +37,7 @@ export function HeaderNotAuthenticated({
   const { isOpen, onToggle } = useDisclosure();
   const { isOpen: isOpenSearchbar, onToggle: onToggleSearchBar } =
     useDisclosure();
+  const { user, logout, showAuthPropmpt } = useAuth();
 
   return (
     <>
@@ -49,9 +56,11 @@ export function HeaderNotAuthenticated({
         shadow="base"
       >
         <Box>
-          <Heading as="a" href="/" size="md" textTransform="uppercase">
-            Brasileis
-          </Heading>
+          <Link href="/" passHref>
+            <Heading as="a" size="md" textTransform="uppercase">
+              Brasileis
+            </Heading>
+          </Link>
         </Box>
         <Spacer />
 
@@ -74,19 +83,51 @@ export function HeaderNotAuthenticated({
           display={{ base: "none", md: "flex" }}
           gridGap="5"
         >
-          <Link textTransform="uppercase" fontWeight="bold" fontSize="small">
-            Casos de Uso
-          </Link>
+          {!user && (
+            <>
+              <Link href="/casos-uso" passHref>
+                <Box
+                  as="a"
+                  textTransform="uppercase"
+                  fontWeight="bold"
+                  fontSize="small"
+                >
+                  Casos de Uso
+                </Box>
+              </Link>
 
-          <Button
-            as="a"
-            href="/login"
-            colorScheme="blue"
-            textTransform="uppercase"
-            fontSize="small"
-          >
-            Entrar
-          </Button>
+              <Button
+                as="a"
+                colorScheme="blue"
+                textTransform="uppercase"
+                fontSize="small"
+                onClick={showAuthPropmpt}
+              >
+                Entrar
+              </Button>
+            </>
+          )}
+          {user && (
+            <Menu isLazy>
+              <MenuButton>
+                <Image
+                  borderRadius="full"
+                  boxSize="32px"
+                  src={user.profilePicture}
+                  alt={user.name}
+                />
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Biblioteca</MenuItem>
+                <MenuItem>Feed</MenuItem>
+                <MenuDivider />
+                <MenuItem>Minha Conta</MenuItem>
+                <MenuItem>Configurações</MenuItem>
+                <MenuDivider />
+                <MenuItem onClick={logout}>Sair</MenuItem>
+              </MenuList>
+            </Menu>
+          )}
         </Stack>
 
         <Stack

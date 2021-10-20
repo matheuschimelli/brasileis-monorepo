@@ -1,10 +1,13 @@
 import { ChakraProvider } from "@chakra-ui/react";
+import { ProvideAuth } from "../lib/auth";
 //@ts-ignore
 function MyApp({ Component, pageProps }) {
   return (
-    <ChakraProvider>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <ProvideAuth>
+      <ChakraProvider>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </ProvideAuth>
   );
 }
 export default MyApp;

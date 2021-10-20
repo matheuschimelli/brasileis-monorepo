@@ -1,5 +1,7 @@
 import React from "react";
 import { Box, Stack, Flex, Heading, Text } from "@chakra-ui/react";
+import styles from "./styles.module.scss";
+
 export default function Viewer({ data }: { data: any }) {
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "8", md: "12" }}>
@@ -29,6 +31,7 @@ export default function Viewer({ data }: { data: any }) {
               </Heading>
               <Text>
                 <div
+                  className={styles.htmlRender}
                   dangerouslySetInnerHTML={{ __html: data.htmlContent }}
                 ></div>
               </Text>

@@ -1,0 +1,18 @@
+.htmlRender {
+  line-height: 1.5em;
+  a {
+    color: blue;
+  }
+  h1,
+  h2,
+  strong {
+    text-align: center;
+  }
+  p {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    background-color: #f7fafc;
+    padding: 10px;
+    border-radius: 10px;
+  }
+}
