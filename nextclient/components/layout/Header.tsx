@@ -48,12 +48,13 @@ export function HeaderNotAuthenticated({
         paddingTop="4"
         paddingBottom="4"
         align="center"
-        position={{ base: "fixed", md: "absolute" }}
+        position={{ base: "fixed", md: "fixed" }}
         left="0"
         right="0"
         top="0"
         backgroundColor="white"
         shadow="base"
+        zIndex="9999"
       >
         <Box>
           <Link href="/" passHref>
