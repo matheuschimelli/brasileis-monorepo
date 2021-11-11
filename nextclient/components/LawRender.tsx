@@ -135,6 +135,54 @@ export default function LawRender({ data }: { data: any }) {
                     </Box>
                   </Link>{" "}
                   {article.text}
+                  {article.paragraphs &&
+                    article.paragraphs.map((p: any) => {
+                      return (
+                        <Text
+                          fontSize="17px"
+                          style={{ textIndent: "2em" }}
+                          lineHeight="normal"
+                          mt="1em"
+                          mb="1em"
+                        >
+                          <Link href="/id123/id123">
+                            <Box
+                              as="a"
+                              cursor="pointer"
+                              color="blue.600"
+                              fontWeight="bold"
+                            >
+                              {p.paragraph}
+                            </Box>
+                          </Link>{" "}
+                          {p.text}
+                          {p.incises &&
+                            p.incises.map((pincise: any) => {
+                              return (
+                                <Text
+                                  fontSize="17px"
+                                  style={{ textIndent: "2em" }}
+                                  lineHeight="normal"
+                                  mt="1em"
+                                  mb="1em"
+                                >
+                                  <Link href="/id123/id123">
+                                    <Box
+                                      as="a"
+                                      cursor="pointer"
+                                      color="blue.600"
+                                      fontWeight="bold"
+                                    >
+                                      {pincise.paragraph}
+                                    </Box>
+                                  </Link>{" "}
+                                  {pincise.text}
+                                </Text>
+                              );
+                            })}
+                        </Text>
+                      );
+                    })}
                   {article.incises &&
                     article.incises.map((incise: any) => {
                       return (

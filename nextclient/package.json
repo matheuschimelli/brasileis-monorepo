@@ -16,9 +16,9 @@
     "@emotion/styled": "^11",
     "framer-motion": "^4",
     "graphql": "^15.6.1",
-    "next": "11.1.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
+    "next": "12",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "react-use": "^17.3.1",
     "sass": "^1.43.2"
   },
