@@ -48,7 +48,7 @@ export default function Features() {
           spacingY={{ base: "8", md: "14" }}
         >
           <Feature
-            title="Secure by default"
+            title="Sempre atualizado"
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -64,11 +64,11 @@ export default function Features() {
               </svg>
             }
           >
-            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-            kasd gubergren, no sea takimata sanctus.
+            Nossos robôs checam diariamente atualizações em leis para você não
+            ficar desatualizado.
           </Feature>
           <Feature
-            title="Always up to date"
+            title="Fácil de usar"
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -84,11 +84,10 @@ export default function Features() {
               </svg>
             }
           >
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore.
+            Pesquise e encontre facilmente o que procura.
           </Feature>
           <Feature
-            title="Incredible statistics"
+            title="Links e referências"
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -104,11 +103,11 @@ export default function Features() {
               </svg>
             }
           >
-            At vero eos et accusam et justo duo dolores et ea rebum. Stet clita
-            kasd gubergren, no sea takimata sanctus.
+            Veja as referências legais para um artigo de lei e links
+            relacionados.
           </Feature>
           <Feature
-            title="Support for multiple devices"
+            title="Disponível em qualquer lugar"
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -124,8 +123,8 @@ export default function Features() {
               </svg>
             }
           >
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore.
+            Fique atualizado de onde estiver: nossa interface funciona tanto em
+            computadores quanto celulares.
           </Feature>
         </SimpleGrid>
       </Box>
