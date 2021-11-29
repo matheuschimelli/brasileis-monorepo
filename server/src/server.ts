@@ -26,7 +26,7 @@ import {
 
 dotenv.config({ path: '.env' })
 
-Queue.process()
+//Queue.process()
 // Queue.WorkerJobs.workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
 // Queue.WorkerJobs.jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
 
@@ -62,16 +62,26 @@ const server = new Server({
     'http://localhost:7613'
   ]
 })
-connectDB().then(() => {
-  console.log('database running')
-  server.useMiddleware(
-    morgan(':method :url :req[header] :status - :response-time ms')
-  )
-    .useMiddleware(jwtAuth)
+// connectDB().then(() => {
+//   console.log('database running')
+//   server.useMiddleware(
+//     morgan(':method :url :req[header] :status - :response-time ms')
+//   )
+//     .useMiddleware(jwtAuth)
 
-    .useMiddleware2('/admin/queues', basicAuth({
-      users: { 'painel': 'decontrole' },
-      challenge: true,
-    }), serverAdapter.getRouter())
-    .useMiddleware(routes).boostrap()
-}).catch((err) => { throw new Error(err) })
+//     .useMiddleware2('/admin/queues', basicAuth({
+//       users: { 'painel': 'decontrole' },
+//       challenge: true,
+//     }), serverAdapter.getRouter())
+//     .useMiddleware(routes).boostrap()
+// }).catch((err) => { throw new Error(err) })
+console.log('database running')
+server.useMiddleware(
+  morgan(':method :url :req[header] :status - :response-time ms')
+)
+  .useMiddleware(jwtAuth)
+  .useMiddleware2('/admin/queues', basicAuth({
+    users: { 'painel': 'decontrole' },
+    challenge: true,
+  }), serverAdapter.getRouter())
+  .useMiddleware(routes).boostrap()

@@ -10,7 +10,9 @@ type Props = {
 
 interface User {
   id: string;
-  profilePicture: string;
+  profile: {
+    picture: string;
+  }
   name: string;
   email: string;
 }
@@ -81,9 +83,7 @@ export function useProvideAuth() {
   const initializeGoogleAuth = () => {
     if (window.google) {
       google.accounts.id.initialize({
-        client_id:
-          process.env.GOOGLE_CLIENT_ID ||
-          "333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com",
+        client_id: "333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com",
         callback: handleCallback,
       });
     }

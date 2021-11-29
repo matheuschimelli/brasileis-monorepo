@@ -1,0 +1,31 @@
+import { GraphQLResolveInfo } from "graphql";
+import { AggregateBlockPropertyArgs } from "./args/AggregateBlockPropertyArgs";
+import { CreateBlockPropertyArgs } from "./args/CreateBlockPropertyArgs";
+import { CreateManyBlockPropertyArgs } from "./args/CreateManyBlockPropertyArgs";
+import { DeleteBlockPropertyArgs } from "./args/DeleteBlockPropertyArgs";
+import { DeleteManyBlockPropertyArgs } from "./args/DeleteManyBlockPropertyArgs";
+import { FindFirstBlockPropertyArgs } from "./args/FindFirstBlockPropertyArgs";
+import { FindManyBlockPropertyArgs } from "./args/FindManyBlockPropertyArgs";
+import { FindUniqueBlockPropertyArgs } from "./args/FindUniqueBlockPropertyArgs";
+import { GroupByBlockPropertyArgs } from "./args/GroupByBlockPropertyArgs";
+import { UpdateBlockPropertyArgs } from "./args/UpdateBlockPropertyArgs";
+import { UpdateManyBlockPropertyArgs } from "./args/UpdateManyBlockPropertyArgs";
+import { UpsertBlockPropertyArgs } from "./args/UpsertBlockPropertyArgs";
+import { BlockProperty } from "../../../models/BlockProperty";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateBlockProperty } from "../../outputs/AggregateBlockProperty";
+import { BlockPropertyGroupBy } from "../../outputs/BlockPropertyGroupBy";
+export declare class BlockPropertyCrudResolver {
+    blockProperty(ctx: any, info: GraphQLResolveInfo, args: FindUniqueBlockPropertyArgs): Promise<BlockProperty | null>;
+    findFirstBlockProperty(ctx: any, info: GraphQLResolveInfo, args: FindFirstBlockPropertyArgs): Promise<BlockProperty | null>;
+    blockProperties(ctx: any, info: GraphQLResolveInfo, args: FindManyBlockPropertyArgs): Promise<BlockProperty[]>;
+    createBlockProperty(ctx: any, info: GraphQLResolveInfo, args: CreateBlockPropertyArgs): Promise<BlockProperty>;
+    createManyBlockProperty(ctx: any, info: GraphQLResolveInfo, args: CreateManyBlockPropertyArgs): Promise<AffectedRowsOutput>;
+    deleteBlockProperty(ctx: any, info: GraphQLResolveInfo, args: DeleteBlockPropertyArgs): Promise<BlockProperty | null>;
+    updateBlockProperty(ctx: any, info: GraphQLResolveInfo, args: UpdateBlockPropertyArgs): Promise<BlockProperty | null>;
+    deleteManyBlockProperty(ctx: any, info: GraphQLResolveInfo, args: DeleteManyBlockPropertyArgs): Promise<AffectedRowsOutput>;
+    updateManyBlockProperty(ctx: any, info: GraphQLResolveInfo, args: UpdateManyBlockPropertyArgs): Promise<AffectedRowsOutput>;
+    upsertBlockProperty(ctx: any, info: GraphQLResolveInfo, args: UpsertBlockPropertyArgs): Promise<BlockProperty>;
+    aggregateBlockProperty(ctx: any, info: GraphQLResolveInfo, args: AggregateBlockPropertyArgs): Promise<AggregateBlockProperty>;
+    groupByBlockProperty(ctx: any, info: GraphQLResolveInfo, args: GroupByBlockPropertyArgs): Promise<BlockPropertyGroupBy[]>;
+}

@@ -1,0 +1,101 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator typegraphql {
+  provider           = "typegraphql-prisma"
+  output             = "../src/graphql/generated/type-graphql"
+  emitTranspiledCode = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model BlockProperty {
+  id           String  @id @default(cuid())
+  value        String?
+  title        String?
+  number       String?
+  identifier   String?
+  comment      String?
+  year         Int?
+  author       String?
+  membersOnly  Boolean @default(false)
+  searchString String?
+
+  lawBlockId String   @unique
+  LawBlock   LawBlock @relation(fields: [lawBlockId], references: [id])
+}
+
+model LawBlock {
+  id         String         @id @default(cuid())
+  type       BlockType      @default(ARTICLE)
+  content    LawBlock[]     @relation("LawBlockToLawBlock")
+  properties BlockProperty?
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  LawBlock   LawBlock? @relation("LawBlockToLawBlock", fields: [lawBlockId], references: [id], onDelete: Cascade)
+  lawBlockId String?
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String   @db.VarChar(255)
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  content   String?
+  published Boolean  @default(false)
+  authorId  String
+  User      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Profile {
+  id      String  @id @default(cuid())
+  bio     String?
+  picture String?
+  userId  String  @unique
+  User    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?  @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  username  String?  @db.VarChar(255)
+  tokens    String[]
+  admin     Boolean  @default(false)
+  googleId  String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role UserRole @default(USER)
+
+  profile Profile?
+  posts   Post[]
+}
+
+enum UserRole {
+  USER
+  MEMBER
+  ADMIN
+}
+
+enum BlockType {
+  LAW
+  JURISPRUDENCE
+  ARTICLE
+  PARAGRAPH
+  INCISE
+  ALINEA
+  UNIQUE_PARAGRAPH
+  INFO
+  CODE
+  CONSTITUTION
+}

@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserCrudResolver = exports.ProfileCrudResolver = exports.PostCrudResolver = exports.LawBlockCrudResolver = exports.BlockPropertyCrudResolver = void 0;
+var BlockPropertyCrudResolver_1 = require("./BlockProperty/BlockPropertyCrudResolver");
+Object.defineProperty(exports, "BlockPropertyCrudResolver", { enumerable: true, get: function () { return BlockPropertyCrudResolver_1.BlockPropertyCrudResolver; } });
+var LawBlockCrudResolver_1 = require("./LawBlock/LawBlockCrudResolver");
+Object.defineProperty(exports, "LawBlockCrudResolver", { enumerable: true, get: function () { return LawBlockCrudResolver_1.LawBlockCrudResolver; } });
+var PostCrudResolver_1 = require("./Post/PostCrudResolver");
+Object.defineProperty(exports, "PostCrudResolver", { enumerable: true, get: function () { return PostCrudResolver_1.PostCrudResolver; } });
+var ProfileCrudResolver_1 = require("./Profile/ProfileCrudResolver");
+Object.defineProperty(exports, "ProfileCrudResolver", { enumerable: true, get: function () { return ProfileCrudResolver_1.ProfileCrudResolver; } });
+var UserCrudResolver_1 = require("./User/UserCrudResolver");
+Object.defineProperty(exports, "UserCrudResolver", { enumerable: true, get: function () { return UserCrudResolver_1.UserCrudResolver; } });

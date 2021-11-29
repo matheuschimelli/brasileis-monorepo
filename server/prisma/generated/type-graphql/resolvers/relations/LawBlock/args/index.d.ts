@@ -1,0 +1,1 @@
+export { LawBlockContentArgs } from "./LawBlockContentArgs";

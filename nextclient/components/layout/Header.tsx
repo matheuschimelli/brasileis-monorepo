@@ -114,7 +114,7 @@ export function HeaderNotAuthenticated({
                 <Image
                   borderRadius="full"
                   boxSize="32px"
-                  src={user.profilePicture}
+                  src={user.profile.picture}
                   alt={user.name}
                 />
               </MenuButton>

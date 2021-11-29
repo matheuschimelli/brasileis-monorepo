@@ -1,0 +1,31 @@
+import { GraphQLResolveInfo } from "graphql";
+import { AggregateLawBlockArgs } from "./args/AggregateLawBlockArgs";
+import { CreateLawBlockArgs } from "./args/CreateLawBlockArgs";
+import { CreateManyLawBlockArgs } from "./args/CreateManyLawBlockArgs";
+import { DeleteLawBlockArgs } from "./args/DeleteLawBlockArgs";
+import { DeleteManyLawBlockArgs } from "./args/DeleteManyLawBlockArgs";
+import { FindFirstLawBlockArgs } from "./args/FindFirstLawBlockArgs";
+import { FindManyLawBlockArgs } from "./args/FindManyLawBlockArgs";
+import { FindUniqueLawBlockArgs } from "./args/FindUniqueLawBlockArgs";
+import { GroupByLawBlockArgs } from "./args/GroupByLawBlockArgs";
+import { UpdateLawBlockArgs } from "./args/UpdateLawBlockArgs";
+import { UpdateManyLawBlockArgs } from "./args/UpdateManyLawBlockArgs";
+import { UpsertLawBlockArgs } from "./args/UpsertLawBlockArgs";
+import { LawBlock } from "../../../models/LawBlock";
+import { AffectedRowsOutput } from "../../outputs/AffectedRowsOutput";
+import { AggregateLawBlock } from "../../outputs/AggregateLawBlock";
+import { LawBlockGroupBy } from "../../outputs/LawBlockGroupBy";
+export declare class LawBlockCrudResolver {
+    lawBlock(ctx: any, info: GraphQLResolveInfo, args: FindUniqueLawBlockArgs): Promise<LawBlock | null>;
+    findFirstLawBlock(ctx: any, info: GraphQLResolveInfo, args: FindFirstLawBlockArgs): Promise<LawBlock | null>;
+    lawBlocks(ctx: any, info: GraphQLResolveInfo, args: FindManyLawBlockArgs): Promise<LawBlock[]>;
+    createLawBlock(ctx: any, info: GraphQLResolveInfo, args: CreateLawBlockArgs): Promise<LawBlock>;
+    createManyLawBlock(ctx: any, info: GraphQLResolveInfo, args: CreateManyLawBlockArgs): Promise<AffectedRowsOutput>;
+    deleteLawBlock(ctx: any, info: GraphQLResolveInfo, args: DeleteLawBlockArgs): Promise<LawBlock | null>;
+    updateLawBlock(ctx: any, info: GraphQLResolveInfo, args: UpdateLawBlockArgs): Promise<LawBlock | null>;
+    deleteManyLawBlock(ctx: any, info: GraphQLResolveInfo, args: DeleteManyLawBlockArgs): Promise<AffectedRowsOutput>;
+    updateManyLawBlock(ctx: any, info: GraphQLResolveInfo, args: UpdateManyLawBlockArgs): Promise<AffectedRowsOutput>;
+    upsertLawBlock(ctx: any, info: GraphQLResolveInfo, args: UpsertLawBlockArgs): Promise<LawBlock>;
+    aggregateLawBlock(ctx: any, info: GraphQLResolveInfo, args: AggregateLawBlockArgs): Promise<AggregateLawBlock>;
+    groupByLawBlock(ctx: any, info: GraphQLResolveInfo, args: GroupByLawBlockArgs): Promise<LawBlockGroupBy[]>;
+}
