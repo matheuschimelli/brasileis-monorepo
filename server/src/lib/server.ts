@@ -78,7 +78,15 @@ class Server {
     }))
     this.app.use(cors())
     this.app.use(express.urlencoded({ extended: true }))
-    this.app.use(express.json())
+
+    this.app.use((req, res, next) => {
+      if (req.originalUrl === '/api/v1/checkout/webhook') {
+        next();
+      } else {
+        express.json()(req, res, next);
+      }
+    });
+
     this.app.use(compression())
     if (process.env.NODE_ENV === 'development') this.app.use(errorHandler())
 

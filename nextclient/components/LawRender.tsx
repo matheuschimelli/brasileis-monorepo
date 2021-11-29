@@ -86,7 +86,24 @@ const List = ({ data }: { data: any[] }) => {
     </>
   );
 };
+const RenderType = ({ articleType }: any) => {
+  switch (articleType) {
+    case "ARTICLE":
+      return <>Art. </>;
 
+    case "PARAGRAFO_UNICO":
+      return <></>;
+
+    case "PARAGRAFO":
+      return <>§</>;
+
+    case "INCISO":
+      return <></>;
+
+    default:
+      return <>Artigo. </>;
+  }
+};
 const ArticleRender = ({ article }: { article: any }) => {
   return (
     <Text
@@ -98,116 +115,39 @@ const ArticleRender = ({ article }: { article: any }) => {
     >
       <Link href="/id123/id123">
         <Box as="a" cursor="pointer" color="blue.600" fontWeight="bold">
-          {article.number}
+          <RenderType articleType={article.type} /> {article.properties.number}
         </Box>
       </Link>{" "}
-      {article.text}
+      {article.properties.value}
+      {article.content &&
+        article.content.map((subArticles: any) => {
+          return (
+            <ArticleRender
+              article={subArticles}
+              key={article.properties.value}
+            />
+          );
+        })}
     </Text>
   );
 };
+
 export default function LawRender({ data }: { data: any }) {
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "8", md: "12" }}>
       <Flex shadow="2xl" flexDirection={{ sm: "column-reverse", md: "row" }}>
         <Box flex="1" padding="1em 80px 5em 80px">
           <Text fontSize="3xl" fontWeight="bold">
-            Constituição Federal
+            Código de Defesa do Consumidor
           </Text>
 
           {data.map((article: any) => {
             return (
               <>
-                <Text
-                  fontSize="17px"
-                  style={{ textIndent: "2em" }}
-                  lineHeight="normal"
-                  mt="1em"
-                  mb="1em"
-                >
-                  <Link href="/id123/id123">
-                    <Box
-                      as="a"
-                      cursor="pointer"
-                      color="blue.600"
-                      fontWeight="bold"
-                    >
-                      {article.number}
-                    </Box>
-                  </Link>{" "}
-                  {article.text}
-                  {article.paragraphs &&
-                    article.paragraphs.map((p: any) => {
-                      return (
-                        <Text
-                          fontSize="17px"
-                          style={{ textIndent: "2em" }}
-                          lineHeight="normal"
-                          mt="1em"
-                          mb="1em"
-                        >
-                          <Link href="/id123/id123">
-                            <Box
-                              as="a"
-                              cursor="pointer"
-                              color="blue.600"
-                              fontWeight="bold"
-                            >
-                              {p.paragraph}
-                            </Box>
-                          </Link>{" "}
-                          {p.text}
-                          {p.incises &&
-                            p.incises.map((pincise: any) => {
-                              return (
-                                <Text
-                                  fontSize="17px"
-                                  style={{ textIndent: "2em" }}
-                                  lineHeight="normal"
-                                  mt="1em"
-                                  mb="1em"
-                                >
-                                  <Link href="/id123/id123">
-                                    <Box
-                                      as="a"
-                                      cursor="pointer"
-                                      color="blue.600"
-                                      fontWeight="bold"
-                                    >
-                                      {pincise.paragraph}
-                                    </Box>
-                                  </Link>{" "}
-                                  {pincise.text}
-                                </Text>
-                              );
-                            })}
-                        </Text>
-                      );
-                    })}
-                  {article.incises &&
-                    article.incises.map((incise: any) => {
-                      return (
-                        <Text
-                          fontSize="17px"
-                          style={{ textIndent: "2em" }}
-                          lineHeight="normal"
-                          mt="1em"
-                          mb="1em"
-                        >
-                          <Link href="/id123/id123">
-                            <Box
-                              as="a"
-                              cursor="pointer"
-                              color="blue.600"
-                              fontWeight="bold"
-                            >
-                              {incise.paragraph}
-                            </Box>
-                          </Link>{" "}
-                          {incise.text}
-                        </Text>
-                      );
-                    })}
-                </Text>
+                <ArticleRender
+                  article={article}
+                  key={article.properties.number}
+                />
               </>
             );
           })}
@@ -225,7 +165,7 @@ export default function LawRender({ data }: { data: any }) {
           height="100vh"
         >
           <Text fontSize="2xl" fontWeight="bold">
-            Constituição Federal
+            Código de Defesa do Consumidor
           </Text>
         </Box>
       </Flex>

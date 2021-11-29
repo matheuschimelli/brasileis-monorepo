@@ -75,7 +75,7 @@ export function useProvideAuth() {
     updateCookie(token.auth_token);
     localStorage.setItem("auth", JSON.stringify(userData));
     setUser(userData);
-    return router.push("/painel");
+    // return router.push("/painel");
   };
 
   const initializeGoogleAuth = () => {

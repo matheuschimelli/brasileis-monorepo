@@ -69,7 +69,7 @@ export function isAuthenticated(req: Request, res: Response, next: any) {
     return next()
   }
   console.log('user is NOT')
-  return res.status(404).send('<pre>Page not found</pre>')
+  return res.status(400).send({ message: 'Auth required to perform this action.' })
 };
 
 export function isAdmin(req: Request, res: Response, next: any) {
@@ -79,6 +79,6 @@ export function isAdmin(req: Request, res: Response, next: any) {
     return next()
   }
   if (!admin) {
-    return res.status(404).send('<pre>Page not found</pre>')
+    return res.status(404).send({ message: 'Auth required to perform this action.' })
   }
 };
