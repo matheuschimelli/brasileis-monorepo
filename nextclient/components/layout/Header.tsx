@@ -20,6 +20,9 @@ import {
   MenuItem,
   MenuList,
   MenuDivider,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import SearchForm from "./SearchForm";
@@ -71,7 +74,12 @@ export function HeaderNotAuthenticated({
             width={{ base: "container.sm" }}
             display={{ base: "flex", md: "none" }}
           >
-            <Input variant="filled" placeholder="Pesquisar" />
+
+            <InputGroup>
+
+              <Input variant="filled" placeholder="Pesquisar" />
+              <InputRightElement children={<Button>p</Button>} />
+            </InputGroup>
           </Box>
         </Slide>
 
@@ -122,8 +130,7 @@ export function HeaderNotAuthenticated({
                 <MenuItem>Biblioteca</MenuItem>
                 <MenuItem>Feed</MenuItem>
                 <MenuDivider />
-                <MenuItem>Minha Conta</MenuItem>
-                <MenuItem>Configurações</MenuItem>
+                <Link href="configuracoes/minha-conta"><MenuItem>Minha Conta</MenuItem></Link>
                 <MenuDivider />
                 <MenuItem onClick={logout}>Sair</MenuItem>
               </MenuList>

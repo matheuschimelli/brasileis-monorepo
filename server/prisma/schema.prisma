@@ -8,7 +8,7 @@ generator client {
 generator typegraphql {
   provider           = "typegraphql-prisma"
   output             = "../src/graphql/generated/type-graphql"
-  emitTranspiledCode = true
+  emitTranspiledCode = false
 }
 
 datasource db {
@@ -77,8 +77,30 @@ model User {
 
   role UserRole @default(USER)
 
-  profile Profile?
-  posts   Post[]
+  profile     Profile?
+  posts       Post[]
+  memberships Membership[]
+}
+
+model Membership {
+  id       String  @id @default(cuid())
+  user     User    @relation(fields: [userId], references: [id])
+  isActive Boolean @default(true)
+
+  startDate DateTime
+  endDate   DateTime
+
+  stripeTransactionId String
+  customerId          String
+  invoiceUrl          String
+  subscriptionId      String
+  receiptUrl          String
+  pdfInvoice          String
+  urlInvoice          String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
 }
 
 enum UserRole {

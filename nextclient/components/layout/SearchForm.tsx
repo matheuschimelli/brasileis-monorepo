@@ -1,4 +1,5 @@
-import { Box, Input } from "@chakra-ui/react";
+import { Box, Button, Center, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { SearchIcon, CloseIcon } from '@chakra-ui/icons'
 import React, { useState, useMemo } from "react";
 import { useRouter } from "next/router";
 
@@ -10,7 +11,7 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
   const router = useRouter();
   const [query, setQuery] = useState("");
 
-  const handleParam = (setValue: any) => (e: any) => setValue(e.target.value);
+  const handleParam = (e: any) => setQuery(e.target.value);
 
   const handleSubmit = preventDefault(() => {
     router.push({
@@ -31,16 +32,29 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
       display={{ base: "none", md: "flex" }}
       as="form"
       onSubmit={handleSubmit}
+
     >
-      <Input
-        variant="filled"
-        placeholder="Pesquisar"
-        type="text"
-        name="1"
-        value={memoizedVal}
-        onChange={handleParam(setQuery)}
-        aria-label="Search"
-      />
+      <InputGroup>
+
+        <Input variant="filled" placeholder="Pesquisar" name="q" onChange={handleParam} value={query} />
+        <InputRightElement w="5rem"
+          children={
+            <>
+              {query !== "" ? (<Button type="button" size='sm' onClick={(e) => { e.preventDefault(); setQuery("") }}>
+                <Center>
+                  <CloseIcon />
+                </Center>
+              </Button>) : (<></>)}
+              <Button type="submit" size='sm' onClick={handleSubmit}>
+                <Center>
+                  <SearchIcon />
+                </Center>
+              </Button>
+
+            </>
+          }
+        />
+      </InputGroup>
     </Box>
   );
 }

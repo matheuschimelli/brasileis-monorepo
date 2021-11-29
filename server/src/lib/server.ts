@@ -9,7 +9,7 @@ import helmet from 'helmet'
 import errorHandler from 'errorhandler'
 import cors from 'cors'
 import signale from 'signale'
-
+import { IRequest } from '../types'
 declare var process: {
   env: {
     SESSION_SECRET: string
@@ -29,7 +29,7 @@ interface ServerParams {
 }
 
 interface Middleware {
-  <T>(req: Request & T, res: Response, next: NextFunction): void;
+  <T>(req: Request | IRequest & T, res: Response, next: NextFunction): void;
   res?: Response;
 }
 

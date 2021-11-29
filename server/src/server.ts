@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import morgan from 'morgan'
 import Server from './lib/server'
-import connectDB from './database/connection'
+//import connectDB from './database/connection'
 import routes from './routes'
 import jwtAuth from './middlewares/jwtAuth'
 import Queue from './jobs/Queue'
@@ -14,14 +14,14 @@ import basicAuth from 'express-basic-auth'
 const serverAdapter = new ExpressAdapter()
 
 import {
-  ArticleResolver,
-  CategoriesResolver,
-  SubCategoriesResolver,
-  CrawlerResolver,
-  LawResolver,
-  CrawlerTypeResolver,
+  // ArticleResolver,
+  // CategoriesResolver,
+  // SubCategoriesResolver,
+  // CrawlerResolver,
+  // LawResolver,
+  // CrawlerTypeResolver,
   UsersResolver,
-  PeticaoResolver
+  //PeticaoResolver
 } from './modules'
 
 dotenv.config({ path: '.env' })
@@ -43,14 +43,14 @@ const server = new Server({
   debugGraphql: true,
   postgresql: process.env.POSTGRESQL_URL,
   graphqlResolvers: [
-    ArticleResolver,
-    CategoriesResolver,
-    SubCategoriesResolver,
-    CrawlerResolver,
-    LawResolver,
-    CrawlerTypeResolver,
+    //  ArticleResolver,
+    //  CategoriesResolver,
+    //   SubCategoriesResolver,
+    // CrawlerResolver,
+    // LawResolver,
+    //  CrawlerTypeResolver,
     UsersResolver,
-    PeticaoResolver
+    //PeticaoResolver
   ],
   cors: [
     'https://api.brasileis.com.br',
@@ -79,6 +79,7 @@ console.log('database running')
 server.useMiddleware(
   morgan(':method :url :req[header] :status - :response-time ms')
 )
+  //@ts-ignore
   .useMiddleware(jwtAuth)
   .useMiddleware2('/admin/queues', basicAuth({
     users: { 'painel': 'decontrole' },
