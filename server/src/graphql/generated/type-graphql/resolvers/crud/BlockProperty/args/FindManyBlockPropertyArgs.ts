@@ -35,5 +35,5 @@ export class FindManyBlockPropertyArgs {
   @TypeGraphQL.Field(_type => [BlockPropertyScalarFieldEnum], {
     nullable: true
   })
-  distinct?: Array<"id" | "value" | "title" | "number" | "identifier" | "comment" | "year" | "author" | "membersOnly" | "searchString" | "lawBlockId"> | undefined;
+  distinct?: Array<"id" | "value" | "title" | "number" | "identifier" | "comment" | "year" | "author" | "subsOnly" | "searchString" | "lawBlockId"> | undefined;
 }

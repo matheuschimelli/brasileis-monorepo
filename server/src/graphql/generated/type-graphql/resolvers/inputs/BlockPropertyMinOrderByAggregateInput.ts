@@ -51,7 +51,7 @@ export class BlockPropertyMinOrderByAggregateInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  membersOnly?: "asc" | "desc" | undefined;
+  subsOnly?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true

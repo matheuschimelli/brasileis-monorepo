@@ -25,7 +25,7 @@ model BlockProperty {
   comment      String?
   year         Int?
   author       String?
-  membersOnly  Boolean @default(false)
+  subsOnly     Boolean @default(false)
   searchString String?
 
   lawBlockId String   @unique
@@ -65,38 +65,64 @@ model Profile {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  name      String?  @db.VarChar(255)
-  email     String   @unique @db.VarChar(255)
-  username  String?  @db.VarChar(255)
-  tokens    String[]
-  admin     Boolean  @default(false)
-  googleId  String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id       String   @id @default(cuid())
+  name     String?  @db.VarChar(255)
+  email    String   @unique @db.VarChar(255)
+  username String?  @db.VarChar(255)
+  tokens   String[]
+  admin    Boolean  @default(false)
+  googleId String   @unique
+  isPro    Boolean? @default(false)
+
 
   role UserRole @default(USER)
 
-  profile     Profile?
-  posts       Post[]
-  memberships Membership[]
+  profile       Profile?
+  posts         Post[]
+  subscriptions Subscription[]
+  Customer      Customer?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
-model Membership {
+model Customer {
+  id       String @id @default(cuid())
+  stripeId String @unique
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+}
+
+model Subscription {
   id       String  @id @default(cuid())
   user     User    @relation(fields: [userId], references: [id])
   isActive Boolean @default(true)
 
-  startDate DateTime
-  endDate   DateTime
 
-  stripeTransactionId String
-  customerId          String
-  invoiceUrl          String
-  subscriptionId      String
-  receiptUrl          String
-  pdfInvoice          String
-  urlInvoice          String
+
+  stripePaymentId     String?
+  stripeTransactionId String?
+
+  stripeSubscriptionId String @unique
+  customerId           String
+
+  startDate         DateTime
+  endDate           DateTime
+  quantity          Int?
+  cancelAtPeriodEnd Boolean?
+  cancelAt          DateTime?
+  canceledAt        DateTime?
+  created           DateTime?
+  endedAt           DateTime?
+
+  trialStart DateTime?
+  trialEnd   DateTime?
+
+  invoiceUrl String?
+  receiptUrl String?
+  pdfInvoice String?
+  urlInvoice String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -105,6 +131,7 @@ model Membership {
 
 enum UserRole {
   USER
+  PRO
   MEMBER
   ADMIN
 }

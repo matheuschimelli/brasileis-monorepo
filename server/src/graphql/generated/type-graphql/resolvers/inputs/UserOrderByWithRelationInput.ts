@@ -2,9 +2,10 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
-import { MembershipOrderByRelationAggregateInput } from "../inputs/MembershipOrderByRelationAggregateInput";
+import { CustomerOrderByWithRelationInput } from "../inputs/CustomerOrderByWithRelationInput";
 import { PostOrderByRelationAggregateInput } from "../inputs/PostOrderByRelationAggregateInput";
 import { ProfileOrderByWithRelationInput } from "../inputs/ProfileOrderByWithRelationInput";
+import { SubscriptionOrderByRelationAggregateInput } from "../inputs/SubscriptionOrderByRelationAggregateInput";
 import { SortOrder } from "../../enums/SortOrder";
 
 @TypeGraphQL.InputType("UserOrderByWithRelationInput", {
@@ -49,12 +50,7 @@ export class UserOrderByWithRelationInput {
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
   })
-  createdAt?: "asc" | "desc" | undefined;
-
-  @TypeGraphQL.Field(_type => SortOrder, {
-    nullable: true
-  })
-  updatedAt?: "asc" | "desc" | undefined;
+  isPro?: "asc" | "desc" | undefined;
 
   @TypeGraphQL.Field(_type => SortOrder, {
     nullable: true
@@ -71,8 +67,23 @@ export class UserOrderByWithRelationInput {
   })
   posts?: PostOrderByRelationAggregateInput | undefined;
 
-  @TypeGraphQL.Field(_type => MembershipOrderByRelationAggregateInput, {
+  @TypeGraphQL.Field(_type => SubscriptionOrderByRelationAggregateInput, {
     nullable: true
   })
-  memberships?: MembershipOrderByRelationAggregateInput | undefined;
+  subscriptions?: SubscriptionOrderByRelationAggregateInput | undefined;
+
+  @TypeGraphQL.Field(_type => CustomerOrderByWithRelationInput, {
+    nullable: true
+  })
+  Customer?: CustomerOrderByWithRelationInput | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  createdAt?: "asc" | "desc" | undefined;
+
+  @TypeGraphQL.Field(_type => SortOrder, {
+    nullable: true
+  })
+  updatedAt?: "asc" | "desc" | undefined;
 }

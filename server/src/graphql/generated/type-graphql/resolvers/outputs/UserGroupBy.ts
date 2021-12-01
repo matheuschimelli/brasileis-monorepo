@@ -46,6 +46,16 @@ export class UserGroupBy {
   })
   googleId!: string;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: true
+  })
+  isPro!: boolean | null;
+
+  @TypeGraphQL.Field(_type => UserRole, {
+    nullable: false
+  })
+  role!: "USER" | "PRO" | "MEMBER" | "ADMIN";
+
   @TypeGraphQL.Field(_type => Date, {
     nullable: false
   })
@@ -55,11 +65,6 @@ export class UserGroupBy {
     nullable: false
   })
   updatedAt!: Date;
-
-  @TypeGraphQL.Field(_type => UserRole, {
-    nullable: false
-  })
-  role!: "USER" | "MEMBER" | "ADMIN";
 
   @TypeGraphQL.Field(_type => UserCountAggregate, {
     nullable: true

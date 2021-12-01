@@ -28,6 +28,82 @@ export class Profile {
     User?: User;
 }
 
+@ObjectType("Membership", {
+    isAbstract: true
+})
+export class Membership {
+    @Field(_type => String, {
+        nullable: false
+    })
+    id!: string;
+
+    user?: User;
+
+    @Field(_type => Boolean, {
+        nullable: false
+    })
+    isActive!: boolean;
+
+    @Field(_type => Date, {
+        nullable: false
+    })
+    startDate!: Date;
+
+    @Field(_type => Date, {
+        nullable: false
+    })
+    endDate!: Date;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    stripeTransactionId!: string;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    customerId!: string;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    invoiceUrl!: string;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    subscriptionId!: string;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    receiptUrl!: string;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    pdfInvoice!: string;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    urlInvoice!: string;
+
+    @Field(_type => Date, {
+        nullable: false
+    })
+    createdAt!: Date;
+
+    @Field(_type => Date, {
+        nullable: false
+    })
+    updatedAt!: Date;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    userId!: string;
+}
 @ObjectType("User", {
     isAbstract: true
 })
@@ -77,13 +153,13 @@ export class User {
     })
     updatedAt!: Date;
 
-    // @Field(_type => UserRole, {
-    //     nullable: false
-    // })
-    // role!: UserRole;
-
     @Field(_type => Profile, {
         nullable: true
     })
     profile?: Profile | null;
+
+    @Field(_type => Membership, {
+        nullable: true
+    })
+    membership?: Membership | null;
 }

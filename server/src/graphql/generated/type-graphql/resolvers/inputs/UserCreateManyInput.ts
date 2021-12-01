@@ -39,6 +39,16 @@ export class UserCreateManyInput {
   })
   googleId!: string;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: true
+  })
+  isPro?: boolean | undefined;
+
+  @TypeGraphQL.Field(_type => UserRole, {
+    nullable: true
+  })
+  role?: "USER" | "PRO" | "MEMBER" | "ADMIN" | undefined;
+
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
@@ -48,11 +58,6 @@ export class UserCreateManyInput {
     nullable: true
   })
   updatedAt?: Date | undefined;
-
-  @TypeGraphQL.Field(_type => UserRole, {
-    nullable: true
-  })
-  role?: "USER" | "MEMBER" | "ADMIN" | undefined;
 
   @TypeGraphQL.Field(_type => UserCreateManytokensInput, {
     nullable: true

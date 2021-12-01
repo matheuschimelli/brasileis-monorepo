@@ -51,7 +51,7 @@ export class BlockPropertyCreateInput {
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
   })
-  membersOnly?: boolean | undefined;
+  subsOnly?: boolean | undefined;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

@@ -50,7 +50,7 @@ export class BlockPropertyMinAggregate {
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: true
   })
-  membersOnly!: boolean | null;
+  subsOnly!: boolean | null;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

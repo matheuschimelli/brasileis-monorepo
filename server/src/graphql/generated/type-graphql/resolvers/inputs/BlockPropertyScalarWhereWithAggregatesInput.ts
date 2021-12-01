@@ -69,7 +69,7 @@ export class BlockPropertyScalarWhereWithAggregatesInput {
   @TypeGraphQL.Field(_type => BoolWithAggregatesFilter, {
     nullable: true
   })
-  membersOnly?: BoolWithAggregatesFilter | undefined;
+  subsOnly?: BoolWithAggregatesFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableWithAggregatesFilter, {
     nullable: true

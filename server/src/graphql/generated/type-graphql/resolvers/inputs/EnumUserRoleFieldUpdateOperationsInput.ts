@@ -11,5 +11,5 @@ export class EnumUserRoleFieldUpdateOperationsInput {
   @TypeGraphQL.Field(_type => UserRole, {
     nullable: true
   })
-  set?: "USER" | "MEMBER" | "ADMIN" | undefined;
+  set?: "USER" | "PRO" | "MEMBER" | "ADMIN" | undefined;
 }

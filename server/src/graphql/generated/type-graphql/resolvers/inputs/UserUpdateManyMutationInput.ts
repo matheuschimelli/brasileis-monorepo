@@ -5,6 +5,7 @@ import { DecimalJSScalar } from "../../scalars";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { EnumUserRoleFieldUpdateOperationsInput } from "../inputs/EnumUserRoleFieldUpdateOperationsInput";
+import { NullableBoolFieldUpdateOperationsInput } from "../inputs/NullableBoolFieldUpdateOperationsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
 import { UserUpdatetokensInput } from "../inputs/UserUpdatetokensInput";
@@ -43,6 +44,16 @@ export class UserUpdateManyMutationInput {
   })
   googleId?: StringFieldUpdateOperationsInput | undefined;
 
+  @TypeGraphQL.Field(_type => NullableBoolFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  isPro?: NullableBoolFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => EnumUserRoleFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  role?: EnumUserRoleFieldUpdateOperationsInput | undefined;
+
   @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
     nullable: true
   })
@@ -52,11 +63,6 @@ export class UserUpdateManyMutationInput {
     nullable: true
   })
   updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
-
-  @TypeGraphQL.Field(_type => EnumUserRoleFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  role?: EnumUserRoleFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => UserUpdatetokensInput, {
     nullable: true

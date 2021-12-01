@@ -1,10 +1,11 @@
 import * as TypeGraphQL from "type-graphql";
-import { Membership } from "../../../models/Membership";
+import { Customer } from "../../../models/Customer";
 import { Post } from "../../../models/Post";
 import { Profile } from "../../../models/Profile";
+import { Subscription } from "../../../models/Subscription";
 import { User } from "../../../models/User";
-import { UserMembershipsArgs } from "./args/UserMembershipsArgs";
 import { UserPostsArgs } from "./args/UserPostsArgs";
+import { UserSubscriptionsArgs } from "./args/UserSubscriptionsArgs";
 import { transformFields, getPrismaFromContext, transformCountFieldIntoSelectRelationsCount } from "../../../helpers";
 
 @TypeGraphQL.Resolver(_of => User)
@@ -31,14 +32,25 @@ export class UserRelationsResolver {
     }).posts(args);
   }
 
-  @TypeGraphQL.FieldResolver(_type => [Membership], {
+  @TypeGraphQL.FieldResolver(_type => [Subscription], {
     nullable: false
   })
-  async memberships(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UserMembershipsArgs): Promise<Membership[]> {
+  async subscriptions(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any, @TypeGraphQL.Args() args: UserSubscriptionsArgs): Promise<Subscription[]> {
     return getPrismaFromContext(ctx).user.findUnique({
       where: {
         id: user.id,
       },
-    }).memberships(args);
+    }).subscriptions(args);
+  }
+
+  @TypeGraphQL.FieldResolver(_type => Customer, {
+    nullable: true
+  })
+  async Customer(@TypeGraphQL.Root() user: User, @TypeGraphQL.Ctx() ctx: any): Promise<Customer | null> {
+    return getPrismaFromContext(ctx).user.findUnique({
+      where: {
+        id: user.id,
+      },
+    }).Customer({});
   }
 }

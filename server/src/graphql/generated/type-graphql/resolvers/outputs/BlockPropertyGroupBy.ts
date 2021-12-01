@@ -55,7 +55,7 @@ export class BlockPropertyGroupBy {
   @TypeGraphQL.Field(_type => Boolean, {
     nullable: false
   })
-  membersOnly!: boolean;
+  subsOnly!: boolean;
 
   @TypeGraphQL.Field(_type => String, {
     nullable: true

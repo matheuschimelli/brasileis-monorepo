@@ -20,7 +20,7 @@ export class GroupByBlockPropertyArgs {
   @TypeGraphQL.Field(_type => [BlockPropertyScalarFieldEnum], {
     nullable: false
   })
-  by!: Array<"id" | "value" | "title" | "number" | "identifier" | "comment" | "year" | "author" | "membersOnly" | "searchString" | "lawBlockId">;
+  by!: Array<"id" | "value" | "title" | "number" | "identifier" | "comment" | "year" | "author" | "subsOnly" | "searchString" | "lawBlockId">;
 
   @TypeGraphQL.Field(_type => BlockPropertyScalarWhereWithAggregatesInput, {
     nullable: true

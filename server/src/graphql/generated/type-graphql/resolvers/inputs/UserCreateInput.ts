@@ -2,9 +2,10 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
-import { MembershipCreateNestedManyWithoutUserInput } from "../inputs/MembershipCreateNestedManyWithoutUserInput";
+import { CustomerCreateNestedOneWithoutUserInput } from "../inputs/CustomerCreateNestedOneWithoutUserInput";
 import { PostCreateNestedManyWithoutUserInput } from "../inputs/PostCreateNestedManyWithoutUserInput";
 import { ProfileCreateNestedOneWithoutUserInput } from "../inputs/ProfileCreateNestedOneWithoutUserInput";
+import { SubscriptionCreateNestedManyWithoutUserInput } from "../inputs/SubscriptionCreateNestedManyWithoutUserInput";
 import { UserCreatetokensInput } from "../inputs/UserCreatetokensInput";
 import { UserRole } from "../../enums/UserRole";
 
@@ -42,6 +43,16 @@ export class UserCreateInput {
   })
   googleId!: string;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: true
+  })
+  isPro?: boolean | undefined;
+
+  @TypeGraphQL.Field(_type => UserRole, {
+    nullable: true
+  })
+  role?: "USER" | "PRO" | "MEMBER" | "ADMIN" | undefined;
+
   @TypeGraphQL.Field(_type => Date, {
     nullable: true
   })
@@ -51,11 +62,6 @@ export class UserCreateInput {
     nullable: true
   })
   updatedAt?: Date | undefined;
-
-  @TypeGraphQL.Field(_type => UserRole, {
-    nullable: true
-  })
-  role?: "USER" | "MEMBER" | "ADMIN" | undefined;
 
   @TypeGraphQL.Field(_type => UserCreatetokensInput, {
     nullable: true
@@ -72,8 +78,13 @@ export class UserCreateInput {
   })
   posts?: PostCreateNestedManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field(_type => MembershipCreateNestedManyWithoutUserInput, {
+  @TypeGraphQL.Field(_type => SubscriptionCreateNestedManyWithoutUserInput, {
     nullable: true
   })
-  memberships?: MembershipCreateNestedManyWithoutUserInput | undefined;
+  subscriptions?: SubscriptionCreateNestedManyWithoutUserInput | undefined;
+
+  @TypeGraphQL.Field(_type => CustomerCreateNestedOneWithoutUserInput, {
+    nullable: true
+  })
+  Customer?: CustomerCreateNestedOneWithoutUserInput | undefined;
 }

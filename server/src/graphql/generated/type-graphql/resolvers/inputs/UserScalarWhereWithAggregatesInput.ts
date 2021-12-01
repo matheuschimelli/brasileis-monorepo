@@ -2,6 +2,7 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
+import { BoolNullableWithAggregatesFilter } from "../inputs/BoolNullableWithAggregatesFilter";
 import { BoolWithAggregatesFilter } from "../inputs/BoolWithAggregatesFilter";
 import { DateTimeWithAggregatesFilter } from "../inputs/DateTimeWithAggregatesFilter";
 import { EnumUserRoleWithAggregatesFilter } from "../inputs/EnumUserRoleWithAggregatesFilter";
@@ -63,6 +64,16 @@ export class UserScalarWhereWithAggregatesInput {
   })
   googleId?: StringWithAggregatesFilter | undefined;
 
+  @TypeGraphQL.Field(_type => BoolNullableWithAggregatesFilter, {
+    nullable: true
+  })
+  isPro?: BoolNullableWithAggregatesFilter | undefined;
+
+  @TypeGraphQL.Field(_type => EnumUserRoleWithAggregatesFilter, {
+    nullable: true
+  })
+  role?: EnumUserRoleWithAggregatesFilter | undefined;
+
   @TypeGraphQL.Field(_type => DateTimeWithAggregatesFilter, {
     nullable: true
   })
@@ -72,9 +83,4 @@ export class UserScalarWhereWithAggregatesInput {
     nullable: true
   })
   updatedAt?: DateTimeWithAggregatesFilter | undefined;
-
-  @TypeGraphQL.Field(_type => EnumUserRoleWithAggregatesFilter, {
-    nullable: true
-  })
-  role?: EnumUserRoleWithAggregatesFilter | undefined;
 }

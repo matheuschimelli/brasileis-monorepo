@@ -3,13 +3,15 @@ import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../../scalars";
 import { BoolFieldUpdateOperationsInput } from "../inputs/BoolFieldUpdateOperationsInput";
+import { CustomerUpdateOneWithoutUserInput } from "../inputs/CustomerUpdateOneWithoutUserInput";
 import { DateTimeFieldUpdateOperationsInput } from "../inputs/DateTimeFieldUpdateOperationsInput";
 import { EnumUserRoleFieldUpdateOperationsInput } from "../inputs/EnumUserRoleFieldUpdateOperationsInput";
-import { MembershipUpdateManyWithoutUserInput } from "../inputs/MembershipUpdateManyWithoutUserInput";
+import { NullableBoolFieldUpdateOperationsInput } from "../inputs/NullableBoolFieldUpdateOperationsInput";
 import { NullableStringFieldUpdateOperationsInput } from "../inputs/NullableStringFieldUpdateOperationsInput";
 import { PostUpdateManyWithoutUserInput } from "../inputs/PostUpdateManyWithoutUserInput";
 import { ProfileUpdateOneWithoutUserInput } from "../inputs/ProfileUpdateOneWithoutUserInput";
 import { StringFieldUpdateOperationsInput } from "../inputs/StringFieldUpdateOperationsInput";
+import { SubscriptionUpdateManyWithoutUserInput } from "../inputs/SubscriptionUpdateManyWithoutUserInput";
 import { UserUpdatetokensInput } from "../inputs/UserUpdatetokensInput";
 
 @TypeGraphQL.InputType("UserUpdateInput", {
@@ -46,6 +48,16 @@ export class UserUpdateInput {
   })
   googleId?: StringFieldUpdateOperationsInput | undefined;
 
+  @TypeGraphQL.Field(_type => NullableBoolFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  isPro?: NullableBoolFieldUpdateOperationsInput | undefined;
+
+  @TypeGraphQL.Field(_type => EnumUserRoleFieldUpdateOperationsInput, {
+    nullable: true
+  })
+  role?: EnumUserRoleFieldUpdateOperationsInput | undefined;
+
   @TypeGraphQL.Field(_type => DateTimeFieldUpdateOperationsInput, {
     nullable: true
   })
@@ -55,11 +67,6 @@ export class UserUpdateInput {
     nullable: true
   })
   updatedAt?: DateTimeFieldUpdateOperationsInput | undefined;
-
-  @TypeGraphQL.Field(_type => EnumUserRoleFieldUpdateOperationsInput, {
-    nullable: true
-  })
-  role?: EnumUserRoleFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => UserUpdatetokensInput, {
     nullable: true
@@ -76,8 +83,13 @@ export class UserUpdateInput {
   })
   posts?: PostUpdateManyWithoutUserInput | undefined;
 
-  @TypeGraphQL.Field(_type => MembershipUpdateManyWithoutUserInput, {
+  @TypeGraphQL.Field(_type => SubscriptionUpdateManyWithoutUserInput, {
     nullable: true
   })
-  memberships?: MembershipUpdateManyWithoutUserInput | undefined;
+  subscriptions?: SubscriptionUpdateManyWithoutUserInput | undefined;
+
+  @TypeGraphQL.Field(_type => CustomerUpdateOneWithoutUserInput, {
+    nullable: true
+  })
+  Customer?: CustomerUpdateOneWithoutUserInput | undefined;
 }

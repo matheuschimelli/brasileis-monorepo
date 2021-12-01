@@ -70,7 +70,7 @@ export class BlockPropertyWhereInput {
   @TypeGraphQL.Field(_type => BoolFilter, {
     nullable: true
   })
-  membersOnly?: BoolFilter | undefined;
+  subsOnly?: BoolFilter | undefined;
 
   @TypeGraphQL.Field(_type => StringNullableFilter, {
     nullable: true

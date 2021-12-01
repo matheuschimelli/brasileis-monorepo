@@ -55,7 +55,7 @@ export class BlockPropertyUpdateInput {
   @TypeGraphQL.Field(_type => BoolFieldUpdateOperationsInput, {
     nullable: true
   })
-  membersOnly?: BoolFieldUpdateOperationsInput | undefined;
+  subsOnly?: BoolFieldUpdateOperationsInput | undefined;
 
   @TypeGraphQL.Field(_type => NullableStringFieldUpdateOperationsInput, {
     nullable: true

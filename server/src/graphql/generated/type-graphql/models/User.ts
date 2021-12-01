@@ -2,9 +2,10 @@ import * as TypeGraphQL from "type-graphql";
 import * as GraphQLScalars from "graphql-scalars";
 import { Prisma } from "@prisma/client";
 import { DecimalJSScalar } from "../scalars";
-import { Membership } from "../models/Membership";
+import { Customer } from "../models/Customer";
 import { Post } from "../models/Post";
 import { Profile } from "../models/Profile";
+import { Subscription } from "../models/Subscription";
 import { UserRole } from "../enums/UserRole";
 import { UserCount } from "../resolvers/outputs/UserCount";
 
@@ -47,6 +48,24 @@ export class User {
   })
   googleId!: string;
 
+  @TypeGraphQL.Field(_type => Boolean, {
+    nullable: true
+  })
+  isPro?: boolean | null;
+
+  @TypeGraphQL.Field(_type => UserRole, {
+    nullable: false
+  })
+  role!: "USER" | "PRO" | "MEMBER" | "ADMIN";
+
+  profile?: Profile | null;
+
+  posts?: Post[];
+
+  subscriptions?: Subscription[];
+
+  Customer?: Customer | null;
+
   @TypeGraphQL.Field(_type => Date, {
     nullable: false
   })
@@ -56,17 +75,6 @@ export class User {
     nullable: false
   })
   updatedAt!: Date;
-
-  @TypeGraphQL.Field(_type => UserRole, {
-    nullable: false
-  })
-  role!: "USER" | "MEMBER" | "ADMIN";
-
-  profile?: Profile | null;
-
-  posts?: Post[];
-
-  memberships?: Membership[];
 
   @TypeGraphQL.Field(_type => UserCount, {
     nullable: false

@@ -50,7 +50,7 @@ export class BlockPropertyCountAggregate {
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false
   })
-  membersOnly!: number;
+  subsOnly!: number;
 
   @TypeGraphQL.Field(_type => TypeGraphQL.Int, {
     nullable: false

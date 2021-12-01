@@ -9,7 +9,7 @@ export enum BlockPropertyScalarFieldEnum {
   comment = "comment",
   year = "year",
   author = "author",
-  membersOnly = "membersOnly",
+  subsOnly = "subsOnly",
   searchString = "searchString",
   lawBlockId = "lawBlockId"
 }
