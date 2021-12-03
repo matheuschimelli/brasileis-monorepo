@@ -32,9 +32,6 @@ export default function Preco() {
 
   const startCheckout = async () => {
     const authToken = token;
-    alert(`TOKEN ${authToken}`);
-    alert(`${process.env.SERVER_URL}/api/v1/checkout/create-session`);
-
     const { response, error } = await checkout.mutate(
       1,
       "POST",
@@ -60,12 +57,11 @@ export default function Preco() {
       <Text align="center" fontSize="5xl" fontWeight="bold" as="h1">
         Planos e preços
       </Text>
-      <Text align="center" fontSize="2xl" as="h2">
+      <Text align="center" fontSize="2xl" as="h2" pb="20">
         Nossos preços são simples e claros. Um plano para o que você precisa
       </Text>
       <Box
         as="section"
-        bg={useColorModeValue("gray.50", "gray.800")}
         py="14"
         px={{ base: "4", md: "8" }}
         display="flex"
@@ -108,15 +104,16 @@ export default function Preco() {
       </Box>
       <Box
         as="section"
-        bg={useColorModeValue("gray.50", "gray.800")}
+        bg="facebook.500"
         py="14"
         px={{ base: "4", md: "8" }}
         display="flex"
         justifyContent="center"
         justifyItems="center"
         alignItems="center"
+        borderRadius="md"
       >
-        <Text fontSize="medium" maxW="2xl" as="p">
+        <Text fontSize="medium" maxW="2xl" as="p" color="white">
           O valor cobrado refere-se ao uso da plataforma e disponibilização dos
           recursos exclusivos do Brasileis.com.br. A assinatura é cobrada de
           forma mensal e renovada automaticamente, podendo ser cancelada a
