@@ -1,10 +1,21 @@
 import { useState } from 'react'
 import useSWR from 'swr'
-
-
+import { useAuth } from './auth'
 type MutationType = 'POST' | 'GET' | 'PUT' | 'DELETE'
 
 
+export async function getData(url: string, token: string) {
+
+    const response = await fetch(url, {
+        method: 'GET',
+
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+    })
+    return response
+}
 export function useData(url: string) {
     const fetcher = (urlToFetch: string) => fetch(urlToFetch).then(r => r.json())
 

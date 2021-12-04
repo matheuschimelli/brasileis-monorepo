@@ -1,4 +1,4 @@
-import { Response } from 'express'
+import { Response, Request } from 'express'
 import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import prisma from '../lib/prisma'
@@ -6,9 +6,7 @@ import { IRequest } from '../types'
 import { User } from '@prisma/client'
 dotenv.config({ path: '.env' })
 
-
-
-export default async function jwtAuth(req: IRequest, res: Response, next: any) {
+export default async function jwtAuth(req: Request, res: Response, next: any) {
   req.isAuthenticated = () => {
     let token = req.headers.authorization
     if (!token) return undefined
@@ -31,7 +29,7 @@ export default async function jwtAuth(req: IRequest, res: Response, next: any) {
           id: authenticatedUser.id
         },
         include: {
-          profile: true
+          profile: true,
         }
       })
 
@@ -50,7 +48,9 @@ export default async function jwtAuth(req: IRequest, res: Response, next: any) {
   }
 }
 
-export function isAuthenticated(req: IRequest, res: Response, next: any) {
+export function isAuthenticated(req: Request, res: Response, next: any) {
+  const a = req.user
+
   const isAuth = req.isAuthenticated()
   if (isAuth) {
     console.log('user IS authenticated')

@@ -15,7 +15,7 @@ export default function Success() {
     <DefaultLayout title="Assinatura">
 
       <Flex px={4} py={32} mx="auto">
-        <Box w="full" mx="auto" w={{ lg: 8 / 12, xl: 5 / 12 }} border="2px" borderColor="green.500" padding="6" borderRadius="md">
+        <Box mx="auto" w={{ lg: 8 / 12, xl: 5 / 12 }} border="2px" borderColor="green.500" padding="6" borderRadius="md">
           <chakra.p
             mb={2}
             fontSize="xs"

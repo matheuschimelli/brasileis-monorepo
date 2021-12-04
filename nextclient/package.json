@@ -16,6 +16,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "contentful": "^9.1.4",
+    "dayjs": "^1.10.7",
     "framer-motion": "^4",
     "graphql": "^15.6.1",
     "next": "12",

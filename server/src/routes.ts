@@ -1,23 +1,14 @@
 import express from 'express'
-import { AuthService } from './modules/auth'
-import { StripeService } from './modules/stripe'
 import SearchController from './controllers/Search'
+import userRoutes from './modules/users/userRoutes'
+import stripeRoutes from './modules/stripe/stripeRoutes'
 
-import { isAuthenticated } from './middlewares/jwtAuth'
 const routes = express.Router()
 
-routes.get('/', (req, res) => { return res.redirect('https://brasileis.com.br') })
-routes.post('/api/v1/user/verify', AuthService.verifyToken)
-routes.get('/api/v1/user', isAuthenticated, AuthService.getUser)/// isAuthenticated
-routes.get('/api/v1/user/logout', isAuthenticated, AuthService.logout)
-
+routes.use('/api/v1/user', userRoutes)
 routes.get('/api/v1/search', SearchController.search)/// isAuthenticated
-routes.get('/ping', (req, res) => res.send("pong"))
+routes.use('/api/v1/checkout', stripeRoutes)
 
-// Stripe Checkout URLs
-// TODO put authentication here
-routes.post('/api/v1/checkout/create-session', isAuthenticated, StripeService.createSession)
-routes.post('/api/v1/checkout/create-portal-session', isAuthenticated, StripeService.createPortalSession)
-routes.post('/api/v1/checkout/webhook', express.raw({ type: "*/*" }), StripeService.webhook)
+//routes.get('/ping', (req: express.Request, res: express.Response) => res.send("pong"))
 
 export default routes

@@ -28,10 +28,10 @@ export class Profile {
     User?: User;
 }
 
-@ObjectType("Membership", {
+@ObjectType("Subscription", {
     isAbstract: true
 })
-export class Membership {
+export class Subscription {
     @Field(_type => String, {
         nullable: false
     })
@@ -44,6 +44,26 @@ export class Membership {
     })
     isActive!: boolean;
 
+    @Field(_type => String, {
+        nullable: true
+    })
+    stripePaymentId?: string | null;
+
+    @Field(_type => String, {
+        nullable: true
+    })
+    stripeTransactionId?: string | null;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    stripeSubscriptionId!: string;
+
+    @Field(_type => String, {
+        nullable: false
+    })
+    customerId!: string;
+
     @Field(_type => Date, {
         nullable: false
     })
@@ -54,40 +74,65 @@ export class Membership {
     })
     endDate!: Date;
 
-    @Field(_type => String, {
-        nullable: false
+    @Field(_type => Int, {
+        nullable: true
     })
-    stripeTransactionId!: string;
+    quantity?: number | null;
+
+    @Field(_type => Boolean, {
+        nullable: true
+    })
+    cancelAtPeriodEnd?: boolean | null;
+
+    @Field(_type => Date, {
+        nullable: true
+    })
+    cancelAt?: Date | null;
+
+    @Field(_type => Date, {
+        nullable: true
+    })
+    canceledAt?: Date | null;
+
+    @Field(_type => Date, {
+        nullable: true
+    })
+    created?: Date | null;
+
+    @Field(_type => Date, {
+        nullable: true
+    })
+    endedAt?: Date | null;
+
+    @Field(_type => Date, {
+        nullable: true
+    })
+    trialStart?: Date | null;
+
+    @Field(_type => Date, {
+        nullable: true
+    })
+    trialEnd?: Date | null;
 
     @Field(_type => String, {
-        nullable: false
+        nullable: true
     })
-    customerId!: string;
+    invoiceUrl?: string | null;
 
     @Field(_type => String, {
-        nullable: false
+        nullable: true
     })
-    invoiceUrl!: string;
+    receiptUrl?: string | null;
 
     @Field(_type => String, {
-        nullable: false
+        nullable: true
     })
-    subscriptionId!: string;
+    pdfInvoice?: string | null;
 
     @Field(_type => String, {
-        nullable: false
+        nullable: true
     })
-    receiptUrl!: string;
-
-    @Field(_type => String, {
-        nullable: false
-    })
-    pdfInvoice!: string;
-
-    @Field(_type => String, {
-        nullable: false
-    })
-    urlInvoice!: string;
+    urlInvoice?: string | null;
 
     @Field(_type => Date, {
         nullable: false
@@ -104,6 +149,8 @@ export class Membership {
     })
     userId!: string;
 }
+
+
 @ObjectType("User", {
     isAbstract: true
 })
@@ -158,8 +205,8 @@ export class User {
     })
     profile?: Profile | null;
 
-    @Field(_type => Membership, {
+    @Field(_type => Subscription, {
         nullable: true
     })
-    membership?: Membership | null;
+    subscriptions?: Subscription | null;
 }

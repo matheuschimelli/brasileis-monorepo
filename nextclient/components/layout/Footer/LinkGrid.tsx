@@ -14,8 +14,9 @@ export const LinkGrid = (props: SimpleGridProps) => (
       </Stack>
     </Box>
     <Box minW="130px">
-      <FooterHeading mb="4">Legal</FooterHeading>
+      <FooterHeading mb="4">O Brasileis</FooterHeading>
       <Stack>
+        <Link href="ajuda">Ajuda e contato</Link>
         <Link href="politica-de-privacidade">Politica de Privacidade</Link>
         <Link href="termos-de-uso">Termos de uso</Link>
       </Stack>

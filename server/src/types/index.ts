@@ -12,9 +12,6 @@ export interface IRequest extends Request {
 export interface AppContext {
   req: IRequest
 }
-export interface IGetUserAuthInfoRequest extends Request {
-  user: object // or any other type
-}
 
 export interface Notification {
   title: string;

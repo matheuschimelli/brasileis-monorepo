@@ -3,14 +3,13 @@ import { Request, Response } from 'express'
 import dotenv from 'dotenv'
 import prisma from '../../lib/prisma'
 import { generateToken } from '../../utils/jwt'
-import { IRequest } from '../../types'
 dotenv.config({ path: '.env' })
 
 const client = new OAuth2Client(process.env.GOOGLE_ID, process.env.GOOGLE_SECRET)
 const tokenExpirationTime = '7d'
 
 export default class AuthService {
-  static getUser(req: IRequest, res: Response) {
+  static getUser(req: Request, res: Response) {
     if (req.isAuthenticated()) {
       const user = req.user
       return res.json({ ...user })

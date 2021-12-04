@@ -15,12 +15,16 @@ interface User {
   }
   name: string;
   email: string;
+  createdAt?: Date
+  updatedAt?: Date
+  subscriptions?: any[]
 }
 interface AuthContext {
   user: User | null;
   token: string | null;
   logout?: () => void;
   showAuthPropmpt?: () => void;
+
 }
 
 function delete_cookie(name: string) {
