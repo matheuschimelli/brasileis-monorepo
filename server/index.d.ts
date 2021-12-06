@@ -9,11 +9,7 @@ declare module 'redis'
 declare module 'mongoose'
 declare module 'errorhandler'
 declare module 'compression'
-
-
-
 import { User } from '@prisma/client'
-
 
 declare global {
     namespace Express {

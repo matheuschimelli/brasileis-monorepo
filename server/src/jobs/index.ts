@@ -6,7 +6,7 @@
 // export { default as Friday } from './Continuous/Friday'
 // export { default as Saturday } from './Continuous/Saturday'
 // export { default as Sunday } from './Continuous/Sunday'
-// export { default as FromWorkerServer } from './FromWorkerServer'
+export { default as FromWorkerServer } from './FromWorkerServer'
 // export { default as JobProcessor } from './JobProcessor'
 
 // export { default as JobTest } from './JobTest'

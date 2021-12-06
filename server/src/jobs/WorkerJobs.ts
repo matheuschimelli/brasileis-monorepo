@@ -68,6 +68,7 @@ internalCrawler.process(async job => {
     }
     return Promise.resolve()
 })
+
 internalCrawlerProcessor.process(async job => {
     const law = job.data as Law
     const searchService = new SearchService()
@@ -119,7 +120,7 @@ elasticSearchIndexVerifierProcessor.process(async job => {
 function start() {
     internalCrawler.add({}, { repeat: { cron: "12 12 * * 3" } })
     elasticSearchIndexVerifier.add({}, { repeat: { cron: "12 12 * * 3" } })
-
+    workerServer.add({ data: 'teste from main server' })
 }
 start()
 

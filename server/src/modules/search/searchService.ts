@@ -2,13 +2,16 @@ import { Client } from '@elastic/elasticsearch'
 import { Category } from '../../models/Category'
 import { SubCategory } from '../../models/SubCategory'
 
+const ELASTICSEARCH_HOST = "http://158.101.96.33"
+const ELASTICSEARCH_API_ID = "giXPQ3YBCRrp2Vczyoar"
+const ELASTICSEARCH_API_KEY = "if3EJqjhT22NNyictEqP5A"
 
 const client = new Client({
-  node: process.env.ELASTICSEARCH_HOST,
+  node: ELASTICSEARCH_HOST!,
   auth: {
     apiKey: {
-      id: process.env.ELASTICSEARCH_API_ID!,
-      api_key: process.env.ELASTICSEARCH_API_KEY!
+      id: ELASTICSEARCH_API_ID!,
+      api_key: ELASTICSEARCH_API_KEY!
     }
   }
 })

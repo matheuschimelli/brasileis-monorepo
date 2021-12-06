@@ -18,7 +18,7 @@ export const Logo = (props: HTMLChakraProps<"svg">) => {
         viewBox="0 0 123 24"
         fill="none"
         h="6"
-        BoxShrink={0}
+        // BoxShrink={0}
         {...props}
       >
         <path

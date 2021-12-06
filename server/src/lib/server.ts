@@ -172,8 +172,8 @@ class Server {
     this.handleErrors()
     this.server?.listen(this.port, () => {
       signale.success(`Server listening on port ${this.port}`)
-      signale.success(`GraphQl path: ${this.apolloServer?.graphqlPath}`)
-      signale.success(`GraphQl Subscriptions path: ${this.apolloServer?.subscriptionsPath}`)
+      // signale.success(`GraphQl path: ${this.apolloServer?.graphqlPath}`)
+      // signale.success(`GraphQl Subscriptions path: ${this.apolloServer?.subscriptionsPath}`)
     })
   }
 }

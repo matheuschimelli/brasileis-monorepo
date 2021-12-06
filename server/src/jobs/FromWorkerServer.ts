@@ -10,7 +10,8 @@ export default {
   async handle(job: Job) {
     console.log('WORKING FROM main server')
     console.log('Received message', job.data.msg)
-    // Queue.sendToWorkerServer({ msg: 'ITS WORKING main server?? I GUESS YES' })
+
+    Queue.sendToWorkerServer({ msg: 'ITS WORKING main server?? I GUESS YES' })
 
     return Promise.resolve({ done: true })
   }

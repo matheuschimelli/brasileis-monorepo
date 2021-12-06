@@ -14,7 +14,8 @@ import Queue from './jobs/Queue'
 const serverAdapter = new ExpressAdapter()
 dotenv.config({ path: '.env' })
 
-//Queue.process()
+Queue.process()
+
 // Queue.WorkerJobs.workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
 // Queue.WorkerJobs.jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
 

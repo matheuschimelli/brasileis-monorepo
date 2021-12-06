@@ -1,14 +1,13 @@
-import { Error } from 'mongoose'
 import { getRepository } from 'typeorm'
 import CrawlerType from '../models/CrawlerType'
 
 interface CrawlerOpts {
-    name: string;
-    description: string;
-    params?: object
+  name: string;
+  description: string;
+  params?: object
 }
 export default class CrawlerTypeService {
-  async upsert (crawlerOpts: CrawlerOpts) {
+  async upsert(crawlerOpts: CrawlerOpts) {
     try {
       const crawlerTypeRepo = getRepository(CrawlerType)
 
@@ -26,7 +25,7 @@ export default class CrawlerTypeService {
         return newCrawler
       }
       return crawler
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
       throw new Error(error)
     }

@@ -3,7 +3,7 @@ import redisConfig from '../config/redis'
 import * as BullJobs from '.'
 import { jobQueues } from './WorkerJobs'
 
-const queues = Object.values(BullJobs).map(job => ({
+const queues = Object.values(BullJobs).map((job: any) => ({
   bull: new Queue(job.key, redisConfig.options),
   name: job.key,
   // @ts-ignore
@@ -63,15 +63,13 @@ export default {
         console.log(`${queue.name} was cleaned`)
       }
       // }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err)
       throw new Error(err)
     }
   },
 
   process() {
-    console.log('PROCESSING JOBS')
-
     this.queues.forEach(queue => {
       if (queue.options.continuous) {
         this.add(queue.name, null)

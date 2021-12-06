@@ -1,8 +1,6 @@
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../components/layout/DefaultLayout";
 import LawRender from "../components/LawRender";
-import client from "../lib/graphql";
-import { gql } from "@apollo/client";
 import data from "../components/ViewerPage/test.json";
 
 type Props = {
