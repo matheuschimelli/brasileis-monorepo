@@ -1,8 +1,13 @@
 import { Request, Response, } from 'express'
 import Stripe from 'stripe'
 import prisma from '../../lib/prisma'
-import { IRequest } from '../../types';
 
+import {
+  createOrRetrieveCustomer,
+  relevantEvents,
+  manageSubscriptionStatusChange,
+  stripe
+} from './stripeUtils'
 /**
  * 
  * .\stripe.exe listen --forward-to localhost:8080/api/v1/checkout/webhook
@@ -13,174 +18,8 @@ const YOUR_DOMAIN = process.env.SERVER_URL || 'http://localhost:8080';
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000'
 const STRIPE_KEY = "whsec_ky3ZplETQIfQeUEJMvLlZeukCAXn2ufN"
 
-const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
-  apiVersion: '2020-08-27'
-})
-
-
-const relevantEvents = new Set([
-  'product.created',
-  'product.updated',
-  'price.created',
-  'price.updated',
-  'checkout.session.completed',
-  'customer.subscription.created',
-  'customer.subscription.updated',
-  'customer.subscription.deleted'
-]);
-
-export const toDateTime = (secs: number) => {
-  var t = new Date('1970-01-01T00:30:00Z'); // Unix epoch start.
-  t.setSeconds(secs);
-  return t;
-};
-/**
- * Returns customer stripe id
- */
-const createOrRetrieveCustomer = async ({ email, uuid, name }: { email: string; uuid: string, name: string }): Promise<string> => {
-  try {
-    const customer = await prisma.customer.findUnique({
-      where: {
-        userId: uuid
-      }
-    })
-
-    if (customer) {
-      const activeSubscriptions = await prisma.subscription.findFirst({
-        where: {
-          userId: customer.userId,
-          AND: {
-            isActive: true,
-          }
-        }
-      })
-      if (activeSubscriptions) {
-        throw new Error("Não pode ser assinate. Já há uma assinatura em curso")
-      }
-      return customer.stripeId
-
-    } else {
-
-      const stripeCustomer = await stripe.customers.create({
-        email: email,
-        description: 'Usuário Brasileis',
-        name: name,
-      })
-
-      const newCustomer = await prisma.customer.create({
-        data: {
-          user: {
-            connect: {
-              email
-            }
-          },
-          stripeId: stripeCustomer.id
-        }
-      })
-      return newCustomer.stripeId
-    }
-  } catch (error: any) {
-    throw new Error(error)
-  }
-};
-
-const manageSubscriptionStatusChange = async (subscriptionId: string, customerId: string, createAction = false) => {
-
-  try {
-    const customer = await prisma.customer.findUnique({
-      where: {
-        stripeId: customerId
-      }
-    })
-    if (customer) {
-
-      const { id, userId } = customer
-      const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId, {
-        expand: ['default_payment_method']
-      });
-
-      const isActive = () => {
-        if (stripeSubscription.status === 'active') return true
-        return false
-      }
-
-      if (isActive()) {
-        await prisma.user.update({
-          where: {
-            id: userId
-          },
-          data: {
-            role: 'PRO',
-            isPro: true
-          }
-        })
-      } else {
-        await prisma.user.update({
-          where: {
-            id: userId
-          },
-          data: {
-            role: 'USER',
-            isPro: false
-          }
-        })
-      }
-
-      const subscription = await prisma.subscription.upsert({
-        where: {
-          stripeSubscriptionId: stripeSubscription.id,
-        },
-        create: {
-          isActive: isActive(),
-          user: {
-            connect: {
-              id: userId
-            }
-          },
-          startDate: toDateTime(stripeSubscription.current_period_start),
-          endDate: toDateTime(stripeSubscription.current_period_end),
-
-          customerId: stripeSubscription.customer as string,
-          stripeSubscriptionId: stripeSubscription.id,
-
-          cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
-          cancelAt: stripeSubscription.cancel_at ? toDateTime(stripeSubscription.cancel_at) : null,
-          canceledAt: stripeSubscription.canceled_at ? toDateTime(stripeSubscription.canceled_at) : null,
-
-          created: toDateTime(stripeSubscription.created),
-          endedAt: stripeSubscription.ended_at ? toDateTime(stripeSubscription.ended_at) : null,
-
-        },
-        update: {
-          isActive: isActive(),
-          user: {
-            connect: {
-              id: userId
-            },
-          },
-          startDate: toDateTime(stripeSubscription.current_period_start),
-          endDate: toDateTime(stripeSubscription.current_period_end),
-
-          customerId: stripeSubscription.customer as string,
-          stripeSubscriptionId: stripeSubscription.id,
-
-          cancelAtPeriodEnd: stripeSubscription.cancel_at_period_end,
-          cancelAt: stripeSubscription.cancel_at ? toDateTime(stripeSubscription.cancel_at) : null,
-          canceledAt: stripeSubscription.canceled_at ? toDateTime(stripeSubscription.canceled_at) : null,
-
-          created: toDateTime(stripeSubscription.created),
-          endedAt: stripeSubscription.ended_at ? toDateTime(stripeSubscription.ended_at) : null,
-        },
-      })
-      return subscription
-    }
-  } catch (error: any) {
-    throw new Error(error)
-  }
-};
-
 export default class StripeService {
-  static async createSession(req: IRequest, res: Response) {
+  static async createSession(req: Request, res: Response) {
 
     const { priceId } = req.body
     const user = req.user!
@@ -312,41 +151,6 @@ export default class StripeService {
           .send('Webhook error: "Webhook handler failed. View logs."');
       }
     }
-
-    // if (event.type === 'payment_intent.succeeded') {
-
-    //     console.log("pagamento feito com sucesso ")
-
-    //     const stripeObject: Stripe.PaymentIntent = event.data
-    //         .object as Stripe.PaymentIntent;
-
-    //     console.log(`💰 PaymentIntent status: ${stripeObject.status}`);
-
-    //     if (stripeObject.status === 'succeeded') {
-
-    //         const customer = await stripe.customers.retrieve(
-    //             stripeObject.customer as string
-    //         ) as Stripe.Customer;
-
-    //         if (customer) {
-    //             console.log(customer)
-    //         }
-    //     }
-
-
-    // } else if (event.type === 'charge.succeeded') {
-    //     const charge = event.data.object as Stripe.Charge;
-    //     console.log(`💵 Charge id: ${charge.id}`);
-
-    // } else if (event.type === 'checkout.session.completed') {
-    //     const ev = event.data.object as Stripe.Checkout.Session
-
-    // }
-
-    // else {
-    //     console.warn(`🤷‍♀️ Unhandled event type: ${event.type}`);
-    // }
-
     res.json({ received: true });
   }
 }
