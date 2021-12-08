@@ -16,34 +16,101 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model BlockProperty {
-  id           String  @id @default(cuid())
-  value        String?
-  title        String?
-  number       String?
-  identifier   String?
-  comment      String?
-  year         Int?
-  author       String?
-  subsOnly     Boolean @default(false)
-  searchString String?
-
-  lawBlockId String   @unique
-  LawBlock   LawBlock @relation(fields: [lawBlockId], references: [id])
+model Slug {
+  id       String     @id @default(cuid())
+  title    String
+  value    String     @unique
+  lawBlock LawBlock[]
 }
 
-model LawBlock {
-  id         String         @id @default(cuid())
-  type       BlockType      @default(ARTICLE)
-  content    LawBlock[]     @relation("LawBlockToLawBlock")
-  properties BlockProperty?
-
-
+model LawComment {
+  id        String   @id @default(cuid())
+  title     String
+  text      String
+  author    User     @relation(fields: [userId], references: [id])
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  LawBlock   LawBlock? @relation("LawBlockToLawBlock", fields: [lawBlockId], references: [id], onDelete: Cascade)
+  lawBlock   LawBlock? @relation(fields: [lawBlockId], references: [id])
   lawBlockId String?
+
+}
+
+model BlockAuthor {
+  id   String @id @default(cuid())
+  name String
+
+  lawBlock LawBlock[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// model BlockProperty {
+//   id           String       @id @default(cuid())
+//   isRef        Boolean      @default(false)
+//   value        String?
+//   title        String?
+//   parentId     String?
+//   articleId    String?
+//   identifier   String?
+//   comments     LawComment[]
+//   year         Int?
+//   author       String?
+//   subsOnly     Boolean      @default(false)
+//   searchString String?
+
+//   slug Slug @relation(fields: [slugId], references: [id])
+
+//   slugId      String
+//   BlockAuthor BlockAuthor[]
+//   lawBlockId  String?
+// }
+
+model LawBlock {
+  id   String    @id @default(cuid())
+  type BlockType @default(ARTIGO_LEI)
+
+  source String? //url to be crawled
+
+  version Int     @default(1)
+  isRef   Boolean @default(false)
+
+  title String?
+  value String?
+
+  parentId   String?
+  identifier String?
+
+  artigo    String?
+  inciso    String?
+  paragrafo String?
+  aliena    String?
+
+  comments LawComment[]
+
+  year DateTime?
+
+  subsOnly     Boolean @default(false)
+  searchString String?
+
+  slug   Slug?   @relation(fields: [slugId], references: [id])
+  slugId String?
+
+  content         LawBlock[] @relation("LawBlockToLawBlock")
+  contentLawBlock LawBlock[] @relation("LawBlockToLawBlock", fields: [lawBlockId], references: [id], onDelete: Cascade)
+  lawBlockId      String?
+
+  parent         LawBlock? @relation("ParentBlock", fields: [parentBlockId], references: [id])
+  parentLawBlock LawBlock? @relation("ParentBlock")
+  parentBlockId  String?   @unique
+
+  author        BlockAuthor? @relation(fields: [blockAuthorId], references: [id])
+  blockAuthorId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Post {
@@ -53,7 +120,7 @@ model Post {
   content   String?
   published Boolean  @default(false)
   authorId  String
-  User      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Profile {
@@ -80,10 +147,11 @@ model User {
   profile       Profile?
   posts         Post[]
   subscriptions Subscription[]
-  Customer      Customer?
+  customer      Customer?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  LawComment LawComment[]
 }
 
 model Customer {
@@ -137,14 +205,16 @@ enum UserRole {
 }
 
 enum BlockType {
-  LAW
-  JURISPRUDENCE
-  ARTICLE
-  PARAGRAPH
-  INCISE
-  ALINEA
-  UNIQUE_PARAGRAPH
+  NORMA
+  PORTARIA
+  DECRETO
+  LEI
+  JURISPRUDENCIA
+  ARTIGO_LEI
+  PARAGRAFO_LEI
+  INCISO_LEI
+  ALINEA_LEI
+  PARAGRAFO_UNICO_LEI
   INFO
-  CODE
-  CONSTITUTION
+  CODIGO
 }

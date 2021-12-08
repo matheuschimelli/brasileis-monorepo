@@ -1,8 +1,0 @@
-//export { CategoriesResolver } from './categories/categoriesResolver'
-//export { ArticleResolver } from './articles/articlesResolver'
-//export { SubCategoriesResolver } from './subCategories/subCategoriesResolver'
-//export { CrawlerResolver } from './crawlers/crawlersResolver'
-//export { LawResolver } from './laws/lawResolver'
-//export { CrawlerTypeResolver } from './crawlerTypes/crawlerTypesResolver'
-export { UsersResolver } from './users/usersResolver'
-//export { PeticaoResolver } from './peticoes/peticoesResolver'

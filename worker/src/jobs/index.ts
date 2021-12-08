@@ -1,9 +1,9 @@
-import WorkerServer from './WorkerServer'
-import CronJobs from './Cronjobs'
-import jobResults from './jobResults'
-import testCrawler1 from './crawlers/testCrawler1'
+import WorkerServer from './worker-server'
+import CronJobs from './cron-jobs'
+import jobResults from './job-results'
+import testCrawler1 from './crawlers/test-crawler-1'
 
-import defaultCrawler from './crawlers/defaultcrawler'
+import defaultCrawler from './crawlers/default-crawler'
 
 const jobQueues = [
     WorkerServer,

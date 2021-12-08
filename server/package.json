@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --respawn --ignore-watch node_modules --transpile-only ./src/server.ts",
+    "dev": " ts-node-dev -r tsconfig-paths/register --respawn --ignore-watch node_modules --transpile-only ./src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc -p .",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
@@ -37,9 +37,10 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.1",
     "prettier": "2.3.2",
-    "prisma": "^3.5.0",
+    "prisma": "^3.6.0",
     "ts-node": "^8.10.2",
     "ts-node-dev": "^1.0.0-pre.56",
+    "tsconfig-paths": "^3.12.0",
     "typegraphql-prisma": "^0.18.0"
   },
   "dependencies": {
@@ -47,7 +48,7 @@
     "@bull-board/express": "^3.6.0",
     "@elastic/elasticsearch": "^7.10.0",
     "@mozilla/readability": "^0.4.1",
-    "@prisma/client": "^3.5.0",
+    "@prisma/client": "^3.6.0",
     "apify": "^0.21.8",
     "apollo-server-express": "^2.21.0",
     "axios": "^0.20.0",
@@ -85,6 +86,7 @@
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
     "signale": "^1.4.0",
+    "slugify": "^1.6.3",
     "socket.io": "^3.0.2",
     "stripe": "^8.171.0",
     "type-graphql": "^1.1.1",

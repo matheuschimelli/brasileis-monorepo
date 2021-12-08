@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Link from "next/link";
 import {
   Box,
-  Stack,
   Flex,
   Heading,
   Text,
@@ -13,6 +12,11 @@ import {
   IconButton,
   Center,
   Square,
+  Tabs,
+  Tab,
+  TabPanels,
+  TabPanel,
+  TabList,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -20,6 +24,7 @@ import {
   RepeatIcon,
   EditIcon,
 } from "@chakra-ui/icons";
+import Sidebar from '../components/LawRender/Sidebar'
 
 const List = ({ data }: { data: any[] }) => {
   return (
@@ -132,6 +137,7 @@ const ArticleRender = ({ article }: { article: any }) => {
   );
 };
 
+
 export default function LawRender({ data }: { data: any }) {
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "8", md: "12" }}>
@@ -153,21 +159,11 @@ export default function LawRender({ data }: { data: any }) {
           })}
         </Box>
 
-        <Box
-          bg="#f2f1ef"
-          width={{ sm: "auto", md: "450px" }}
-          position={{ sm: "relative", md: "sticky" }}
-          top={{ sm: "0", md: "20" }}
-          alignItems="start"
-          justifyItems="start"
-          justifyContent="start"
-          padding="4"
-          height="100vh"
-        >
-          <Text fontSize="2xl" fontWeight="bold">
-            Código de Defesa do Consumidor
-          </Text>
-        </Box>
+        <Sidebar title="Código de Defesa do Consumidor">
+
+
+
+        </Sidebar>
       </Flex>
     </Box>
   );

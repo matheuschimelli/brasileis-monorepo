@@ -9,7 +9,6 @@ import helmet from 'helmet'
 import errorHandler from 'errorhandler'
 import cors from 'cors'
 import signale from 'signale'
-import { IRequest } from '../types'
 declare var process: {
   env: {
     SESSION_SECRET: string
@@ -29,7 +28,7 @@ interface ServerParams {
 }
 
 interface Middleware {
-  <T>(req: Request | IRequest & T, res: Response, next: NextFunction): void;
+  <T>(req: Request & T, res: Response, next: NextFunction): void;
   res?: Response;
 }
 
@@ -78,6 +77,7 @@ class Server {
     }))
     this.app.use(cors())
     this.app.use(express.urlencoded({ extended: true }))
+    this.app.use(express.json({ limit: '100mb' }))
 
     this.app.use((req, res, next) => {
       if (req.originalUrl === '/api/v1/checkout/webhook') {
@@ -172,8 +172,8 @@ class Server {
     this.handleErrors()
     this.server?.listen(this.port, () => {
       signale.success(`Server listening on port ${this.port}`)
-      signale.success(`GraphQl path: ${this.apolloServer?.graphqlPath}`)
-      signale.success(`GraphQl Subscriptions path: ${this.apolloServer?.subscriptionsPath}`)
+      // signale.success(`GraphQl path: ${this.apolloServer?.graphqlPath}`)
+      // signale.success(`GraphQl Subscriptions path: ${this.apolloServer?.subscriptionsPath}`)
     })
   }
 }

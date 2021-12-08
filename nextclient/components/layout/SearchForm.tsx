@@ -1,6 +1,6 @@
 import { Box, Button, Center, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons'
-import React, { useState, useMemo } from "react";
+import React, { useState, useRef, LegacyRef, EventHandler } from "react";
 import { useRouter } from "next/router";
 
 export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
@@ -10,6 +10,7 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
   };
   const router = useRouter();
   const [query, setQuery] = useState("");
+  const inputRef = useRef<HTMLInputElement>()
 
   const handleParam = (e: any) => setQuery(e.target.value);
 
@@ -19,12 +20,13 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
       query: { q: query },
     });
   });
-  const memoizedVal = useMemo(() => {
-    if (query && query !== "") {
-      return query;
-    }
-    if (searchQuery) return searchQuery;
-  }, [searchQuery, query]);
+
+  const clearInput = (e: any) => {
+    e.preventDefault();
+    setQuery("");
+    inputRef.current!.focus()
+  }
+
 
   return (
     <Box
@@ -36,11 +38,19 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
     >
       <InputGroup>
 
-        <Input variant="filled" placeholder="Pesquisar" name="q" onChange={handleParam} value={query} />
+        <Input
+          //@ts-ignore  
+          ref={inputRef}
+          variant="filled"
+          placeholder="Pesquisar"
+          name="q"
+          onChange={handleParam}
+          value={query}
+          autoComplete="off" />
         <InputRightElement w="5rem"
           children={
             <>
-              {query !== "" ? (<Button type="button" size='sm' onClick={(e) => { e.preventDefault(); setQuery("") }}>
+              {query !== "" ? (<Button type="button" size='sm' onClick={clearInput}>
                 <Center>
                   <CloseIcon />
                 </Center>
