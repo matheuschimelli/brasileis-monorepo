@@ -79,11 +79,12 @@ model LawBlock {
 
   order Int @default(1)
 
-  title String?
-  name  String?
-  value String?
+  title        String?
+  name         String?
+  value        String?
+  originalText String?
+  searchText   String?
 
-  parentId   String?
   identifier String?
 
   artigo    String?
@@ -101,13 +102,17 @@ model LawBlock {
   slug   Slug?   @relation(fields: [slugId], references: [id])
   slugId String?
 
-  content         LawBlock[] @relation("LawBlockToLawBlock")
-  contentLawBlock LawBlock[] @relation("LawBlockToLawBlock", fields: [lawBlockId], references: [id], onDelete: Cascade)
-  lawBlockId      String?
+  blockId     String?
+  parentBlock LawBlock?  @relation("BlockContentParent", fields: [blockId], references: [id])
+  content     LawBlock[] @relation("BlockContentParent")
 
-  parent         LawBlock? @relation("ParentBlock", fields: [parentBlockId], references: [id])
-  parentLawBlock LawBlock? @relation("ParentBlock")
-  parentBlockId  String?   @unique
+  // content         LawBlock[] @relation("LawBlockToLawBlock")
+  // contentLawBlock LawBlock[] @relation("LawBlockToLawBlock", fields: [lawBlockId], references: [id], onDelete: Cascade)
+  // lawBlockId      String?
+
+  // parent         LawBlock? @relation("ParentBlock", fields: [parentBlockId], references: [id])
+  // parentLawBlock LawBlock? @relation("ParentBlock")
+  // parentBlockId  String?   @unique
 
   author        BlockAuthor? @relation(fields: [blockAuthorId], references: [id])
   blockAuthorId String?

@@ -46,6 +46,8 @@ class LawParser {
         this.paragraphSymbol = /(§)/;
         this.matchArticleNumberBeginning = /^(^([+-]?([0-9]+\.?[0-9]*|\.[0-9]+))(-?[A-Z]?))/;
 
+        this.matchTituloSecao = /(^(TÍTULO|CAPÍTULO|SEÇÃO) (M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})).*)/
+
         this.paragraphAlineaRegex = /^((^(^(^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})) (-))).*(:))/;
 
         this.lastInsertArticle = true
@@ -100,6 +102,12 @@ class LawParser {
     }
     isLawParagrph(str) {
         if (str.match(this.matchParagraph) && str.match(this.matchParagraph)[0]) {
+            return true
+        }
+        return false
+    }
+    isTituloSecao(str) {
+        if (str.match(this.matchTituloSecao) && str.match(this.matchTituloSecao)[0]) {
             return true
         }
         return false
@@ -161,7 +169,7 @@ class LawParser {
     }
 
     getText(str) {
-        return str.replace("Art. ", "").replace("art. ", "").replace(new RegExp(this.matchArticleNumberBeginning), "").replace(new RegExp(this.matchOStart), "").replace("Parágrafo Único. ", "").replace(new RegExp(this.matchParagrafoUnico), "").replace(new RegExp(this.matchRomanNumber), "").replace(new RegExp(this.matchParagraph), "").replace("°", "").replace("º", "").trim()
+        return str.replace("Art. ", "").replace("art. ", "").replace(new RegExp(this.matchArticleNumberBeginning), "").replace(new RegExp(this.matchOStart), "").replace("Parágrafo Único. ", "").replace(new RegExp(this.matchParagrafoUnico), "").replace(new RegExp(this.matchRomanNumber), "").replace(new RegExp(this.matchParagraph), "").replace("°", "").replace("º", "").replace("\n", " ").trim()
     }
 
     getNumber(str) {
@@ -185,6 +193,8 @@ class LawParser {
     }
 
     getParagraphType(paragraph) {
+        if (this.isTituloSecao(paragraph))
+            return 'TITULO_SECAO'
         if (this.isLawArticle(paragraph))
             return 'ARTIGO_LEI'
         if (this.isLawParagrph(paragraph))
@@ -195,6 +205,7 @@ class LawParser {
             return 'INCISO_LEI'
         if (this.isAlinea(paragraph))
             return 'ALINEA_LEI'
+
     }
 
     handleType(lawType) {
@@ -432,6 +443,10 @@ class LawParser {
         this.processParagraphs()
         this.processParagraphsOrderedList()
         this.articles = this.articles.filter(value => Object.keys(value).length !== 0)
+
+        this.orderedArray = this.orderedArray.filter(function ({ type }) {
+            return type !== undefined;
+        });
         console.log(this.articles)
         console.log(this.orderedArray)
     }
