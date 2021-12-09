@@ -77,7 +77,10 @@ model LawBlock {
   version Int     @default(1)
   isRef   Boolean @default(false)
 
+  order Int @default(1)
+
   title String?
+  name  String?
   value String?
 
   parentId   String?
