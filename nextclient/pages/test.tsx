@@ -1,14 +1,10 @@
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../components/layout/DefaultLayout";
-import LawRender from "../components/LawRender";
-import client from "../lib/graphql";
-import { gql } from "@apollo/client";
-import data from "../components/ViewerPage/test.json";
+import LawRender from "../components/LawRender/LawRender";
 
 type Props = {
-  data?: any;
-};
-
+  data: any
+}
 const Busca = ({ data }: Props) => {
   return (
     <DefaultLayout title="teste">
@@ -17,6 +13,11 @@ const Busca = ({ data }: Props) => {
   );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
+
+  const req = await fetch('http://localhost:8080/api/v1/law-block/teste')
+  const data = await req.json()
+  console.log(data)
+
   if (!data) {
     return {
       notFound: true,

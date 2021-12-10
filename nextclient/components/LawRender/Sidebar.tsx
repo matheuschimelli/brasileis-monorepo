@@ -21,6 +21,7 @@ import { Icon, createIcon } from '@chakra-ui/react'
 type Props = {
   children: React.ReactNode
   title: string
+  data: any[]
 }
 
 const ReferenceIcon = (props: ChakraProps) => {
@@ -52,50 +53,43 @@ const CommentIcon = (props: ChakraProps) => {
   )
 }
 
-const RenderReferences = () => {
+const RenderReferences = ({ data }: { data: any[] }) => {
   return (
     <Box pb="5">
       <Accordion defaultIndex={[0]} allowMultiple>
-        <AccordionItem border="none">
-          <h2>
-            <AccordionButton >
-              <Box flex='1' textAlign='left'>
-                <Heading as="h3" fontSize="lg">Art. 1º</Heading>
+        {data.map((article) => {
+          return (
+            <AccordionItem border="none">
+              <h2>
+                <AccordionButton >
+                  <Box flex='1' textAlign='left'>
+                    <Heading as="h3" fontSize="lg">{article.name}</Heading>
 
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4} border="none">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat.
-          </AccordionPanel>
-        </AccordionItem>
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} border="none">
+                {article.value}
+                {article.content &&
+                  article.content.map((subContent: any) => {
+                    return (
+                      <RenderReferences
+                        data={subContent.content}
+                      />
+                    );
+                  })}
+              </AccordionPanel>
+            </AccordionItem>
+          )
+        })}
 
-        <AccordionItem>
-          <h2>
-            <AccordionButton border="none">
-              <Box flex='1' textAlign='left'>
-                Section 2 title
-              </Box>
-              <AccordionIcon />
-            </AccordionButton>
-          </h2>
-          <AccordionPanel pb={4} border="none">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-            veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-            commodo consequat.
-          </AccordionPanel>
-        </AccordionItem>
       </Accordion>
     </Box>
   )
 }
 
-export default function Sidebar({ children, title }: Props) {
+export default function Sidebar({ children, title, data }: Props) {
   return (
     <Box
       bg="#f2f1ef"
@@ -126,9 +120,8 @@ export default function Sidebar({ children, title }: Props) {
         <Box overflowY="scroll" height="container.sm" >
           <TabPanels mb="200">
             <TabPanel>
-              <RenderReferences />
-              <RenderReferences />
-              <RenderReferences />
+              <RenderReferences data={data} />
+
             </TabPanel>
             <TabPanel>
               <p>Doutrina</p>
