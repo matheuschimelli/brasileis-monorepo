@@ -3,12 +3,46 @@ import {
     allBlocks,
     createLawBlock,
     removeLawBlock,
-    createCodeService
+    findBlockAndAllContentById,
+    search as searchBlock,
+    findBlockById
 } from '@modules/law-block/law-block-service'
 
 export const index = async (req: Request, res: Response) => {
     const lawBlock = await allBlocks()
     return res.send(lawBlock)
+}
+
+export const findById = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const data = await findBlockAndAllContentById(id)
+        return res.send(data)
+    } catch (err: any) {
+        console.log(err)
+        return res.status(500).send("Não foi possível encontrar leis.")
+    }
+}
+export const findSingleBlock = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const data = await findBlockById(id)
+        return res.send(data)
+    } catch (err: any) {
+        console.log(err)
+        return res.status(500).send("Não foi possível encontrar leis.")
+    }
+}
+export const search = async (req: Request, res: Response) => {
+    try {
+        const { q } = req.query
+        const data = await searchBlock(q?.toString()!)
+        return res.send(data)
+
+    } catch (err: any) {
+        console.log(err)
+        return res.status(500).send("Não foi possível encontrar leis.")
+    }
 }
 
 export const create = async (req: Request, res: Response) => {
@@ -17,11 +51,6 @@ export const create = async (req: Request, res: Response) => {
     return res.send(lawBlock)
 }
 
-export const createCode = async (req: Request, res: Response) => {
-    const { data } = req.body
-    const lawBlock = await createCodeService(data)
-    return res.send(lawBlock)
-}
 
 export const remove = async (req: Request, res: Response) => {
     try {
@@ -33,5 +62,4 @@ export const remove = async (req: Request, res: Response) => {
         console.log(error)
         return res.status(500).send("Nada alterado")
     }
-
 }

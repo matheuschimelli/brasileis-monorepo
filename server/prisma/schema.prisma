@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
 
 // generator typegraphql {
@@ -106,13 +107,10 @@ model LawBlock {
   parentBlock LawBlock?  @relation("BlockContentParent", fields: [blockId], references: [id])
   content     LawBlock[] @relation("BlockContentParent")
 
-  // content         LawBlock[] @relation("LawBlockToLawBlock")
-  // contentLawBlock LawBlock[] @relation("LawBlockToLawBlock", fields: [lawBlockId], references: [id], onDelete: Cascade)
-  // lawBlockId      String?
 
-  // parent         LawBlock? @relation("ParentBlock", fields: [parentBlockId], references: [id])
-  // parentLawBlock LawBlock? @relation("ParentBlock")
-  // parentBlockId  String?   @unique
+  relatedBlockId String?
+  isRelatedTo    LawBlock?  @relation("BlockRelatedBlock", fields: [relatedBlockId], references: [id])
+  relatedBlocks  LawBlock[] @relation("BlockRelatedBlock")
 
   author        BlockAuthor? @relation(fields: [blockAuthorId], references: [id])
   blockAuthorId String?

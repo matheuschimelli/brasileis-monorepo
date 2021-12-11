@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import 'module-alias/register'
 import morgan from 'morgan'
 import { createBullBoard } from '@bull-board/api'
 import { BullAdapter } from '@bull-board/api/bullAdapter'

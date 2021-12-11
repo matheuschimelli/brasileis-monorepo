@@ -419,7 +419,14 @@ class LawParser {
                 type: this.getParagraphType(paragraph),
                 name: this.getNumber(paragraph),
                 value: this.getText(paragraph),
-                originalText: paragraph
+                originalText: paragraph,
+                source: window.location.href,
+                version: 1,
+                searchText: '',
+                identifier: 'cdc',
+                slug: {
+                    value: 'cdc'
+                }
 
             })
         }

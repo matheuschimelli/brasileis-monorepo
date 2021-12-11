@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Text, Box, Menu, MenuButton, MenuItem, useDisclosure, MenuList, Button } from '@chakra-ui/react'
+import { Text, Box, Menu, MenuButton, MenuItem, useDisclosure, MenuList, Button, useClipboard, useToast } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons';
 const RenderType = ({ articleType }: any) => {
     switch (articleType) {
@@ -27,24 +27,33 @@ const RenderType = ({ articleType }: any) => {
     }
 };
 
-const OptionsBox = ({ isOpen, left, top }) => {
-    return (
-        <Box bg="facebook.50" position="absolute" left={left} top={top}>Ola mundo</Box>
-    )
-}
 export const ArticleRender = ({ article }: { article: any }) => {
     const [xPosition, setXPosition] = useState()
     const [yPosition, setYPosition] = useState()
-
     const { isOpen, onOpen, onClose } = useDisclosure()
+    const [value, setValue] = useState('')
+    const { hasCopied, onCopy } = useClipboard(value)
+    const toast = useToast()
+
 
     const handleOpenOptions = (e: any) => {
         e.preventDefault();
         setXPosition(e.clientX)
         setYPosition(e.clientY)
-
         console.log(e)
     }
+
+    const handleCopyClipboard = (value: string) => {
+        setValue(value)
+        onCopy()
+        toast({
+            title: 'Copiado.',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+        })
+    }
+
     return (
         <>
             {/* <OptionsBox left={xPosition} top={yPosition} isOpen="true" /> */}
@@ -58,17 +67,18 @@ export const ArticleRender = ({ article }: { article: any }) => {
             >
                 <Menu>
                     <MenuButton as={Button} rightIcon={<ChevronDownIcon />} size='xs'>
-                        <Link href={`/finder/${article.identifier}/${article.id}`} passHref>
-                            <Box as="a" cursor="pointer" color="blue.600" fontWeight="bold" onClick={handleOpenOptions}>
-                                <RenderType articleType={article.type} /> {article.name}
-                            </Box>
-                        </Link>
+
                     </MenuButton>
                     <MenuList>
                         <MenuItem>Abrir Artigo</MenuItem>
-                        <MenuItem>Copiar</MenuItem>
+                        <MenuItem onClick={() => handleCopyClipboard(article.value)}>Copiar</MenuItem>
                     </MenuList>
                 </Menu>
+                <Link href={`/finder/${article.identifier}/${article.id}`} passHref>
+                    <Box as="a" cursor="pointer" color="blue.600" fontWeight="bold" onClick={handleOpenOptions}>
+                        <RenderType articleType={article.type} /> {article.name}
+                    </Box>
+                </Link>
                 {" "}
                 {article.value}
                 {article.content &&

@@ -1,5 +1,5 @@
 import prisma from '@lib/prisma'
-import { BlockType, LawBlock } from "@prisma/client"
+import { BlockType } from "@prisma/client"
 
 export const allBlocks = async () => {
     return await prisma.lawBlock.findMany({
@@ -15,41 +15,6 @@ export const allBlocks = async () => {
  * 1. crie um lawBlock inicial do tipo da lei que está sendo criada ex: CODIGO
  * 2. Com o id retornado 
  */
-
-
-export const parseArticle = async (article: any) => {
-    console.log("ITERATINGS")
-    console.log(article)
-
-}
-// function iterate(arr) {
-//     for (const item of arr) {
-//         if (item.content && item.content.length !== 0) {
-//             tempArray.push(item)
-//             console.log(item)
-//             iterate(item.content)
-//         } else {
-//             tempArray.push(item)
-
-//             console.log(item)
-//         }
-//     }
-// }
-const tempArray = []
-
-// function iterate(arr: any[], callBack?: (data: any) => Promise<void>) {
-
-//     for (const item of arr) {
-//         if (item.content && item.content.length !== 0) {
-//             tempArray.push(item)
-//             console.log(item)
-//             iterate(item.content)
-//         } else {
-//             tempArray.push(item)
-//             console.log(item)
-//         }
-//     }
-// }
 
 async function insertArticle({ article, masterParentId, codeName }: {
     article: any,
@@ -90,7 +55,7 @@ async function insertArticle({ article, masterParentId, codeName }: {
 }
 async function iterate(arr: any[]) {
     var codeName = 'Código de Defesa do Consumidor'
-    var masterParentId = "ckwzd98oa8078kyu8q0sy473k"
+    var masterParentId = "ckx1xpqsk0044wzu8jbf3jpil"
 
     var lastInsert = {
         type: null,
@@ -281,6 +246,63 @@ async function iterate(arr: any[]) {
         }
 
     }
+}
+
+export const findBlockAndAllContentById = async (id: string) => {
+    //@TODO improve this content include loop
+    const blocks = await prisma.lawBlock.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            content: {
+                include: {
+                    content: {
+                        include: {
+                            content: {
+                                include: {
+                                    content: {
+                                        include: {
+                                            content: true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+    return blocks
+}
+export const findBlockById = async (id: string) => {
+    const block = await prisma.lawBlock.findUnique({
+        where: {
+            id: id
+        },
+        include: {
+            parentBlock: true,
+            content: {
+                include: {
+                    content: true
+                }
+            }
+        }
+
+    })
+    return block
+}
+export const search = async (query: string) => {
+    const result = await prisma.lawBlock.findMany({
+        where: {
+            value: {
+                search: query
+            }
+        }
+
+    })
+    return result
 }
 export const createLawBlock = async (data: any[]) => {
     iterate(data)
