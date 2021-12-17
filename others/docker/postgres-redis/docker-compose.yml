@@ -1,0 +1,57 @@
+version: '3'
+services:
+  caddy:
+    image: caddy:alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - ./site:/srv
+      - caddy_data:/data
+      - caddy_config:/config
+    networks:
+      - default_net
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass 46PJBuvNpixviTlE
+    ports:
+      - "6379:6379"
+    # volumes:
+    #   - $PWD/redis-data:/var/lib/redis
+    #   - $PWD/redis.conf:/usr/local/etc/redis/redis.conf
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      - default_net
+
+  postgres:
+    image: "postgres" # use latest official postgres version
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+      - POSTGRES_DB=test_db
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    networks:
+      - default_net
+
+  adminer:
+    restart: unless-stopped
+    image: adminer
+    ports:
+      - 8080:8080
+    networks:
+      - default_net
+
+volumes:
+  postgresql_data: null
+  caddy_data: null
+  caddy_config: null
+
+networks:
+  default_net: null

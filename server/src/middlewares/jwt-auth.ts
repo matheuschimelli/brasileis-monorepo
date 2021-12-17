@@ -19,50 +19,40 @@ export const jwtAuth = async (req: Request, res: Response, next: any) => {
   }
 
   const authenticatedUser = req.isAuthenticated()
-  if (authenticatedUser) {
-    try {
-      const user = await prisma.user.findUnique({
-        where: {
-          id: authenticatedUser.id
-        },
-        include: {
-          profile: true,
-        }
-      })
+  if (!authenticatedUser) return next()
 
-      if (user) {
-        req.user = user
-        next()
-      } else {
-        throw new Error('User not found')
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        id: authenticatedUser.id
+      },
+      include: {
+        profile: true,
       }
-    } catch (error) {
-      console.log(error)
-      return false
-    }
-  } else {
+    })
+
+    if (!user) throw new Error('User not found')
+    req.user = user
     next()
+
+  } catch (error) {
+    console.log(error)
+    return false
   }
+
 }
 
 export const isAuthenticated = (req: Request, res: Response, next: any) => {
-  const a = req.user
-
   const isAuth = req.isAuthenticated()
-  if (isAuth) {
-    console.log('user IS authenticated')
-    return next()
-  }
-  console.log('user is NOT')
+  if (isAuth) return next()
+
   return res.status(400).send({ message: 'Auth required to perform this action.' })
 };
 
 export const isAdmin = async (req: Request, res: Response, next: any) => {
   const user = req.user
-  if (user && user.admin) {
-    return next()
-  }
-  if (user && !user.admin) {
-    return res.status(404).send({ message: 'Auth required to perform this action.' })
-  }
+  if (user && user.admin) return next()
+
+  return res.status(404).send({ message: 'Auth required to perform this action.' })
+
 };

@@ -1,16 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
 }
-
-// generator typegraphql {
-//   provider           = "typegraphql-prisma"
-//   output             = "../src/graphql/generated/type-graphql"
-//   emitTranspiledCode = false
-// }
 
 datasource db {
   provider = "postgresql"
@@ -48,27 +39,6 @@ model BlockAuthor {
   updatedAt DateTime @updatedAt
 }
 
-// model BlockProperty {
-//   id           String       @id @default(cuid())
-//   isRef        Boolean      @default(false)
-//   value        String?
-//   title        String?
-//   parentId     String?
-//   articleId    String?
-//   identifier   String?
-//   comments     LawComment[]
-//   year         Int?
-//   author       String?
-//   subsOnly     Boolean      @default(false)
-//   searchString String?
-
-//   slug Slug @relation(fields: [slugId], references: [id])
-
-//   slugId      String
-//   BlockAuthor BlockAuthor[]
-//   lawBlockId  String?
-// }
-
 model LawBlock {
   id   String    @id @default(cuid())
   type BlockType @default(ARTIGO_LEI)
@@ -99,6 +69,8 @@ model LawBlock {
 
   subsOnly     Boolean @default(false)
   searchString String?
+
+  urlSlug String?
 
   slug   Slug?   @relation(fields: [slugId], references: [id])
   slugId String?

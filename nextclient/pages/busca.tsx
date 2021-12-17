@@ -1,7 +1,6 @@
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../components/layout/DefaultLayout";
 import SearchPage from "../components/SearchPage";
-import { Box } from "@chakra-ui/react";
 
 type Props = {
   searchTerm?: string;

@@ -1,5 +1,7 @@
 import prisma from '@lib/prisma'
 import { BlockType } from "@prisma/client"
+import { upsert as elasticSearchUpsert } from '@modules/elasticsearch/elasticsearch-service'
+import slugify from 'slugify'
 
 export const allBlocks = async () => {
     return await prisma.lawBlock.findMany({
@@ -15,6 +17,20 @@ export const allBlocks = async () => {
  * 1. crie um lawBlock inicial do tipo da lei que está sendo criada ex: CODIGO
  * 2. Com o id retornado 
  */
+
+const createSlug = (str: string) => {
+    return slugify(str)
+
+}
+
+const handleArticleType = (articleType: BlockType) => {
+    if (articleType == 'ARTIGO_LEI') return 'art'
+    if (articleType == 'CODIGO') return 'c'
+    if (articleType == 'DECRETO') return 'dec'
+    if (articleType == 'INCISO_LEI') return 'inciso'
+    if (articleType == 'PARAGRAFO_LEI') return 'paragrafo'
+    if (articleType == 'PARAGRAFO_UNICO_LEI') return 'paragrafo unico'
+}
 
 async function insertArticle({ article, masterParentId, codeName }: {
     article: any,
@@ -43,7 +59,24 @@ async function insertArticle({ article, masterParentId, codeName }: {
                 connect: {
                     value: article.slug.value
                 }
-            }
+            },
+            urlSlug: createSlug(`${article.slug.value} ${article.name} ${handleArticleType(article.type)} `)
+        }
+    })
+
+    await elasticSearchUpsert({
+        docId: newArticle.id,
+        document: {
+            type: article.type as BlockType,
+            name: article.name,
+            title: `${codeName} artigo ${article.name}`,
+            value: article.value,
+            originalText: article.originalText,
+            searchText: article.searchText,
+            searchString: article.searchString,
+            identifier: article.identifier,
+            source: article.source,
+            slug: newArticle.urlSlug
         }
     })
 

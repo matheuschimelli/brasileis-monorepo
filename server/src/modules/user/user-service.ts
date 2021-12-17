@@ -145,4 +145,21 @@ export const verifyToken = async (req: Request, res: Response) => {
   }
 }
 
+export const checkAdmin = async (req: Request, res: Response) => {
+  const { id } = req.user!
+
+  const user = await prisma.user.findUnique({
+    where: {
+      id: id
+    }
+  })
+  if (user) {
+    if (user.admin) {
+      return res.send({ isAdmin: true })
+    }
+  }
+  return res.send({ isAdmin: false })
+
+}
+
 
