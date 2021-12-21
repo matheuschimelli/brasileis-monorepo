@@ -2,6 +2,7 @@ import { Response, Request } from 'express'
 import jwt from 'jsonwebtoken'
 import prisma from '@lib/prisma'
 import { User } from '@prisma/client'
+import { validationResult } from 'express-validator'
 
 export const jwtAuth = async (req: Request, res: Response, next: any) => {
   req.isAuthenticated = () => {
@@ -56,3 +57,10 @@ export const isAdmin = async (req: Request, res: Response, next: any) => {
   return res.status(404).send({ message: 'Auth required to perform this action.' })
 
 };
+export const checkValidation = (req: Request, res: Response, next: any) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
+  }
+  next()
+}

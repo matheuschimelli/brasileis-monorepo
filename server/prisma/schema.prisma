@@ -89,6 +89,7 @@ model LawBlock {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Crawler   Crawler?
 }
 
 model Post {
@@ -130,6 +131,23 @@ model User {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   LawComment LawComment[]
+}
+
+model Crawler {
+  id            String  @id @default(uuid())
+  name          String
+  description   String
+  isUrlOnly     Boolean @default(true) // check if crawler only crawls by the given url
+  source        String?
+  cron          String
+  notifyUpdates Boolean @default(true)
+
+
+  lawBlock LawBlock @relation(fields: [lawBlockId], references: [id])
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  lawBlockId String   @unique
 }
 
 model Customer {

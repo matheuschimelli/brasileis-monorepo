@@ -1,19 +1,14 @@
 import type { GetServerSideProps } from "next";
-import DefaultLayout from "../../components/layout/DefaultLayout";
 import { getData } from "../../lib/hooks";
-import { SimpleGrid, Box } from '@chakra-ui/react'
+import AdminLayout from "../../components/Admin/AdminLayout";
+import { Box } from "@chakra-ui/react";
 
 export default function Admin() {
     return (
-        <DefaultLayout title="Admin">
-            <SimpleGrid columns={[1, 1, 4]} spacing={10}>
-                <Box bg='tomato' height='80px'>Usuários</Box>
-                <Box bg='tomato' height='80px'>Invoices</Box>
-                <Box bg='tomato' height='80px'>Crawlers</Box>
-                <Box bg='tomato' height='80px'>Erros reportados</Box>
-                <Box bg='tomato' height='80px'>Configurações do site</Box>
-            </SimpleGrid>
-        </DefaultLayout>
+        <AdminLayout title="Painel de Administração - Brasileis Admin">
+            {/* Add content here, remove div below  */}
+            <Box borderWidth="4px" borderStyle="dashed" rounded="md" h="96" />
+        </AdminLayout>
     )
 }
 export const getServerSideProps: GetServerSideProps = async (context) => {

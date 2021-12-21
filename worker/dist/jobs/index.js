@@ -3,17 +3,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const WorkerServer_1 = __importDefault(require("./WorkerServer"));
-const Cronjobs_1 = __importDefault(require("./Cronjobs"));
-const jobResults_1 = __importDefault(require("./jobResults"));
-const testCrawler1_1 = __importDefault(require("./crawlers/testCrawler1"));
-const defaultcrawler_1 = __importDefault(require("./crawlers/defaultcrawler"));
+const worker_server_1 = __importDefault(require("./worker-server"));
+const cron_jobs_1 = __importDefault(require("./cron-jobs"));
+const job_results_1 = __importDefault(require("./job-results"));
+const test_crawler_1_1 = __importDefault(require("./crawlers/test-crawler-1"));
+const default_crawler_1 = __importDefault(require("./crawlers/default-crawler"));
 const jobQueues = [
-    WorkerServer_1.default,
-    Cronjobs_1.default,
-    jobResults_1.default,
-    defaultcrawler_1.default,
-    testCrawler1_1.default
+    worker_server_1.default,
+    cron_jobs_1.default,
+    job_results_1.default,
+    default_crawler_1.default,
+    test_crawler_1_1.default
 ];
 exports.default = jobQueues;
 //# sourceMappingURL=index.js.map

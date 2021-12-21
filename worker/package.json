@@ -10,8 +10,7 @@
     "start": "node dist/index.js",
     "start:queue": "node dist/queue.js",
     "build": "tsc -p .",
-    "heroku-cleanup": "curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh&&./node-prune node_modules",
-    "postbuild": "curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh&&./node-prune node_modules"
+    "heroku-cleanup": "curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh&&./node-prune node_modules"
   },
   "devDependencies": {
     "@types/bull": "^3.15.3",

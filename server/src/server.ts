@@ -9,18 +9,19 @@ import basicAuth from 'express-basic-auth'
 import Server from '@lib/server'
 import routes from './routes'
 import { jwtAuth } from '@middlewares/jwt-auth'
-import { workerServer, jobProcessor, BullQueues } from '@jobs/WorkerJobs'
+//import { workerServer, jobProcessor, BullQueues } from '@jobs/WorkerJobs'
+import { runQueues, queues } from '@modules/jobs/jobs'
 
-
+runQueues()
 const serverAdapter = new ExpressAdapter()
 dotenv.config({ path: '.env' })
 
 //Queue.process()
-workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
-jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
+// workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
+// jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
 
 createBullBoard({
-  queues: BullQueues.map(queue => new BullAdapter(queue)),
+  queues: queues.map(queue => new BullAdapter(queue)),
   serverAdapter: serverAdapter
 })
 serverAdapter.setBasePath('/admin/queues')

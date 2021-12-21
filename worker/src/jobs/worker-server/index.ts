@@ -7,15 +7,10 @@ const queue = createJob("WorkerServer")
 const process = () => {
     console.log("aqui")
     queue.process(async (job) => {
-        console.log(job.id)
-        console.log(job.data)
         try {
-            switch (job.data.queue) {
-                case "DefaultCrawler":
+            switch (job.data.processor) {
+                case "CRAWLER":
                     defaultCrawler.queue.add({ ...job.data.jobData })
-                    break;
-                case "CrawlerTest":
-                    testCrawler1.queue.add({ ...job.data.jobData })
                     break;
                 default:
                     console.log(job.data)
