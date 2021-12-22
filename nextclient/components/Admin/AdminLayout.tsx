@@ -12,8 +12,8 @@ export default function AdminLayout({ title, children }: { title: string, childr
         <DefaultLayout title={title}>
             <Box
                 as="section"
-                bg={useColorModeValue("gray.50", "gray.700")}
                 minH="100vh"
+                w="100%"
             >
                 <SidebarContent display={{ base: "none", md: "unset" }} />
                 <Drawer
@@ -36,6 +36,7 @@ export default function AdminLayout({ title, children }: { title: string, childr
                         borderBottomWidth="1px"
                         borderColor={useColorModeValue("inherit", "gray.700")}
                         h="14"
+                        display={{ sm: 'flex', md: 'flex', lg: 'none' }}
                     >
                         <IconButton
                             aria-label="Menu"

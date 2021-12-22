@@ -133,9 +133,22 @@ model User {
   LawComment LawComment[]
 }
 
+model CrawlerType {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+  customCode  String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Crawler   Crawler[]
+}
+
 model Crawler {
-  id            String  @id @default(uuid())
-  name          String
+  id          String       @id @default(uuid())
+  name        String
+  crawlerType CrawlerType? @relation(fields: [crawlerTypeId], references: [id])
+
   description   String
   isUrlOnly     Boolean @default(true) // check if crawler only crawls by the given url
   source        String?
@@ -143,11 +156,12 @@ model Crawler {
   notifyUpdates Boolean @default(true)
 
 
-  lawBlock LawBlock @relation(fields: [lawBlockId], references: [id])
+  lawBlock LawBlock? @relation(fields: [lawBlockId], references: [id])
 
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  lawBlockId String   @unique
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  lawBlockId    String?  @unique
+  crawlerTypeId String?
 }
 
 model Customer {

@@ -4,7 +4,7 @@ export const handleJobResults = async (job: Job) => {
     try {
         switch (job.data.processor) {
             case "CRAWLER":
-                defaultCrawler.queue.add({ ...job.data.jobData })
+                // defaultCrawler.queue.add({ ...job.data.jobData })
                 break;
             default:
                 console.log(job.data)

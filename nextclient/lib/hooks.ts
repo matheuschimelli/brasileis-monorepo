@@ -57,7 +57,7 @@ export const useMutate = () => {
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
 
-    const mutate = async (id: any, mutationType: MutationType, url: string, formData?: any, token?: any) => {
+    const mutate = async (id: any, mutationType: MutationType, url: string, formData?: any, errorMsg?: string) => {
         let isLoading = loading.slice();
         isLoading[id] = true;
 
@@ -66,8 +66,6 @@ export const useMutate = () => {
         setErrorMessage(undefined)
         setErrorMessage(undefined)
 
-        console.log(`TOKEN HOOK ${token}`)
-
         try {
             const response = await fetch(url, {
                 method: mutationType,
@@ -75,16 +73,11 @@ export const useMutate = () => {
                 body: JSON.stringify({
                     ...formData
                 }),
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-                // headers: new Headers({
-                //     'Content-Type': 'application/json',
-                //     Accept: 'application/json',
-                //     Authorization: `Bearer ${token}`
-                //     // ...(token && { Authorization: `Bearer ${token}` }),
-                // }),
+
+                headers: new Headers({
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                }),
             })
             if (!response.ok) {
 
@@ -93,21 +86,19 @@ export const useMutate = () => {
                 setSuccess(false)
                 setErrorMessage(`Erro ${response.statusText}`)
                 setResponse(response.statusText)
-                return { response }
+                return
             }
 
             isLoading[id] = false;
             setLoading(isLoading)
             setSuccess(true)
             setResponse(response.statusText)
-            return { response }
         } catch (error: any) {
             isLoading[id] = false;
             setLoading(isLoading)
             setErrorMessage(error)
             setSuccess(false)
             setResponse(response.statusText)
-            return { error }
         }
 
     }

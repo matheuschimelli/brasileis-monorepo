@@ -9,24 +9,22 @@ import { checkAdmin } from "../../../lib/checkAdmin";
 
 export default function NewCrawler() {
     return (
-        <AdminLayout title="Crawlers - Brasileis Admin">
-            <CrudBar title='Crawlers' update />
-            <FormBase formTitle="Crawler" create>
+        <AdminLayout title="Tipos de Crawler - Brasileis Admin">
+            <CrudBar title='Novo Tipo Crawler' update />
+            <FormBase formTitle="Novo Tipo de Crawler" create>
                 <Input
-                    name="crawlerName"
-                    label="Nome do Crawler"
+                    name="name"
+                    label="Nome do tipo do Crawler"
                     type="text"
                     helper="Use um nome descritivo"
                     onChange={(e) => console.log(e.target.value)}
                     placeholder="Nome do Crawler"
                 />
                 <Input
-                    name="cron"
-                    label="Horário para executar o crawler"
+                    name="description"
+                    label="Descrição do crawler"
                     type="text"
-                    helper="https://crontab.guru/"
                     onChange={(e) => console.log(e.target.value)}
-                    placeholder="* * * * *"
                 />
             </FormBase>
 
@@ -36,6 +34,7 @@ export default function NewCrawler() {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { token } = context.req.cookies
+    console.log(token)
     const isAdmin = await checkAdmin(token)
 
     if (isAdmin) {

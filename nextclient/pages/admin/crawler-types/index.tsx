@@ -8,9 +8,9 @@ import { checkAdmin } from "../../../lib/checkAdmin";
 
 export default function Swibc({ crawlers }: { crawlers: any[] }) {
     return (
-        <AdminLayout title="Crawlers - Brasileis Admin">
-            <CrudBar title='Crawlers' create />
-            <ShowItems data={crawlers} itemTitle="name" itemValue="id" pathTo="crawlers" viewMode="grid" />
+        <AdminLayout title="Tipos de Crawlers - Brasileis Admin">
+            <CrudBar title='Tipos de Crawlers' create />
+            <ShowItems data={crawlers} itemTitle="name" itemValue="id" pathTo="crawler-types" viewMode="grid" />
         </AdminLayout>
     );
 }
@@ -18,12 +18,8 @@ export default function Swibc({ crawlers }: { crawlers: any[] }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { token } = context.req.cookies
     const isAdmin = await checkAdmin(token)
-
-    const crawlersReq = await getData(`${process.env.SERVER_URL}/api/v1/crawlers`, token)
+    const crawlersReq = await getData(`${process.env.SERVER_URL}/api/v1/crawler-types`, token)
     const crawlers = await crawlersReq.json()
-    console.log(crawlers)
-
-
 
     if (isAdmin) {
         return {

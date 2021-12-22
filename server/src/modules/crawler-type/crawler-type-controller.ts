@@ -1,5 +1,11 @@
 import { Request, Response } from 'express'
-import { index, show, create, remove } from "@modules/crawler/crawler-service"
+import {
+    index,
+    show,
+    create,
+    update,
+    remove
+} from "@modules/crawler-type/crawler-type-service"
 import { body } from 'express-validator'
 
 
@@ -42,7 +48,7 @@ export const createController = async (req: Request, res: Response) => {
 
 export const updateController = async (req: Request, res: Response) => {
     const { id } = req.params
-    const crawler = await show(id)
+    const crawler = await update({ id, ...req.body })
 
     if (!crawler) return res.status(404).send({ success: false, message: 'Nenhum crawler cadastrado' })
 

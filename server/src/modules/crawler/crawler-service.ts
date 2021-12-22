@@ -4,7 +4,8 @@ export const index = async (page: number) => {
     const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
 
     const crawlers = await prisma.crawler.findMany({
-        skip: skipItems
+        skip: skipItems,
+        take: 10
     })
     return crawlers
 }
@@ -22,7 +23,6 @@ export const create = async ({ cron,
     description,
     name,
     isUrlOnly,
-    lawBlockId,
     notifyUpdates,
     source
 }: {
@@ -40,10 +40,8 @@ export const create = async ({ cron,
             description,
             name,
             isUrlOnly,
-            lawBlockId,
             notifyUpdates,
             source,
-
         }
     })
     return newCrawler
