@@ -12,10 +12,7 @@ import { body } from 'express-validator'
 export const validate = () => {
     return [
         body('name', 'Nome do crawler não pode estar em branco').exists().notEmpty(),
-        body('description', 'Descrição não pode estar em branco').notEmpty(),
-        body('isUrlOnly', 'Escolha se o crawler é de url ').isBoolean(),
-        body('cron', 'Cron não é válido').isString().matches(/^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/).notEmpty(),
-        body('notifyUpdate', 'Escolha se o crawler deve notificar sobre atualizações').isBoolean(),
+        body('description', 'Descrição não pode estar em branco').notEmpty()
     ]
 }
 
@@ -59,5 +56,6 @@ export const removeController = async (req: Request, res: Response) => {
     const { id } = req.params
 
     const crawler = await remove(id)
-    return crawler
+    return res.send(crawler)
+
 }

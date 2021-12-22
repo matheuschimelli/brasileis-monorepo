@@ -5,18 +5,21 @@ import {
     showController,
     createController,
     updateController,
-    removeController
+    removeController,
+    runCrawlerController
 } from '@modules/crawler/crawler-controller'
 import { checkValidation, isAdmin, isAuthenticated } from '@middlewares/jwt-auth'
 
 const crawlerRoutes = express.Router()
 
 
-crawlerRoutes.get('/', indexController)
-crawlerRoutes.get('/:id', showController)
-crawlerRoutes.post('/', validate(), checkValidation, createController)
-crawlerRoutes.put('/:id', validate(), checkValidation, updateController)
-crawlerRoutes.delete('/:id', removeController)
+crawlerRoutes.get('/', isAuthenticated, isAdmin, indexController)
+crawlerRoutes.get('/:id', isAuthenticated, isAdmin, showController)
+crawlerRoutes.post('/', isAuthenticated, isAdmin, validate(), checkValidation, createController)
+crawlerRoutes.put('/:id', isAuthenticated, isAdmin, validate(), checkValidation, updateController)
+crawlerRoutes.delete('/:id', isAuthenticated, isAdmin, removeController)
+crawlerRoutes.post('/run-crawler/:id', isAuthenticated, isAdmin, runCrawlerController)
+
 
 // isAuthenticated, isAdmin,
 

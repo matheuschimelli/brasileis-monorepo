@@ -14,7 +14,6 @@ export const MainServer = queue('MainServer', mainServerHandler)
 export const test = queue('test', handler)
 export const crawlerJobCheck = queue('crawlerJobCheck', crawlerJobCheckHandler)
 
-
 export const runQueues = () => {
     test.add({}, { repeat: { cron: '* * * * *' } })
     crawlerJobCheck.add({}, { repeat: { cron: '* * * * *' } })
@@ -24,3 +23,9 @@ export const runQueues = () => {
 
 export const queues = [MainServer, test, crawlerJobCheck, WorkerServer]
 
+export const runQueue = (name: string) => {
+    const foundQueue = queues.find((queue) => queue.name == name)
+    if (foundQueue) {
+        return foundQueue
+    }
+}

@@ -45,14 +45,17 @@ export const jwtAuth = async (req: Request, res: Response, next: any) => {
 
 export const isAuthenticated = (req: Request, res: Response, next: any) => {
   const isAuth = req.isAuthenticated()
+  console.log('IS AUTHENTICATEDS', isAuth)
   if (isAuth) return next()
 
   return res.status(400).send({ message: 'Auth required to perform this action.' })
 };
 
 export const isAdmin = async (req: Request, res: Response, next: any) => {
+  console.log('IS admin', req.user)
+
   const user = req.user
-  if (user && user.admin) return next()
+  if (user && user.admin && user.role == 'ADMIN') return next()
 
   return res.status(404).send({ message: 'Auth required to perform this action.' })
 

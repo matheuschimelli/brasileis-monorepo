@@ -19,8 +19,22 @@ export default function ShowItems({ data, itemTitle, itemValue, pathTo, viewMode
             <SimpleGrid columns={[1, 1, view(viewMode)]} spacing={10}>
                 {data.map((d) => {
                     return (
-                        <Link passHref href={`/${pathTo}/${d[itemValue]}`}>
-                            <Box bg='gray.50' height='80px' shadow='xs' textAlign="center" as="a" >{d[itemTitle]}</Box>
+                        <Link passHref href={`${pathTo}/${d[itemValue]}`}>
+                            <Box
+                                bg='gray.200'
+                                height='80px'
+                                borderRadius="base"
+                                textAlign="center"
+                                as="a"
+                                fontWeight="medium"
+                                display="flex"
+                                justifyContent="center"
+                                justifyItems="center"
+                                alignItems="center"
+                                _hover={{
+                                    background: 'gray.400'
+                                }}
+                            >{d[itemTitle]}</Box>
                         </Link>
                     )
                 })}

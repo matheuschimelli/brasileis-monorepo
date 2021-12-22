@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormControl, FormLabel, Input as ChakraInput, FormHelperText } from '@chakra-ui/react'
+import { FormControl, FormLabel, Textarea as ChakraTextarea, FormHelperText } from '@chakra-ui/react'
 
 type Props = {
     name: string
@@ -10,11 +10,11 @@ type Props = {
     helper?: string
     placeholder?: string
 }
-export default function Input({ name, value, onChange, type, label, helper, placeholder }: Props) {
+export default function TextArea({ name, value, onChange, type, label, helper, placeholder }: Props) {
     return (
         <FormControl>
             <FormLabel htmlFor={name}>{label}</FormLabel>
-            <ChakraInput id={name} type={type} onChange={onChange} value={value} placeholder={placeholder} name={name} />
+            <ChakraTextarea id={name} type={type} onChange={onChange} value={value} placeholder={placeholder} name={name} />
             {helper && (
                 <FormHelperText>{helper}</FormHelperText>
             )}

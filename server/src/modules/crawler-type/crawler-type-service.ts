@@ -64,7 +64,7 @@ export const update = async ({
 
 
 export const remove = async (id: string) => {
-    const crawler = await prisma.crawlerType.findUnique({
+    const crawler = await prisma.crawlerType.delete({
         where: {
             id
         }

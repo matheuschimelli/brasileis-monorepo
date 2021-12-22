@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { index, show, create, remove } from "@modules/crawler/crawler-service"
+import { index, show, create, update, remove, runCrawler } from "@modules/crawler/crawler-service"
 import { body } from 'express-validator'
 
 
@@ -9,7 +9,7 @@ export const validate = () => {
         body('description', 'Descrição não pode estar em branco').notEmpty(),
         body('isUrlOnly', 'Escolha se o crawler é de url ').isBoolean(),
         body('cron', 'Cron não é válido').isString().matches(/^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/).notEmpty(),
-        body('notifyUpdate', 'Escolha se o crawler deve notificar sobre atualizações').isBoolean(),
+        body('notifyUpdates', 'Escolha se o crawler deve notificar sobre atualizações').isBoolean(),
     ]
 }
 
@@ -42,7 +42,7 @@ export const createController = async (req: Request, res: Response) => {
 
 export const updateController = async (req: Request, res: Response) => {
     const { id } = req.params
-    const crawler = await show(id)
+    const crawler = await update({ id, ...req.body })
 
     if (!crawler) return res.status(404).send({ success: false, message: 'Nenhum crawler cadastrado' })
 
@@ -53,5 +53,15 @@ export const removeController = async (req: Request, res: Response) => {
     const { id } = req.params
 
     const crawler = await remove(id)
-    return crawler
+    return res.send(crawler)
+}
+
+export const runCrawlerController = async (req: Request, res: Response) => {
+    const { id } = req.params
+
+    const crawler = await runCrawler(id)
+
+    if (crawler.success) return res.send(crawler)
+
+    return res.status(400).send(crawler)
 }

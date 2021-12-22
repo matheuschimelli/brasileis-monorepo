@@ -54,10 +54,21 @@ export default function SidebarContent(props: any) {
                 color="gray.600"
                 aria-label="Main Navigation"
             >
-                <NavItem icon={MdHome}>Home</NavItem>
-                <NavItem icon={FaRss}>Artigos</NavItem>
-                <NavItem icon={HiCollection}>Crawlers</NavItem>
-                <NavItem icon={FaClipboardCheck}>Usuários</NavItem>
+                <Link href="/admin/" passHref>
+                    <NavItem icon={MdHome} as="a">Home</NavItem>
+                </Link>
+                <Link href="/admin/articles" passHref>
+                    <NavItem icon={FaRss} as="a">Artigos</NavItem>
+                </Link>
+                <Link href="/admin/crawlers" passHref>
+                    <NavItem icon={HiCollection} as="a">Crawlers</NavItem>
+                </Link>
+                <Link href="/admin/crawler-types" passHref>
+                    <NavItem icon={FaClipboardCheck} as="a">Tipos de Crawler</NavItem>
+                </Link>
+                <Link href="/admin/users" passHref>
+                    <NavItem icon={FaClipboardCheck} as="a">Usuários</NavItem>
+                </Link>
                 <NavItem icon={HiCode} onClick={integrations.onToggle}>
                     Integrations
                     <Icon
@@ -77,8 +88,9 @@ export default function SidebarContent(props: any) {
                         Zapier
                     </NavItem>
                 </Collapse>
-                <NavItem icon={AiFillGift}>Changelog</NavItem>
-                <NavItem icon={BsGearFill}>Configurações</NavItem>
+                <Link href="/admin/settings" passHref>
+                    <NavItem icon={BsGearFill} as="a">Configurações</NavItem>
+                </Link>
             </Flex>
         </Box>)
 }

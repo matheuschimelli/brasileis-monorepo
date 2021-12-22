@@ -17,7 +17,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const slug = context.params!.slug?.toString()
     const id = context.params!.id?.toString()
 
-    console.log(`${slug} ${id}`)
 
     const req = await fetch(`http://localhost:8080/api/v1/law-block/${slug}/${id}`)
     const data = await req.json()

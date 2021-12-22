@@ -1,8 +1,7 @@
 import { useState } from 'react'
 import useSWR from 'swr'
 import { useAuth } from './auth'
-type MutationType = 'POST' | 'GET' | 'PUT' | 'DELETE'
-
+export type MutationType = 'POST' | 'GET' | 'PUT' | 'DELETE'
 
 export async function getData(url: string, token: string) {
 
@@ -16,6 +15,7 @@ export async function getData(url: string, token: string) {
     })
     return response
 }
+
 export function useData(url: string) {
     const fetcher = (urlToFetch: string) => fetch(urlToFetch).then(r => r.json())
 
@@ -24,6 +24,7 @@ export function useData(url: string) {
 }
 
 export const useForm = (formType: any) => {
+
     const [form, setFormData] = useState(formType);
 
     const handleSubmit = (event: any) => {
@@ -31,11 +32,17 @@ export const useForm = (formType: any) => {
             event.preventDefault();
         }
     };
+
+    const handleValue = (val: any) => {
+        if (val == "true") return true
+        if (val == "false") return false
+        return val
+    }
     const handleInputChange = (event: any) => {
         event.persist();
         setFormData((form: any) => ({
             ...form,
-            [event.target.name]: event.target.value,
+            [event.target.name]: handleValue(event.target.value),
         }));
     };
 
@@ -51,13 +58,15 @@ export const useForm = (formType: any) => {
 };
 
 export const useMutate = () => {
+    const { token } = useAuth()
+
     const [loading, setLoading] = useState<any[]>([])
     const [success, setSuccess] = useState<boolean | undefined>(undefined)
     const [response, setResponse] = useState<string | any>()
     const [errorMessage, setErrorMessage] = useState<string | undefined>(undefined)
 
 
-    const mutate = async (id: any, mutationType: MutationType, url: string, formData?: any, errorMsg?: string) => {
+    const mutate = async (id: any, mutationType: MutationType, url: string, formData?: any, errorMsg?: string): Promise<Response> => {
         let isLoading = loading.slice();
         isLoading[id] = true;
 
@@ -77,6 +86,7 @@ export const useMutate = () => {
                 headers: new Headers({
                     'Content-Type': 'application/json',
                     Accept: 'application/json',
+                    Authorization: `Bearer ${token}`,
                 }),
             })
             if (!response.ok) {
@@ -86,19 +96,22 @@ export const useMutate = () => {
                 setSuccess(false)
                 setErrorMessage(`Erro ${response.statusText}`)
                 setResponse(response.statusText)
-                return
+                return response
             }
 
             isLoading[id] = false;
             setLoading(isLoading)
             setSuccess(true)
             setResponse(response.statusText)
+            return response
+
         } catch (error: any) {
             isLoading[id] = false;
             setLoading(isLoading)
             setErrorMessage(error)
             setSuccess(false)
             setResponse(response.statusText)
+            return response
         }
 
     }

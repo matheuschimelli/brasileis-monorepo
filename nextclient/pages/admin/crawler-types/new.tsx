@@ -11,7 +11,14 @@ export default function NewCrawler() {
     return (
         <AdminLayout title="Tipos de Crawler - Brasileis Admin">
             <CrudBar title='Novo Tipo Crawler' update />
-            <FormBase formTitle="Novo Tipo de Crawler" create>
+            <FormBase
+                create
+                formTitle="Novo Tipo de Crawler"
+                initSchema={{ name: String, description: String }}
+                apiRoute="crawler-types"
+                method="POST"
+
+            >
                 <Input
                     name="name"
                     label="Nome do tipo do Crawler"

@@ -1,22 +1,47 @@
 import React from "react";
 import type { GetServerSideProps } from "next";
-import {
-    Box
-} from "@chakra-ui/react";
-import AdminLayout from "../../../components/Admin/AdminLayout";
-import { checkAdmin } from "../../../lib/checkAdmin";
 
-export default function Swibc() {
+import AdminLayout from "../../../components/Admin/AdminLayout";
+import CrudBar from "../../../components/Admin/CrudBar";
+import FormBase from "../../../components/FormBase";
+import Input from "../../../components/FormBase/Input";
+import { checkAdmin } from "../../../lib/checkAdmin";
+import { Textarea } from "@chakra-ui/react";
+
+export default function NewCrawler() {
     return (
-        <AdminLayout title="Crawlers - Brasileis Admin">
-            {/* Add content here, remove div below  */}
-            <Box borderWidth="4px" borderStyle="dashed" rounded="md" h="96" />
+        <AdminLayout title="Tipos de Crawler - Brasileis Admin">
+            <CrudBar title='Novo Tipo Crawler' update />
+            <FormBase
+                create
+                formTitle="Editar Tipo de Crawler"
+                initSchema={{ name: String, description: String }}
+                apiRoute="crawler-types"
+                method="POST"
+            >
+                <Input
+                    name="name"
+                    label="Nome do tipo do Crawler"
+                    type="text"
+                    helper="Use um nome descritivo"
+                    onChange={(e) => console.log(e.target.value)}
+                    placeholder="Nome do Crawler"
+                />
+                <Textarea
+                    name="description"
+                    label="Descrição do crawler"
+                    type="text"
+                    onChange={(e) => console.log(e.target.value)}
+                />
+            </FormBase>
+
         </AdminLayout>
     );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { token } = context.req.cookies
+    console.log(token)
     const isAdmin = await checkAdmin(token)
 
     if (isAdmin) {
