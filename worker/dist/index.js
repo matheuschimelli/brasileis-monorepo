@@ -10,21 +10,18 @@ const express_2 = require("@bull-board/express");
 const signale_1 = __importDefault(require("signale"));
 require("dotenv/config");
 const express_basic_auth_1 = __importDefault(require("express-basic-auth"));
-const Queue_1 = require("./lib/Queue");
-const Queue_2 = require("./lib/Queue");
+const jobs_1 = require("./jobs");
+const jobs_2 = require("./jobs");
 const pingmydyno_1 = __importDefault(require("pingmydyno"));
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 8081;
 if (process.env.NODE_ENV == 'production') {
     console.log("Running on production");
-    (0, Queue_2.startProcess)();
+    (0, jobs_2.runQueues)();
 }
-//import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
-//import BullMQ from './bullmq';
-//BullMQ.queues.map((queue) => new BullMQAdapter(queue)),
 const serverAdapter = new express_2.ExpressAdapter();
 (0, api_1.createBullBoard)({
-    queues: Queue_1.queues.map((job) => new bullAdapter_1.BullAdapter(job.queue)),
+    queues: jobs_1.queues.map((job) => new bullAdapter_1.BullAdapter(job)),
     serverAdapter,
 });
 const app = (0, express_1.default)();

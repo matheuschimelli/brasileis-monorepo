@@ -17,7 +17,15 @@ export async function getData(url: string, token: string) {
 }
 
 export function useData(url: string) {
-    const fetcher = (urlToFetch: string) => fetch(urlToFetch).then(r => r.json())
+    const { token } = useAuth()
+
+    const fetcher = (urlToFetch: string) => fetch(urlToFetch, {
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            Authorization: `Bearer ${token}`,
+        }),
+    }).then(r => r.json())
 
     const { data, error } = useSWR(url, fetcher)
     return { data, error }

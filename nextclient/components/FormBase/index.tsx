@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Box, Text, Button, useToast } from '@chakra-ui/react'
 import { MutationType, useData, useForm, useMutate } from '../../lib/hooks'
 import router, { useRouter } from 'next/router';
+import AlertDialog from './ConfirmDialog';
 type Props = {
     formTitle: string
     children: React.ReactNode
@@ -29,6 +30,9 @@ export default function FormBase({
     method,
     loadDataFromId
 }: Props) {
+    const [isDeletedDialogOpen, setIsDeletedDialogOpen] = useState(false)
+    const [isDialogLoading, setIsDialogLoading] = useState(false)
+
     const router = useRouter()
     const { id: dataId } = router.query
 
@@ -86,14 +90,29 @@ export default function FormBase({
                 const res = await handleCreate.mutate(1, 'POST', `${process.env.SERVER_URL}/api/v1/${apiRoute}`, {
                     ...form,
                 });
-                toast({
-                    title: 'Salvo',
-                    status: 'success',
-                    duration: 9000,
-                    isClosable: true,
-                })
+
                 const resData = await res.json()
-                router.push(`${apiRoute}/${resData.id}`)
+
+                if (res.status == 200) {
+                    toast({
+                        title: 'Salvo',
+                        status: 'success',
+                        duration: 9000,
+                        isClosable: true,
+                    })
+
+                    router.push(`/admin/${apiRoute}/${resData.id}`)
+                } else {
+
+                    for (const err of resData.errors) {
+                        toast({
+                            title: `${err.msg}`,
+                            status: 'error',
+                            duration: 9000,
+                            isClosable: true,
+                        })
+                    }
+                }
             }
         } catch (err) {
             console.log(err)
@@ -107,7 +126,17 @@ export default function FormBase({
 
     };
 
+    const confirmDelete = () => {
+        setIsDeletedDialogOpen(true)
+    }
+
+    const cancelDelete = () => {
+        setIsDeletedDialogOpen(false)
+    }
+
+
     const deleteData = async () => {
+        setIsDialogLoading(true)
         await handleDelete.mutate(2, "DELETE", `${process.env.SERVER_URL}/api/v1/${apiRoute}/${loadedFormData.data.id}`, {
             ...form,
         });
@@ -117,6 +146,7 @@ export default function FormBase({
             duration: 9000,
             isClosable: true,
         })
+        setIsDeletedDialogOpen(false)
         router.back();
     };
 
@@ -133,29 +163,39 @@ export default function FormBase({
     });
 
     return (
-        <Box
-            as="form"
-            display="flex"
-            flexDir="column"
-            padding="10"
-            shadow="xs"
-            borderRadius="base"
-            gridGap={10}
-            onSubmit={handleSubmit}>
+        <>
+            <AlertDialog
+                title='Confirmar delete'
+                description='Você realmente quer deletar isso? Essa ação é irreversível.'
+                onConfirm={deleteData}
+                isOpened={isDeletedDialogOpen}
+                isLoading={handleDelete.loading[2]}
+                onCancel={cancelDelete}
+            />
+            <Box
+                as="form"
+                display="flex"
+                flexDir="column"
+                padding="10"
+                shadow="xs"
+                borderRadius="base"
+                gridGap={10}
+                onSubmit={handleSubmit}>
 
-            <Text fontSize="2xl" fontWeight="bold" mb="1">{formTitle}</Text>
+                <Text fontSize="2xl" fontWeight="bold" mb="1">{formTitle}</Text>
 
-            {childrenWithProps}
+                {childrenWithProps}
 
-            <Box display="flex" flexDir={['column', 'column', 'row']} gridGap={5}>
-                {create && (
-                    <Button colorScheme="blue" onClick={saveData} isLoading={handleCreate.loading[1]} loadingText='Salvando'>Salvar</Button>
-                )}
-                {destroy || dataId && (
-                    <Button colorScheme="red" onClick={deleteData} isLoading={handleDelete.loading[2]} loadingText='Apagando'>Apagar</Button>
-                )}
+                <Box display="flex" flexDir={['column', 'column', 'row']} gridGap={5}>
+                    {create && (
+                        <Button colorScheme="blue" onClick={saveData} isLoading={handleCreate.loading[1]} loadingText='Salvando'>Salvar</Button>
+                    )}
+                    {destroy || dataId && (
+                        <Button colorScheme="red" onClick={confirmDelete} isLoading={handleDelete.loading[2]} loadingText='Apagando'>Apagar</Button>
+                    )}
 
+                </Box>
             </Box>
-        </Box>
+        </>
     )
 }

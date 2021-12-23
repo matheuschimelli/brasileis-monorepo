@@ -4,6 +4,7 @@ import { useCookie } from "react-use";
 import { useRouter } from "next/router";
 
 const SERVER_URL = process.env.SERVER_URL || "https://api.brasileis.com.br";
+
 type Props = {
   children: React.ReactNode;
 };
@@ -26,6 +27,7 @@ interface AuthContext {
   showAuthPropmpt?: () => void;
 
 }
+
 
 function delete_cookie(name: string) {
   document.cookie = name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
@@ -66,6 +68,7 @@ const handleGoogleResponse = async (googleToken: any) => {
 export const authContext = createContext<AuthContext>({} as AuthContext);
 
 export function useProvideAuth() {
+
   const [user, setUser] = useState(null);
   const [token, setToken] = useState<string | null>(null);
   const [value, updateCookie, deleteCookie] = useCookie("token");

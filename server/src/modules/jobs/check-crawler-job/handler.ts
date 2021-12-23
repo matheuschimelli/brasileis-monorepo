@@ -2,7 +2,7 @@ import { Job } from 'bull'
 import prisma from '@lib/prisma'
 import parser from 'cron-parser'
 import dayjs from '@lib/dayjs'
-import { processOnWorker } from '@lib/bullQueue'
+import { processOnWorker } from '@lib/bull'
 
 export const handler = async (job: Job) => {
     const crawlers = await prisma.crawler.findMany({})

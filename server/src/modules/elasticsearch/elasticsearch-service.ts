@@ -146,7 +146,7 @@ export const search = async ({ str, from, size }: { str: string, from: number, s
     }
 }
 
-export const remove = async ({ documentId }: { documentId: number }) => {
+export const remove = async ({ documentId }: { documentId: string }) => {
     try {
         const doc = await elasticSearchClient.deleteByQuery({
             index: esIndex,

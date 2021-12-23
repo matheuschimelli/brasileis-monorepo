@@ -3,13 +3,10 @@ import type { GetServerSideProps } from "next";
 
 import AdminLayout from "../../../components/Admin/AdminLayout";
 import CrudBar from "../../../components/Admin/CrudBar";
-import FormBase from "../../../components/FormBase";
-import Input from "../../../components/FormBase/Input";
 import { checkAdmin } from "../../../lib/checkAdmin";
-import { Textarea } from "@chakra-ui/react";
-import Checkbox from "../../../components/FormBase/Checkbox";
 import CrawlerManager from "../../../components/Admin/CrawlerManager";
 import { useRouter } from "next/router";
+import CrawlerForm from "../../../components/Admin/Crawler/CrawlerForm";
 
 export default function EditCrawler() {
     const router = useRouter()
@@ -17,48 +14,9 @@ export default function EditCrawler() {
 
     return (
         <AdminLayout title="Crawlers">
-            <CrudBar title='Crawler' update />
+            <CrudBar title='Crawlers' path="crawlers" />
             <CrawlerManager id={id as string} />
-            <FormBase
-                create
-                formTitle="Editar Crawler"
-                initSchema={{ name: String, description: String }}
-                apiRoute="crawlers"
-                method="POST"
-            >
-                <Input
-                    name="name"
-                    label="Nome do tipo do Crawler"
-                    type="text"
-                    helper="Use um nome descritivo"
-                    placeholder="Nome do Crawler"
-                />
-                <Input
-                    name="source"
-                    label="Url fonte"
-                    type="text"
-                    helper="Utilize url inteiro"
-                    placeholder="http://site.com"
-                />
-                <Input
-                    name="cron"
-                    label="Cron"
-                    type="text"
-                    helper="Horário de execução"
-                    placeholder="* * * * * "
-                />
-                <Textarea
-                    name="description"
-                    label="Descrição do crawler"
-                    type="text"
-                />
-                <Checkbox
-                    name="notifyUpdates"
-                    label="Notificar Atualizações para usuários"
-
-                />
-            </FormBase>
-
+            <CrawlerForm />
         </AdminLayout>
     );
 }

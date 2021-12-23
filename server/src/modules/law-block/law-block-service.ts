@@ -1,6 +1,6 @@
 import prisma from '@lib/prisma'
 import { BlockType } from "@prisma/client"
-import { upsert as elasticSearchUpsert } from '@modules/elasticsearch/elasticsearch-service'
+import { upsert as elasticSearchUpsert, remove as elasticSearchRemove } from '@modules/elasticsearch/elasticsearch-service'
 import slugify from 'slugify'
 
 export const allBlocks = async () => {
@@ -349,5 +349,6 @@ export const removeLawBlock = async (id: string) => {
             id
         }
     })
+    await elasticSearchRemove({ documentId: lawBlock.id })
     return lawBlock
 }

@@ -1,5 +1,5 @@
+import { processOnWorker } from '@lib/bull';
 import prisma from '@lib/prisma'
-import { runQueue } from '@modules/jobs/jobs';
 
 export const index = async (page: number) => {
     const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
@@ -20,29 +20,33 @@ export const show = async (id: string) => {
     return crawler
 }
 
-export const create = async ({ cron,
+export const create = async ({
+    cron,
     description,
     name,
-    isUrlOnly,
-    notifyUpdates,
-    source
+    source,
+    crawlerTypeId
 }: {
     cron: string,
     description: string,
     name: string,
-    isUrlOnly: boolean,
     lawBlockId: string,
-    notifyUpdates: boolean,
     source: string,
+    crawlerTypeId: string
 }) => {
     const newCrawler = await prisma.crawler.create({
         data: {
             cron,
             description,
             name,
-            isUrlOnly,
-            notifyUpdates,
+            isUrlOnly: false,
+            notifyUpdates: true,
             source,
+            crawlerType: {
+                connect: {
+                    id: crawlerTypeId
+                }
+            }
         }
     })
     return newCrawler
@@ -55,7 +59,8 @@ export const update = async ({
     name,
     isUrlOnly,
     notifyUpdates,
-    source
+    source,
+    crawlerTypeId
 }: {
     id: string,
     cron: string,
@@ -65,6 +70,7 @@ export const update = async ({
     lawBlockId: string,
     notifyUpdates: boolean,
     source: string,
+    crawlerTypeId: string
 }) => {
     const updateCrawler = await prisma.crawler.update({
         where: {
@@ -77,6 +83,11 @@ export const update = async ({
             isUrlOnly,
             notifyUpdates,
             source,
+            crawlerType: {
+                connect: {
+                    id: crawlerTypeId
+                }
+            }
         }
     })
     return updateCrawler
@@ -101,12 +112,14 @@ export const runCrawler = async (crawlerId: string) => {
         }
     })
     if (crawler && crawler.crawlerType) {
-        const crawlerType = crawler.crawlerType.name
-        const queue = runQueue(crawlerType)
-        if (queue) {
-            await queue.add({})
-            return { success: true }
-        }
+        await processOnWorker({
+            id: crawler.id,
+            queue: crawler.crawlerType.name,
+            jobData: {
+                ...crawler
+            }
+        })
+        return { success: true }
     }
     return { success: false }
 }

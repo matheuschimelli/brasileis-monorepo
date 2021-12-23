@@ -1,4 +1,4 @@
-import { sandboxFile, createJob } from "../../lib/job-utils";
+import { runOnSandbox, createJob } from "../../lib/job-utils";
 
 const queue = createJob("jobResults")
 const process = () => Promise.resolve()

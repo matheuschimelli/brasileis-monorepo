@@ -13,6 +13,6 @@ export enum CrawlerName {
 
 export type NewJobData = {
     id?: string;
-    queue: 'CRAWLER' | 'SYSTEM' | 'MAIL' | 'NOTIFICATION' | 'PROCESSOR';
+    queue: string;
     jobData: any
 }
