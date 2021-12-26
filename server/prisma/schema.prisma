@@ -155,8 +155,14 @@ model Crawler {
   cron          String
   notifyUpdates Boolean @default(true)
 
+  slug                 String?
+  mainBlockTitle       String?
+  mainBlockDescription String?
+  version              Int?    @default(1)
 
-  lawBlock LawBlock? @relation(fields: [lawBlockId], references: [id])
+
+
+  lawBlock LawBlock? @relation(fields: [lawBlockId], references: [id], onDelete: Cascade)
 
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt

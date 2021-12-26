@@ -1,6 +1,22 @@
 import { processOnWorker } from '@lib/bull';
 import prisma from '@lib/prisma'
 
+type CrawlerInput = {
+    id?: string
+    cron: string,
+    description: string,
+    name: string,
+    lawBlockId: string,
+    source: string,
+    crawlerTypeId: string,
+    slug: string,
+    mainBlockTitle: string,
+    mainBlockDescription: string,
+    version: number
+    isUrlOnly?: boolean
+    notifyUpdates?: boolean
+
+}
 export const index = async (page: number) => {
     const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
 
@@ -25,15 +41,12 @@ export const create = async ({
     description,
     name,
     source,
-    crawlerTypeId
-}: {
-    cron: string,
-    description: string,
-    name: string,
-    lawBlockId: string,
-    source: string,
-    crawlerTypeId: string
-}) => {
+    mainBlockDescription,
+    mainBlockTitle,
+    version,
+    crawlerTypeId,
+    slug
+}: CrawlerInput) => {
     const newCrawler = await prisma.crawler.create({
         data: {
             cron,
@@ -42,6 +55,10 @@ export const create = async ({
             isUrlOnly: false,
             notifyUpdates: true,
             source,
+            mainBlockTitle,
+            mainBlockDescription,
+            version,
+            slug,
             crawlerType: {
                 connect: {
                     id: crawlerTypeId
@@ -57,21 +74,15 @@ export const update = async ({
     cron,
     description,
     name,
+    source,
+    mainBlockDescription,
+    mainBlockTitle,
+    version,
     isUrlOnly,
     notifyUpdates,
-    source,
-    crawlerTypeId
-}: {
-    id: string,
-    cron: string,
-    description: string,
-    name: string,
-    isUrlOnly: boolean,
-    lawBlockId: string,
-    notifyUpdates: boolean,
-    source: string,
-    crawlerTypeId: string
-}) => {
+    crawlerTypeId,
+    slug
+}: CrawlerInput) => {
     const updateCrawler = await prisma.crawler.update({
         where: {
             id
@@ -83,6 +94,10 @@ export const update = async ({
             isUrlOnly,
             notifyUpdates,
             source,
+            mainBlockTitle,
+            mainBlockDescription,
+            version,
+            slug,
             crawlerType: {
                 connect: {
                     id: crawlerTypeId

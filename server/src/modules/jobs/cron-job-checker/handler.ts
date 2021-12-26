@@ -27,7 +27,7 @@ const handler = async (job: Job) => {
             await processOnWorker({
                 id: crawler.id,
                 queue: crawler.crawlerType?.name!,
-                jobData: crawler.source,
+                jobData: crawler
             })
         }
     }

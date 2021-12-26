@@ -8,10 +8,6 @@ export const jobResults = queue('JobResults', handleJobResults)
 export const cronJobChecker = queue('CronJobChecker', cronJobCheckerHandler)
 export const test = queue('test', handler)
 
-// import { mainServerHandler } from './main-server-job/main-server-handler'
-// export const MainServer = queue('MainServer', mainServerHandler)
-// MainServer.add({ send: 'to another server' })
-// MainServer,
 
 export const runQueues = () => {
     test.add({}, { repeat: { cron: '* * * * *' } })

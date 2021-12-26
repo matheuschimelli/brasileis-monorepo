@@ -48,6 +48,29 @@ export default function CrawlerForm() {
                 label="Notificar Atualizações para usuários"
 
             />
+            <Input
+                name="mainBlockTitle"
+                label="Título completo da lei ou artigo"
+                type="text"
+                placeholder="Ex: Código Cívil"
+            />
+            <Textarea
+                name="mainBlockDescription"
+                label="Descrição da lei ou artigo"
+                type="text"
+            />
+            <Input
+                name="version"
+                label="Versão do documento"
+                type="number"
+            />
+
+            <Input
+                name="slug"
+                label="Sigla do Código ou decreto, etc"
+                type="text"
+                placeholder="Sigla. Ex: CDC, CPC, etc..."
+            />
             <Select
                 name="crawlerTypeId"
                 label="Processador do Crawler"
