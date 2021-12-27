@@ -7,6 +7,7 @@ import Textarea from '../../../components/FormBase/TextArea'
 
 
 import Select from '../../FormBase/Select'
+import SimpleSelect from '../../FormBase/SimpleSelect'
 
 export default function CrawlerForm() {
     return (
@@ -70,6 +71,14 @@ export default function CrawlerForm() {
                 label="Sigla do Código ou decreto, etc"
                 type="text"
                 placeholder="Sigla. Ex: CDC, CPC, etc..."
+            />
+            <SimpleSelect
+                name="blockType"
+                label="Tipo do bloco a ser criado"
+                options={[{ name: 'Código', value: 'CODIGO' }, { name: 'Decreto', value: 'DECRETO' }]}
+                placeholder='Selecione tipo'
+                dataLabel='name'
+                dataValue='value'
             />
             <Select
                 name="crawlerTypeId"

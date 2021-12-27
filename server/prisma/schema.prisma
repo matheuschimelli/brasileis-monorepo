@@ -40,8 +40,9 @@ model BlockAuthor {
 }
 
 model LawBlock {
-  id   String    @id @default(cuid())
-  type BlockType @default(ARTIGO_LEI)
+  id       String    @id @default(cuid())
+  type     BlockType @default(ARTIGO_LEI)
+  isActive Boolean   @default(true)
 
   source String? //url to be crawled
 
@@ -158,8 +159,11 @@ model Crawler {
   slug                 String?
   mainBlockTitle       String?
   mainBlockDescription String?
-  version              Int?    @default(1)
+  version              Int?      @default(1)
+  blockType            BlockType @default(CODIGO)
 
+  originalHtml      String?
+  pageTextToCompare String?
 
 
   lawBlock LawBlock? @relation(fields: [lawBlockId], references: [id], onDelete: Cascade)

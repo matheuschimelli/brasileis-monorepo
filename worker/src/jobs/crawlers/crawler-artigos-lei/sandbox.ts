@@ -236,10 +236,22 @@ export default async function (job: Job) {
       return lawParser()
     });
 
+    const pageText = await page.evaluate(() => {
+      var body = document.querySelector("body")
+      const text = body?.textContent!.replace("\t", " ").replace("  ", " ").replace("\n", " ").replace("\n\n", "").replace(/(\r\n|\n|\r)/gm, "").trim()
+      return text
+    })
+
+    const pageHtml = await page.evaluate(() => {
+      var markup = document.documentElement.innerHTML;
+      return markup
+
+    })
+
     await sendResult({
       queue: jobOptions.queue,
       data: jobData,
-      result: { data: job.data, result: articles }
+      result: { data: job.data, result: { articles, pageHtml, pageText, } }
     })
     // Close browser
     await browser.close();

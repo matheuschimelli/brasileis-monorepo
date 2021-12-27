@@ -1,6 +1,6 @@
 import { queue } from './job-utils'
 import { handler } from '@modules/jobs/test-job/handler'
-import { handleJobResults } from '@modules/jobs/handle-job-results/handle-job-results-handler'
+import handleJobResults from '@modules/jobs/handle-job-results/handle-job-results-handler'
 import cronJobCheckerHandler from '@modules/jobs/cron-job-checker/handler'
 
 export const WorkerServer = queue('WorkerServer')

@@ -1,7 +1,6 @@
 import { Request, Response } from "express"
 import {
     allBlocks,
-    createLawBlock,
     removeLawBlock,
     findBlockAndAllContentById,
     search as searchBlock,
@@ -47,8 +46,8 @@ export const search = async (req: Request, res: Response) => {
 
 export const create = async (req: Request, res: Response) => {
     const { data } = req.body
-    const lawBlock = await createLawBlock(data)
-    return res.send(lawBlock)
+    //const lawBlock = await createLawBlock(data)
+    return res.send('lawBlock')
 }
 
 

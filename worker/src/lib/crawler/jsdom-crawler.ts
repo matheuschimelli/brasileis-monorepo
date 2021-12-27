@@ -248,11 +248,27 @@ export const processHtml = (html: Html) => {
 
 }
 
+const getPageText = (html: string) => {
+    const dom = new JSDOM(html, {
+        resources: "usable",
+        runScripts: "dangerously"
+    });
+
+    const window = dom.window
+    const document = dom.window.document
+    var body = document.querySelector("body")
+    const text = body?.textContent!.replace("\t", " ").replace("  ", " ").replace("\n", " ").replace("\n\n", "").replace(/(\r\n|\n|\r)/gm, "").trim()
+    return text
+}
+
 export const crawlJsDom = async (url: string) => {
     try {
         const html = await request(url)
         const articles = processHtml(html)
-        return articles
+        const pageText = getPageText(html)
+
+        return { articles, pageHtml: html, pageText }
+
     } catch (err: any) {
         throw new Error(err)
     }

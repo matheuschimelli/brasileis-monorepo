@@ -1,5 +1,6 @@
 import { processOnWorker } from '@lib/bull';
 import prisma from '@lib/prisma'
+import { BlockType } from '@prisma/client';
 
 type CrawlerInput = {
     id?: string
@@ -15,6 +16,7 @@ type CrawlerInput = {
     version: number
     isUrlOnly?: boolean
     notifyUpdates?: boolean
+    blockType: BlockType
 
 }
 export const index = async (page: number) => {
@@ -45,7 +47,8 @@ export const create = async ({
     mainBlockTitle,
     version,
     crawlerTypeId,
-    slug
+    slug,
+    blockType
 }: CrawlerInput) => {
     const newCrawler = await prisma.crawler.create({
         data: {
@@ -59,6 +62,7 @@ export const create = async ({
             mainBlockDescription,
             version,
             slug,
+            blockType,
             crawlerType: {
                 connect: {
                     id: crawlerTypeId
@@ -81,7 +85,8 @@ export const update = async ({
     isUrlOnly,
     notifyUpdates,
     crawlerTypeId,
-    slug
+    slug,
+    blockType
 }: CrawlerInput) => {
     const updateCrawler = await prisma.crawler.update({
         where: {
@@ -98,6 +103,7 @@ export const update = async ({
             mainBlockDescription,
             version,
             slug,
+            blockType,
             crawlerType: {
                 connect: {
                     id: crawlerTypeId

@@ -7,13 +7,14 @@ const handler = async (job: Job) => {
         const jobOptions = job.data
         const jobData = jobOptions.jobData
 
-        const result = await crawlJsDom(jobData.source)
+        const { articles, pageHtml, pageText } = await crawlJsDom(jobData.source)
 
-        if (result.length == 0 || !result) throw new Error("Not articles were found from the provided url source")
+        if (articles.length == 0 || !articles) throw new Error("Not articles were found from the provided url source")
+
         return await sendResult({
             queue: jobOptions.queue,
             data: jobData,
-            result: { data: job.data, result: result }
+            result: { data: job.data, result: { articles, pageHtml, pageText } }
         })
 
     } catch (err) {
