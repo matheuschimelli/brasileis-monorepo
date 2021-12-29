@@ -12,13 +12,13 @@ type IterateInsertParams = {
 }
 
 type UpdateParams = {
-    oldData: any[]
-    newData: any[]
-    parentId: string
-    name: string
-    codeName: string
-    masterLawBlock: any,
-    masterBlockId: string,
+    oldData?: any[]
+    newData?: any[]
+    parentId?: string
+    name?: string
+    codeName?: string
+    masterLawBlock?: any,
+    masterBlockId?: string,
 }
 export const allBlocks = async () => {
     return await prisma.lawBlock.findMany({
@@ -314,7 +314,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
 export async function updateLawBlockFromArray(
     { newData, masterBlockId }: UpdateParams) {
 
-    for (const newArticle of newData) {
+    for (const newArticle of newData!) {
         const oldArticle = await prisma.lawBlock.findFirst({
             where: {
                 belongsTo: {
