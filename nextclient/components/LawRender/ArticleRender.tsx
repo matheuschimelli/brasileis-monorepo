@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Text, Box, Menu, MenuButton, MenuItem, useDisclosure, MenuList, Button, useClipboard, useToast } from '@chakra-ui/react'
+import { Text, Box, Menu, MenuButton, MenuItem, useDisclosure, MenuList, IconButton, useClipboard, useToast } from '@chakra-ui/react'
 import { ChevronDownIcon } from '@chakra-ui/icons';
 const RenderType = ({ articleType }: any) => {
     switch (articleType) {
@@ -61,35 +61,39 @@ export const ArticleRender = ({ article }: { article: any }) => {
             <Text
                 fontSize="17px"
                 style={{ textIndent: "2em" }}
-                lineHeight="normal"
+                lineHeight="revert"
                 mt="1em"
                 mb="1em"
             >
-                <Menu>
-                    <MenuButton as={Button} rightIcon={<ChevronDownIcon />} size='xs'>
+                <Box display="flex" flexDir="row" alignItems="baseline">
+                    <Menu>
+                        <MenuButton as={IconButton} icon={<ChevronDownIcon />} size='xs' colorScheme='blue' mr="2" variant='outline' aria-label='Opções do Artigo'>
 
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem>Abrir Artigo</MenuItem>
-                        <MenuItem onClick={() => handleCopyClipboard(article.value)}>Copiar</MenuItem>
-                    </MenuList>
-                </Menu>
-                <Link href={`/finder/${article.identifier}/${article.id}`} passHref>
-                    <Box as="a" cursor="pointer" color="blue.600" fontWeight="bold" onClick={handleOpenOptions}>
-                        <RenderType articleType={article.type} /> {article.name}
+                        </MenuButton>
+                        <MenuList>
+                            <MenuItem>Abrir Artigo</MenuItem>
+                            <MenuItem onClick={() => handleCopyClipboard(article.value)}>Copiar</MenuItem>
+                        </MenuList>
+                    </Menu>
+                    <Box>
+                        <Link href={`/finder/${article.identifier}/${article.id}`} passHref>
+                            <Box as="a" cursor="pointer" color="blue.600" fontWeight="bold" onClick={handleOpenOptions}>
+                                <RenderType articleType={article.type} /> {article.name}
+                            </Box>
+                        </Link>
+                        {" "}
+                        {article.value}
+                        {article.content &&
+                            article.content.map((subArticles: any) => {
+                                return (
+                                    <ArticleRender
+                                        article={subArticles}
+                                        key={article.value}
+                                    />
+                                );
+                            })}
                     </Box>
-                </Link>
-                {" "}
-                {article.value}
-                {article.content &&
-                    article.content.map((subArticles: any) => {
-                        return (
-                            <ArticleRender
-                                article={subArticles}
-                                key={article.value}
-                            />
-                        );
-                    })}
+                </Box>
             </Text>
         </>
     );

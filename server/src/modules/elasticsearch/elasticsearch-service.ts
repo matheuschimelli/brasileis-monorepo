@@ -27,7 +27,7 @@ export const findManyByType = async ({ type }: { type: string }) => {
     return doc
 }
 
-export const findAll = async (index: string, type: string): Promise<any[] | null> => {
+export const findAll = async (): Promise<any[] | null> => {
     const docs = await elasticSearchClient.search({
         index: esIndex,
         body: {
@@ -53,6 +53,7 @@ export const upsert = async ({ docId, document }: { docId: string, document: any
             id: docId,
             body: {
                 doc: {
+                    type: 'lawBlock',
                     ...document
                 },
                 doc_as_upsert: true

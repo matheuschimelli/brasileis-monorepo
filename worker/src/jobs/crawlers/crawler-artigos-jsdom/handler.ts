@@ -14,7 +14,7 @@ const handler = async (job: Job) => {
         return await sendResult({
             queue: jobOptions.queue,
             data: jobData,
-            result: { data: job.data, result: { articles, pageHtml, pageText } }
+            result: { data: job.data, articles, pageHtml, pageText }
         })
 
     } catch (err) {

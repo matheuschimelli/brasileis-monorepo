@@ -12,7 +12,7 @@ export default function LawRender({ data }: { data: any }) {
       <Flex shadow="2xl" flexDirection={{ sm: "column-reverse", md: "row" }}>
         <Box flex="1" padding="1em 80px 5em 80px">
           <Text fontSize="3xl" fontWeight="bold">
-            Código de Defesa do Consumidor
+            {data.details.title}
           </Text>
 
           {data.content.map((article: any) => {
@@ -27,7 +27,7 @@ export default function LawRender({ data }: { data: any }) {
           })}
         </Box>
 
-        <Sidebar title="Código de Defesa do Consumidor" data={data.content}>
+        <Sidebar title={data.details.title} data={data.content}>
 
         </Sidebar>
       </Flex>

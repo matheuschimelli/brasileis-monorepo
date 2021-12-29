@@ -52,6 +52,7 @@ export default async function (job: Job) {
 
         const removeAnchors = () => {
           Array.from(document.querySelector("body").querySelectorAll("a")).forEach(e => e.remove())
+          Array.from(document.querySelector("body").querySelectorAll("script")).forEach(e => e.remove())
         }
 
         function getParagraphs(el) {
@@ -238,7 +239,9 @@ export default async function (job: Job) {
 
     const pageText = await page.evaluate(() => {
       var body = document.querySelector("body")
-      const text = body?.textContent!.replace("\t", " ").replace("  ", " ").replace("\n", " ").replace("\n\n", "").replace(/(\r\n|\n|\r)/gm, "").trim()
+      var singleText = Array.from(body!.querySelectorAll("p"))
+      var pageText = singleText.map(e => e.textContent!.trim()).join()
+      const text = pageText.replace("\t", " ").replace("  ", " ").replace("\n", " ").replace("\n\n", "").replace(/(\r\n|\n|\r)/gm, "").trim()
       return text
     })
 
@@ -251,7 +254,7 @@ export default async function (job: Job) {
     await sendResult({
       queue: jobOptions.queue,
       data: jobData,
-      result: { data: job.data, result: { articles, pageHtml, pageText, } }
+      result: { data: job.data, articles, pageHtml, pageText }
     })
     // Close browser
     await browser.close();

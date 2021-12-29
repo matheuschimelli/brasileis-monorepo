@@ -14,10 +14,11 @@ type IterateInsertParams = {
 type UpdateParams = {
     oldData: any[]
     newData: any[]
-    masterParentId: string
+    parentId: string
     name: string
     codeName: string
-    masterLawBlock: any
+    masterLawBlock: any,
+    masterBlockId: string,
 }
 export const allBlocks = async () => {
     return await prisma.lawBlock.findMany({
@@ -46,22 +47,25 @@ const handleArticleType = (articleType: BlockType) => {
     if (articleType == 'INCISO_LEI') return 'inciso'
     if (articleType == 'PARAGRAFO_LEI') return 'paragrafo'
     if (articleType == 'PARAGRAFO_UNICO_LEI') return 'paragrafo unico'
+    if (articleType == 'ALINEA_LEI') return 'alinea'
 }
 
-async function insertArticle({ article, masterParentId, codeName }: {
+async function insertArticle({ article, parentId, codeName, masterParentId }: {
     article: any,
-    masterParentId?: string,
-    codeName: string
+    parentId?: string,
+    codeName: string,
+    masterParentId: string
 }): Promise<{ id: string, name: string, type: BlockType }> {
     const newArticle = await prisma.lawBlock.create({
         data: {
-            ...(masterParentId && {
+            ...(parentId && {
                 parentBlock: {
                     connect: {
-                        id: masterParentId
+                        id: parentId
                     }
                 }
             }),
+            index: article.index,
             type: article.type as BlockType,
             name: article.name,
             title: `${codeName} artigo ${article.name}`,
@@ -72,11 +76,22 @@ async function insertArticle({ article, masterParentId, codeName }: {
             identifier: article.identifier,
             source: article.source,
             slug: {
-                connect: {
-                    value: article.slug.value
+                connectOrCreate: {
+                    where: {
+                        value: article.slug.value
+                    },
+                    create: {
+                        value: article.slug.value,
+                        title: 'CDC'
+                    }
                 }
             },
-            urlSlug: createSlug(`${article.slug.value} ${article.name} ${handleArticleType(article.type)} `)
+            urlSlug: createSlug(`${article.slug.value} ${article.name} ${handleArticleType(article.type)} `),
+            belongsTo: {
+                connect: {
+                    id: masterParentId
+                }
+            }
         }
     })
 
@@ -136,7 +151,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         // Lida com as hipóteses possíveis de artigos
 
         if (article.type as BlockType == 'ARTIGO_LEI') {
-            const { id, name, type } = await insertArticle({ article, codeName, masterParentId })
+            const { id, name, type } = await insertArticle({ article, codeName, parentId: masterParentId, masterParentId })
             lastInsert.id = id
             lastInsert.name = name
             lastInsert.type = 'ARTIGO_LEI'
@@ -146,7 +161,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = 'PARAGRAFO_UNICO_LEI'
@@ -156,7 +171,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = 'PARAGRAFO_LEI'
@@ -166,7 +181,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -176,7 +191,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -188,7 +203,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -199,7 +214,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastParagraphId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastParagraphId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -209,7 +224,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastParagraphId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastParagraphId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -220,7 +235,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastInciseId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastInciseId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -229,7 +244,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -239,7 +254,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -249,7 +264,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -260,7 +275,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastInciseId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastInciseId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -269,7 +284,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -278,7 +293,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -287,7 +302,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -296,231 +311,84 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
 
     }
 }
-export async function updateLawBlockFromArray({
-    oldData,
-    newData,
-    masterParentId,
-    codeName }: UpdateParams) {
+export async function updateLawBlockFromArray(
+    { newData, masterBlockId }: UpdateParams) {
 
-    var lastInsert = {
-        type: null,
-        id: null
-    } as {
-        id: null | string,
-        type: BlockType | null,
-        name: string | null
-    }
-
-    var lastArticleId: string | null = null
-    var lastInciseId: string | null = null
-    var lastParagraphId: string | null = null
-
-    /**
-     * artigo
-     *  - paragrafo unico
-     * 
-     *  - paragrafo
-     *  - - inciso
-     *  - - - alinea
-     * 
-     *  - - inciso
-     * 
-     *  - - inciso
-     *  - - - alinea
-     */
-    for (const article of oldData) {
-
-        // Lida com as hipóteses possíveis de artigos
-
-        if (article.type as BlockType == 'ARTIGO_LEI') {
-            const { id, name, type } = await insertArticle({ article, codeName, masterParentId })
-            lastInsert.id = id
-            lastInsert.name = name
-            lastInsert.type = 'ARTIGO_LEI'
-            lastArticleId = id
-        }
-
-        else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = 'PARAGRAFO_UNICO_LEI'
+    for (const newArticle of newData) {
+        const oldArticle = await prisma.lawBlock.findFirst({
+            where: {
+                belongsTo: {
+                    id: masterBlockId,
+                },
+                type: newArticle.type,
+                source: newArticle.source,
+                title: newArticle.title,
+                name: newArticle.name,
+                identifier: newArticle.identifier,
+                slug: {
+                    value: {
+                        contains: newArticle.slug
+                    }
+                }
+            }
+        })
+        if (oldArticle) {
+            if (oldArticle.value !== newArticle.value) {
+                await prisma.lawBlock.update({
+                    where: {
+                        id: oldArticle.id
+                    },
+                    data: {
+                        value: newArticle.value,
+                        originalText: newArticle.originalText
+                    }
+                })
             }
         }
-
-        else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = 'PARAGRAFO_LEI'
-                lastParagraphId = id
-            }
-        }
-        else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'INCISO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-                lastInciseId = id
-            }
-        }
-        else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-
-        // Lida as hipóteses possíveis de parágrafos
-
-        else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-                lastParagraphId = id
-            }
-        }
-
-        else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'INCISO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastParagraphId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-
-        else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastParagraphId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-
-        // Lida com as hipóteses possíveis de incisos
-        else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastInciseId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-        else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'INCISO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-                lastInciseId = id
-            }
-        }
-        else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-                lastInciseId = id
-            }
-        }
-        else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-                lastInciseId = id
-            }
-        }
-        // Lida com as hipóteses possíveis de alíneas
-        else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'ALINEA_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastInciseId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-        else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'INCISO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-        else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-        else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
-            if (lastInsert.id) {
-                //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, masterParentId: lastArticleId })
-                lastInsert.id = id
-                lastInsert.name = name
-                lastInsert.type = type
-            }
-        }
-
     }
 }
 
-export const findBlockAndAllContentById = async (id: string) => {
-    //@TODO improve this content include loop
-    const blocks = await prisma.lawBlock.findUnique({
+export const findAll = async (id: string) => {
+    const block = await prisma.lawBlock.findFirst({
         where: {
-            id: id
+            id
         },
         include: {
-            content: {
-                include: {
-                    content: {
-                        include: {
-                            content: {
-                                include: {
-                                    content: {
-                                        include: {
-                                            content: true
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+            slug: true,
+            ownsBlocks: {
+                orderBy: {
+                    index: 'asc'
                 }
             }
         }
     })
-    return blocks
+
+    if (block) {
+        console.log(block.ownsBlocks)
+
+        return {
+            details: {
+                title: block.title,
+                description: block.value,
+                updatedAt: block.updatedAt,
+                createdAt: block.createdAt,
+                slug: block.slug?.value,
+                blockType: block.type
+            },
+            content: block.ownsBlocks
+        }
+    }
+}
+
+const generateTitle = (articleType: BlockType) => {
+    if (articleType == 'ARTIGO_LEI') return 'artigo'
+    if (articleType == 'CODIGO') return 'código'
+    if (articleType == 'DECRETO') return 'decreto'
+    if (articleType == 'INCISO_LEI') return 'inciso'
+    if (articleType == 'PARAGRAFO_LEI') return 'parágrafo'
+    if (articleType == 'PARAGRAFO_UNICO_LEI') return 'parágrafo unico'
+    if (articleType == 'ALINEA_LEI') return 'alínea'
+
 }
 export const findBlockById = async (id: string) => {
     const block = await prisma.lawBlock.findUnique({
@@ -528,6 +396,14 @@ export const findBlockById = async (id: string) => {
             id: id
         },
         include: {
+            slug: true,
+            belongsTo: {
+                select: {
+                    title: true,
+                    name: true,
+                    type: true,
+                }
+            },
             parentBlock: true,
             content: {
                 include: {
@@ -537,7 +413,24 @@ export const findBlockById = async (id: string) => {
         }
 
     })
-    return block
+
+    if (block) {
+        if (block.type !== 'ARTIGO_LEI') {
+
+        }
+        return {
+            details: {
+                title: `${block?.belongsTo?.title} ${block.parentBlock ? generateTitle(block.parentBlock.type) : ''} ${block.parentBlock ? block.parentBlock.name : ''} ${generateTitle(block.type)} ${block.name}`,
+                description: block.value,
+                updatedAt: block.updatedAt,
+                createdAt: block.createdAt,
+                slug: block.slug?.value,
+                blockType: block.type
+            },
+            block: block
+        }
+    }
+    throw new Error("Nada encontrado")
 }
 export const search = async (query: string) => {
     const result = await prisma.lawBlock.findMany({

@@ -2,9 +2,9 @@ import { Request, Response } from "express"
 import {
     allBlocks,
     removeLawBlock,
-    findBlockAndAllContentById,
+    findAll,
     search as searchBlock,
-    findBlockById
+    findBlockById,
 } from '@modules/law-block/law-block-service'
 
 export const index = async (req: Request, res: Response) => {
@@ -12,10 +12,10 @@ export const index = async (req: Request, res: Response) => {
     return res.send(lawBlock)
 }
 
-export const findById = async (req: Request, res: Response) => {
+export const findAllById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
-        const data = await findBlockAndAllContentById(id)
+        const data = await findAll(id)
         return res.send(data)
     } catch (err: any) {
         console.log(err)
@@ -44,12 +44,6 @@ export const search = async (req: Request, res: Response) => {
     }
 }
 
-export const create = async (req: Request, res: Response) => {
-    const { data } = req.body
-    //const lawBlock = await createLawBlock(data)
-    return res.send('lawBlock')
-}
-
 
 export const remove = async (req: Request, res: Response) => {
     try {
@@ -62,3 +56,4 @@ export const remove = async (req: Request, res: Response) => {
         return res.status(500).send("Nada alterado")
     }
 }
+

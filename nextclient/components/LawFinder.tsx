@@ -13,12 +13,11 @@ export default function LawFinder({ data }: { data: any }) {
       <Flex flexDirection={{ sm: "column-reverse", md: "row" }}>
         <Box flex="1" padding="1em 80px 5em 80px" display="flex" alignItems="center" justifyContent="center">
           <Box maxW={["full", "full", "600"]} bg="white" padding="5" h="full" shadow="base">
-            <Text fontSize="3xl" fontWeight="bold">
-              Código de Defesa do Consumidor
+            <Text fontSize="2xl" fontWeight="bold">
+              {data.details.title}
             </Text>
             <ArticleRender
-              article={data}
-              key={data.name}
+              article={data.block}
             />
           </Box>
         </Box>

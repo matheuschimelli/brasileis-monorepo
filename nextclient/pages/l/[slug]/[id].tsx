@@ -18,7 +18,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const req = await fetch(`http://localhost:8080/api/v1/law-block/${slug}/${id}`)
     const data = await req.json()
-    console.log(data)
 
     if (!data) {
         return {

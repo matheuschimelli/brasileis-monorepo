@@ -26,7 +26,10 @@ const lawParser = (window: DOMWindow, document: Document) => {
 
         const removeAnchors = () => {
             Array.from(document.querySelector("body")!.querySelectorAll("a")).forEach((e: any) => e.remove())
+            Array.from(document.querySelector("body")!.querySelectorAll("script")).forEach(e => e.remove())
+
         }
+
 
         function getParagraphs(el: string) {
             var content = document.querySelector(el)
@@ -172,11 +175,12 @@ const lawParser = (window: DOMWindow, document: Document) => {
                 return 'alínea.'
             }
         }
-        function orderedProcessor(paragraph: any) {
+        function orderedProcessor(paragraph: any, index: number) {
             paragraph = paragraph.textContent.trim()
 
             if (paragraph !== '') {
                 orderedArray.push({
+                    index,
                     type: getParagraphType(paragraph),
                     name: getNumber(paragraph),
                     value: getText(paragraph),
@@ -194,7 +198,7 @@ const lawParser = (window: DOMWindow, document: Document) => {
 
         function processParagraphsOrderedList() {
             if (rawParagraphs.length !== 0) {
-                rawParagraphs.forEach((el: any) => orderedProcessor(el))
+                rawParagraphs.forEach((el: any, index: number) => orderedProcessor(el, index))
             }
         }
 
@@ -233,10 +237,11 @@ export const request = async (url: string): Promise<Html> => {
     }
 }
 
-export const processHtml = (html: Html) => {
+export const processHtml = (html: Html, url: string) => {
     const dom = new JSDOM(html, {
         resources: "usable",
-        runScripts: "dangerously"
+        runScripts: "dangerously",
+        url
     });
 
     const window = dom.window
@@ -248,24 +253,28 @@ export const processHtml = (html: Html) => {
 
 }
 
-const getPageText = (html: string) => {
+const getPageText = (html: string, url: string) => {
     const dom = new JSDOM(html, {
         resources: "usable",
-        runScripts: "dangerously"
+        runScripts: "dangerously",
+        url
     });
 
     const window = dom.window
     const document = dom.window.document
+
     var body = document.querySelector("body")
-    const text = body?.textContent!.replace("\t", " ").replace("  ", " ").replace("\n", " ").replace("\n\n", "").replace(/(\r\n|\n|\r)/gm, "").trim()
+    var singleText = Array.from(body!.querySelectorAll("p"))
+    var pageText = singleText.map(e => e.textContent!.trim()).join()
+    const text = pageText.replace("\t", " ").replace("  ", " ").replace("\n", " ").replace("\n\n", "").replace(/(\r\n|\n|\r)/gm, "").trim()
     return text
 }
 
 export const crawlJsDom = async (url: string) => {
     try {
         const html = await request(url)
-        const articles = processHtml(html)
-        const pageText = getPageText(html)
+        const articles = processHtml(html, url)
+        const pageText = getPageText(html, url)
 
         return { articles, pageHtml: html, pageText }
 

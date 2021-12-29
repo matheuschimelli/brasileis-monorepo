@@ -1,6 +1,7 @@
 import prisma from "@lib/prisma"
 import { createLawBlockFromArray } from "@modules/law-block/law-block-service"
 import { BlockType } from "@prisma/client"
+import { removeOldBlocksFromES } from "../jobs"
 import { JobResult } from "./handle-job-results-handler"
 
 type CrawlerParams = {
@@ -35,7 +36,6 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
         where: {
             isActive: true,
             type: crawlerParams.blockType,
-            parentBlock: null,
             source: crawlerParams.source,
             slug: {
                 value: crawlerParams.slug
@@ -48,7 +48,7 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
 
                 }
             },
-            Crawler: {
+            crawler: {
                 name: crawlerParams.name
             }
         },
@@ -56,14 +56,17 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
             content: true
         }
     })
+    console.log(`block exists? ${masterLawBlock?.id}`)
 
     if (!masterLawBlock) {
         const newMasterLawBlock = await prisma.lawBlock.create({
             data: {
                 isActive: true,
-                title: crawlerParams.mainBlockTitle,
                 type: crawlerParams.blockType,
-                Crawler: {
+                source: crawlerParams.source,
+                title: crawlerParams.mainBlockTitle,
+                originalText: jobData.result.pageText,
+                crawler: {
                     connect: {
                         id: crawlerParams.id
                     }
@@ -82,11 +85,13 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
 
             }
         })
+        console.log(`CREATED NEW BLOCK ${newMasterLawBlock?.id}`)
+
         if (newMasterLawBlock) {
             const masterParentId = newMasterLawBlock.id
 
             await createLawBlockFromArray({
-                data: jobData.articles,
+                data: jobData.result.articles,
                 codeName: newMasterLawBlock.title!,
                 masterParentId,
                 name: newMasterLawBlock.title!,
@@ -95,10 +100,15 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
         }
 
     } else {
+
+        console.log(`mater block exist checking content ${masterLawBlock.id}`)
+
         const oldPageText = masterLawBlock.originalText
-        const newPageText = jobData.pageText
+        const newPageText = jobData.result.pageText
 
         if (oldPageText?.trim() !== newPageText.trim()) {
+            console.log(`mater block HAS UPDATE ${masterLawBlock.id}`)
+
             await prisma.lawBlock.update({
                 where: {
                     id: masterLawBlock.id
@@ -111,11 +121,13 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
 
             const newBlock = await prisma.lawBlock.create({
                 data: {
-                    isActive: true,
                     version: newBlockVersion,
-                    title: crawlerParams.mainBlockTitle,
+                    isActive: true,
                     type: crawlerParams.blockType,
-                    Crawler: {
+                    source: crawlerParams.source,
+                    title: crawlerParams.mainBlockTitle,
+                    originalText: jobData.result.pageText,
+                    crawler: {
                         connect: {
                             id: crawlerParams.id
                         }
@@ -137,14 +149,18 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
             if (newBlock) {
                 const masterParentId = newBlock.id
                 await createLawBlockFromArray({
-                    data: jobData.articles,
+                    data: jobData.result.articles,
                     codeName: newBlock.title!,
                     masterParentId,
                     name: newBlock.title!,
                     masterLawBlock: newBlock
                 })
+                await removeOldBlocksFromES.add({ masterBlockId: masterLawBlock.id })
             }
 
+        } else {
+            console.log("master block not need to update")
+            return Promise.resolve()
         }
 
     }

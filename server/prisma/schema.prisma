@@ -49,7 +49,7 @@ model LawBlock {
   version Int     @default(1)
   isRef   Boolean @default(false)
 
-  order Int @default(1)
+  index Int @default(1)
 
   title        String?
   name         String?
@@ -70,27 +70,48 @@ model LawBlock {
 
   subsOnly     Boolean @default(false)
   searchString String?
-
-  urlSlug String?
+  urlSlug      String?
 
   slug   Slug?   @relation(fields: [slugId], references: [id])
   slugId String?
 
-  blockId     String?
-  parentBlock LawBlock?  @relation("BlockContentParent", fields: [blockId], references: [id])
-  content     LawBlock[] @relation("BlockContentParent")
+
+  // - - - - - - - - - - - -
+  // SELF RELATIONS
+  // - - - - - - - - - - - -
+
+  // 'Belongs to' creates a relationship to the master block which carry all childrens blocks
+  // 'Belongs to' refers to a block with belongs to a master block which owns a lot of blocks
+  // A block belongs to a block
+  belongsTo           LawBlock?  @relation("LawBlockBelongsToMasterLawBlock", fields: [belongsToLawBlockId], references: [id], onDelete: Cascade)
+  belongsToLawBlockId String?
+  // a block owns blocks
+  ownsBlocks          LawBlock[] @relation("LawBlockBelongsToMasterLawBlock")
+
+  // a parent block has a content
+  // a child block has a parent
 
 
-  relatedBlockId String?
+  content       LawBlock[] @relation("LawBlockHasContent") // parent block
+  parentBlock   LawBlock?  @relation("LawBlockHasContent", fields: [parentBlockId], references: [id], onDelete: Cascade)
+  parentBlockId String?
+
+  // parentBlock   LawBlock? @relation("BlockContentParent", fields: [parentBlockId], references: [id], onDelete: Cascade)
+  // parentBlockId String?
+  // content LawBlock[] @relation("BlockContentParent")
+
   isRelatedTo    LawBlock?  @relation("BlockRelatedBlock", fields: [relatedBlockId], references: [id])
+  relatedBlockId String?
   relatedBlocks  LawBlock[] @relation("BlockRelatedBlock")
 
   author        BlockAuthor? @relation(fields: [blockAuthorId], references: [id])
   blockAuthorId String?
 
+  crawler   Crawler? @relation(fields: [crawlerId], references: [id], onDelete: Cascade)
+  crawlerId String?  @unique
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  Crawler   Crawler?
 }
 
 model Post {
@@ -166,11 +187,12 @@ model Crawler {
   pageTextToCompare String?
 
 
-  lawBlock LawBlock? @relation(fields: [lawBlockId], references: [id], onDelete: Cascade)
+  lawBlock LawBlock?
 
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  lawBlockId    String?  @unique
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  lawBlockId String?  @unique
+
   crawlerTypeId String?
 }
 

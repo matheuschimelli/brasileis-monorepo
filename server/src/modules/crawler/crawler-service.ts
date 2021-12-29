@@ -60,7 +60,7 @@ export const create = async ({
             source,
             mainBlockTitle,
             mainBlockDescription,
-            version,
+            version: Number(version),
             slug,
             blockType,
             crawlerType: {
@@ -101,7 +101,7 @@ export const update = async ({
             source,
             mainBlockTitle,
             mainBlockDescription,
-            version,
+            version: Number(version),
             slug,
             blockType,
             crawlerType: {
