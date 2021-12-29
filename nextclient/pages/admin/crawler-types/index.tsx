@@ -9,7 +9,7 @@ import { checkAdmin } from "../../../lib/checkAdmin";
 export default function Swibc({ crawlers }: { crawlers: any[] }) {
     return (
         <AdminLayout title="Tipos de Crawlers - Brasileis Admin">
-            <CrudBar title='Tipos de Crawlers' create />
+            <CrudBar title='Tipos de Crawlers' path="/crawler-types" />
             <ShowItems data={crawlers} itemTitle="name" itemValue="id" pathTo="crawler-types" viewMode="grid" />
         </AdminLayout>
     );

@@ -7,7 +7,7 @@ type Props = {
 }
 const Busca = ({ data }: Props) => {
     return (
-        <DefaultLayout title="teste">
+        <DefaultLayout title={data.details.title}>
             <LawRender data={data} />
         </DefaultLayout>
     );

@@ -3,7 +3,7 @@ import React from "react";
 
 type Props = {
   results?: [];
-  total?: string;
+  total?: any;
   error?: boolean;
 };
 export default function SearchPage({ results, total, error }: Props) {
@@ -47,7 +47,7 @@ export default function SearchPage({ results, total, error }: Props) {
         ) : (
           <Stack spacing={{ base: "8", md: "10" }} flex="3">
             <Heading fontSize="md" fontWeight="bold">
-              {total} Resultados
+              {total.value} Resultados
             </Heading>
 
             <Stack spacing="6">
@@ -63,7 +63,7 @@ export default function SearchPage({ results, total, error }: Props) {
                     <Link
                       fontSize="xl"
                       fontWeight="bold"
-                      href={`/legis/${result._source.slug}`}
+                      href={`/finder/${result._source.slug}/${result._id}`}
                       pb="10"
                     >
                       <Text>{result._source.title}</Text>
@@ -71,11 +71,10 @@ export default function SearchPage({ results, total, error }: Props) {
                     <Text>
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: `${
-                            result.highlight
-                              ? result.highlight.textContent[0]
-                              : ""
-                          }`,
+                          __html: `${result.highlight
+                            ? result.highlight.originalText[0]
+                            : ""
+                            }`,
                         }}
                       ></div>
                     </Text>

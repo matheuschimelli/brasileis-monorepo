@@ -11,7 +11,7 @@ import { Textarea } from "@chakra-ui/react";
 export default function NewCrawler() {
     return (
         <AdminLayout title="Tipos de Crawler - Brasileis Admin">
-            <CrudBar title='Novo Tipo Crawler' update />
+            <CrudBar title='Novo Tipo Crawler' path="/crawler-types" />
             <FormBase
                 create
                 formTitle="Editar Tipo de Crawler"

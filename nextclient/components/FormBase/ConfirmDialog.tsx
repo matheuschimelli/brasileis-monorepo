@@ -30,6 +30,7 @@ export default function AlertDialog({ title, description, isOpened, onConfirm, i
         <>
             <ChakraAlertDialog
                 isOpen={isOpen}
+                //@ts-ignore
                 leastDestructiveRef={cancelRef}
                 onClose={onClose}
             >
@@ -44,7 +45,9 @@ export default function AlertDialog({ title, description, isOpened, onConfirm, i
                         </AlertDialogBody>
 
                         <AlertDialogFooter>
-                            <Button ref={cancelRef} onClick={onCancel}>
+                            <Button
+                                //@ts-ignore
+                                ref={cancelRef} onClick={onCancel}>
                                 Cancelar
                             </Button>
                             <Button colorScheme='red' onClick={onConfirm} ml={3} isLoading={isLoading}>

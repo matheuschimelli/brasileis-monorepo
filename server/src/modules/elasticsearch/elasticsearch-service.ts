@@ -72,8 +72,8 @@ const generateESQuery = (searchTerm: string) => {
             multi_match: {
                 query: searchTerm,
                 fields: [
-                    'title^2',
-                    'textContent'
+                    'originalText^2',
+                    'title'
                 ]
             }
         },
@@ -81,11 +81,8 @@ const generateESQuery = (searchTerm: string) => {
             'title',
             'updatedAt',
             'slug',
-            'url',
-            'categories',
-            'subCategories',
-            'categoriesIds',
-            'subCategoriesIds'
+            'originalText',
+            'source'
         ],
         highlight: {
             order: 'score',
@@ -98,22 +95,22 @@ const generateESQuery = (searchTerm: string) => {
             ],
             fragment_size: 300,
             fields: {
-                textContent: {
-                    number_of_fragments: 3
+                originalText: {
+                    number_of_fragments: 1
                 }
             },
             highlight_query: {
                 bool: {
                     must: {
                         match: {
-                            textContent: {
+                            originalText: {
                                 query: searchTerm
                             }
                         }
                     },
                     should: {
                         match_phrase: {
-                            textContent: {
+                            originalText: {
                                 query: searchTerm,
                                 slop: 1,
                                 boost: 10.0
@@ -127,19 +124,31 @@ const generateESQuery = (searchTerm: string) => {
     }
 }
 
-export const search = async ({ str, from, size }: { str: string, from: number, size: number }) => {
-    if (!str) throw new Error("Pesquisa não pode ser em branco")
+export const search = async ({
+    searchQuery,
+    from,
+    size
+}: {
+    searchQuery: string,
+    from: number,
+    size: number
+}) => {
+    if (!searchQuery) throw new Error("Pesquisa não pode ser em branco")
+
     try {
-        const searchQuery = generateESQuery(str)
+        const queryDsl = generateESQuery(searchQuery)
         const searchResults = await elasticSearchClient.search({
             index: esIndex,
             from: from,
             size: 15,
             // filter_path: ['hits.hits'],
-            body: searchQuery
+            body: queryDsl
         });
 
-        return { results: searchResults };
+        //@ts-ignore
+        const filteredResults = searchResults.body.hits.hits.map(({ _index, _type, _score, ...keepAttrs }) => keepAttrs)
+
+        return { results: filteredResults, total: searchResults.body.hits.total };
 
     } catch (error) {
         console.log(error);

@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import NavItem from "./NavItem";
 import { FaClipboardCheck, FaRss } from "react-icons/fa";
-import { AiFillGift } from "react-icons/ai";
 import { BsGearFill } from "react-icons/bs";
 import { HiCode, HiCollection } from "react-icons/hi";
 import { MdHome, MdKeyboardArrowRight } from "react-icons/md";
@@ -74,7 +73,7 @@ export default function SidebarContent(props: any) {
                     <Icon
                         as={MdKeyboardArrowRight}
                         ml="auto"
-                        transform={integrations.isOpen && "rotate(90deg)"}
+
                     />
                 </NavItem>
                 <Collapse in={integrations.isOpen}>

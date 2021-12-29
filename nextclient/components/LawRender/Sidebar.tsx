@@ -95,7 +95,7 @@ export default function Sidebar({ children, title, data }: Props) {
       bg="#f2f1ef"
       width={{ sm: "auto", md: "450px" }}
       position={{ sm: "relative", md: "sticky" }}
-      top={{ sm: "0", md: "20" }}
+      top={{ sm: "0", md: 20 }}
       alignItems="start"
       justifyItems="start"
       justifyContent="start"

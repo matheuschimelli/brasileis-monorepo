@@ -5,7 +5,7 @@ import { ChevronDownIcon } from '@chakra-ui/icons';
 const RenderType = ({ articleType }: any) => {
     switch (articleType) {
         case "ARTIGO_LEI":
-            return <>Art. </>;
+            return <>Art.</>;
 
         case "PARAGRAFO_UNICO_LEI":
             return <></>;
@@ -23,7 +23,7 @@ const RenderType = ({ articleType }: any) => {
             return <>Parágrafo Único:</>;
 
         default:
-            return <>Art. </>;
+            return <>Art.</>;
     }
 };
 
@@ -60,8 +60,6 @@ export const ArticleRender = ({ article }: { article: any }) => {
 
             <Text
                 fontSize="17px"
-                style={{ textIndent: "2em" }}
-                lineHeight="revert"
                 mt="1em"
                 mb="1em"
             >
@@ -75,15 +73,22 @@ export const ArticleRender = ({ article }: { article: any }) => {
                             <MenuItem onClick={() => handleCopyClipboard(article.value)}>Copiar</MenuItem>
                         </MenuList>
                     </Menu>
-                    <Box>
-                        <Link href={`/finder/${article.identifier}/${article.id}`} passHref>
-                            <Box as="a" cursor="pointer" color="blue.600" fontWeight="bold" onClick={handleOpenOptions}>
-                                <RenderType articleType={article.type} /> {article.name}
-                            </Box>
-                        </Link>
-                        {" "}
-                        {article.value}
-                        {article.content &&
+                    <Box >
+                        <Text
+                            fontSize="17px"
+                            mt="1em"
+                            mb="1em"
+                            style={{ textIndent: "2em" }}
+                        >
+                            <Link href={`/finder/${article.identifier}/${article.id}`} passHref>
+                                <Box as="a" cursor="pointer" color="blue.600" fontWeight="bold" onClick={handleOpenOptions}>
+                                    <RenderType articleType={article.type} /> {article.name}
+                                </Box>
+                            </Link>
+                            {" "}
+                            {article.value}
+                        </Text>
+                        {/* {article.content &&
                             article.content.map((subArticles: any) => {
                                 return (
                                     <ArticleRender
@@ -91,7 +96,7 @@ export const ArticleRender = ({ article }: { article: any }) => {
                                         key={article.value}
                                     />
                                 );
-                            })}
+                            })} */}
                     </Box>
                 </Box>
             </Text>
