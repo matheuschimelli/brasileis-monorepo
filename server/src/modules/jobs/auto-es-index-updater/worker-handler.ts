@@ -1,5 +1,6 @@
 import prisma from "@lib/prisma";
 import { remove } from "@modules/elasticsearch/elasticsearch-service";
+import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service";
 import { Job } from "bull";
 
 const handler = async (job: Job) => {
@@ -14,6 +15,10 @@ const handler = async (job: Job) => {
 
         return Promise.resolve()
     } catch (error) {
+        sendAlertToTelegram(`
+        🛑Erro em: auto-es-index-updater worker-handler🛑
+        Erro: ${error}
+        `);
         return Promise.reject(error)
     }
 }

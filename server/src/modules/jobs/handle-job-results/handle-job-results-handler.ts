@@ -1,6 +1,7 @@
 import { BlockType } from "@prisma/client";
 import { Job } from "bull";
 import { handleLawBlockCode } from '@modules/jobs/handle-job-results/handle-code-lawBlock'
+import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service";
 /**
  * Brasileis job result handler - How it Works (or how should it works)
  * 
@@ -61,7 +62,12 @@ export const handler = async (job: Job) => {
         return Promise.resolve()
 
     } catch (error: any) {
+        sendAlertToTelegram(`
+    🛑Erro em: handle-code-lawBlock🛑
+        Erro: ${error}
+        `);
         return Promise.reject(error)
+
     }
 }
 
