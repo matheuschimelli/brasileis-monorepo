@@ -1,20 +1,33 @@
 import { Box, Button, Center, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons'
-import React, { useState, useRef, LegacyRef, EventHandler } from "react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";
+import * as ga from '../../lib/ga'
 
 export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>()
+
+  const sendEventToGA = () => {
+    ga.event({
+      action: "search",
+      params: {
+        search_term: query
+      }
+    })
+  }
+
   const preventDefault = (f: any) => (e: any) => {
     e.preventDefault();
     f(e);
   };
-  const router = useRouter();
-  const [query, setQuery] = useState("");
-  const inputRef = useRef<HTMLInputElement>()
 
   const handleParam = (e: any) => setQuery(e.target.value);
 
   const handleSubmit = preventDefault(() => {
+    sendEventToGA()
+
     router.push({
       pathname: "/busca",
       query: { q: query },

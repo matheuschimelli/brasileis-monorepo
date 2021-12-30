@@ -126,21 +126,23 @@ const generateESQuery = (searchTerm: string) => {
 
 export const search = async ({
     searchQuery,
-    from,
-    size
+    page
 }: {
     searchQuery: string,
-    from: number,
-    size: number
+    page: number
 }) => {
     if (!searchQuery) throw new Error("Pesquisa não pode ser em branco")
 
     try {
+
         const queryDsl = generateESQuery(searchQuery)
+
+        const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
+
         const searchResults = await elasticSearchClient.search({
             index: esIndex,
-            from: from,
-            size: 15,
+            from: skipItems,
+            size: 10,
             // filter_path: ['hits.hits'],
             body: queryDsl
         });

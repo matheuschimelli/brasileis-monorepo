@@ -1,5 +1,6 @@
 import { Box, Stack, Heading, Text, Flex, Link } from "@chakra-ui/react";
 import React from "react";
+import SearchPagination from "./Pagination";
 
 type Props = {
   results?: [];
@@ -21,10 +22,12 @@ export default function SearchPage({ results, total, error }: Props) {
           padding="4"
           backgroundColor="gray.100"
           borderRadius="md"
+          position="sticky"
+          top="20"
         >
-          <Heading fontSize="xl" fontWeight="bold">
+          <Text fontSize="xl" >
             Filtros de busca
-          </Heading>
+          </Text>
         </Flex>
 
         {error ? (
@@ -45,18 +48,18 @@ export default function SearchPage({ results, total, error }: Props) {
             </Box>
           </Stack>
         ) : (
-          <Stack spacing={{ base: "8", md: "10" }} flex="3">
-            <Heading fontSize="md" fontWeight="bold">
+          <Stack spacing={{ base: "8", md: "4" }} flex="3">
+            <Text as="span" color="gray.700">
               {total.value} Resultados
-            </Heading>
+            </Text>
 
-            <Stack spacing="6">
+            <Stack spacing="2">
               {results?.map((result: any) => {
                 return (
                   <Box
                     padding="4"
                     borderRadius="md"
-                    _hover={{ backgroundColor: "gray.50" }}
+
                     flexDirection="column"
                     key={result._source.id}
                   >
@@ -65,6 +68,7 @@ export default function SearchPage({ results, total, error }: Props) {
                       fontWeight="bold"
                       href={`/finder/${result._source.slug}/${result._id}`}
                       pb="10"
+                      color="blue.600"
                     >
                       <Text>{result._source.title}</Text>
                     </Link>
@@ -82,6 +86,8 @@ export default function SearchPage({ results, total, error }: Props) {
                 );
               })}
             </Stack>
+
+            <SearchPagination total={total!.value as number} />
           </Stack>
         )}
       </Stack>

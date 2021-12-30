@@ -8,13 +8,14 @@ type Props = {
   results?: [];
   searchQuery?: string;
   error?: boolean;
-  total?: string;
+  total?: any;
 };
 
 export default function Busca({ results, error, total, searchQuery }: Props) {
   return (
     <DefaultLayout title="Feed e biblioteca de Leis" searchQuery={searchQuery}>
       <SearchPage results={results} error={error} total={total} />
+
     </DefaultLayout>
   );
 };
@@ -23,6 +24,7 @@ export default function Busca({ results, error, total, searchQuery }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const searchQuery = query.q;
+  const page = query.p
   const sanitizedQuery = searchQuery
     ?.toString()
     .trim()
@@ -32,7 +34,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   if (!!sanitizedQuery) {
     try {
       const response = await fetch(
-        `${process.env.SERVER_URL!}/api/v1/search?q=${sanitizedQuery}`
+        `${process.env.SERVER_URL!}/api/v1/search?q=${sanitizedQuery}&p=${page}`
       );
 
       const data = await response.json();
