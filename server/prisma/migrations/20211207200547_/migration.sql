@@ -1,0 +1,2 @@
+-- AddForeignKey
+-- ALTER TABLE "LawBlock" ADD CONSTRAINT "LawBlock_lawBlockId_fkey" FOREIGN KEY ("lawBlockId") REFERENCES "LawBlock"("id") ON DELETE SET NULL ON UPDATE CASCADE;

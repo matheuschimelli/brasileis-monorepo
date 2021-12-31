@@ -1,30 +1,45 @@
 import { Box, Button, Center, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { SearchIcon, CloseIcon } from '@chakra-ui/icons'
-import React, { useState, useMemo } from "react";
+import React, { useState, useRef } from "react";
 import { useRouter } from "next/router";
+import * as ga from '../../lib/ga'
 
 export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
+  const [query, setQuery] = useState("");
+  const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>()
+
+  const sendEventToGA = () => {
+    ga.event({
+      action: "search",
+      params: {
+        search_term: query
+      }
+    })
+  }
+
   const preventDefault = (f: any) => (e: any) => {
     e.preventDefault();
     f(e);
   };
-  const router = useRouter();
-  const [query, setQuery] = useState("");
 
   const handleParam = (e: any) => setQuery(e.target.value);
 
   const handleSubmit = preventDefault(() => {
+    sendEventToGA()
+
     router.push({
       pathname: "/busca",
       query: { q: query },
     });
   });
-  const memoizedVal = useMemo(() => {
-    if (query && query !== "") {
-      return query;
-    }
-    if (searchQuery) return searchQuery;
-  }, [searchQuery, query]);
+
+  const clearInput = (e: any) => {
+    e.preventDefault();
+    setQuery("");
+    inputRef.current!.focus()
+  }
+
 
   return (
     <Box
@@ -36,11 +51,19 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
     >
       <InputGroup>
 
-        <Input variant="filled" placeholder="Pesquisar" name="q" onChange={handleParam} value={query} />
+        <Input
+          //@ts-ignore  
+          ref={inputRef}
+          variant="filled"
+          placeholder="Pesquisar"
+          name="q"
+          onChange={handleParam}
+          value={query}
+          autoComplete="off" />
         <InputRightElement w="5rem"
           children={
             <>
-              {query !== "" ? (<Button type="button" size='sm' onClick={(e) => { e.preventDefault(); setQuery("") }}>
+              {query !== "" ? (<Button type="button" size='sm' onClick={clearInput}>
                 <Center>
                   <CloseIcon />
                 </Center>

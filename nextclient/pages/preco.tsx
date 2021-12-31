@@ -4,7 +4,6 @@ import {
   Text,
   useColorModeValue,
   Icon,
-  createIcon,
 } from "@chakra-ui/react";
 
 import DefaultLayout from "../components/layout/DefaultLayout";
@@ -32,7 +31,9 @@ export default function Preco() {
 
   const startCheckout = async () => {
     const authToken = token;
-    const { response, error } = await checkout.mutate(
+
+
+    const response = await checkout.mutate(
       1,
       "POST",
       `${process.env.SERVER_URL}/api/v1/checkout/create-session`,
@@ -40,8 +41,9 @@ export default function Preco() {
         priceId: "price_1JzQdKLTXJv5fJAh9w8MSPMl",
         authToken,
       },
-      authToken
+      authToken!
     );
+
 
     if (response) {
       const res = await response.json();

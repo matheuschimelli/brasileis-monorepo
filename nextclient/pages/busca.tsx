@@ -1,28 +1,30 @@
+import React from 'react'
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../components/layout/DefaultLayout";
 import SearchPage from "../components/SearchPage";
-import { Box } from "@chakra-ui/react";
 
 type Props = {
   searchTerm?: string;
   results?: [];
   searchQuery?: string;
   error?: boolean;
-  total?: string;
+  total?: any;
 };
 
-const Busca = ({ results, error, total, searchQuery }: Props) => {
+export default function Busca({ results, error, total, searchQuery }: Props) {
   return (
     <DefaultLayout title="Feed e biblioteca de Leis" searchQuery={searchQuery}>
       <SearchPage results={results} error={error} total={total} />
+
     </DefaultLayout>
   );
 };
 
-export default Busca;
+
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const searchQuery = query.q;
+  const page = query.p
   const sanitizedQuery = searchQuery
     ?.toString()
     .trim()
@@ -32,18 +34,27 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   if (!!sanitizedQuery) {
     try {
       const response = await fetch(
-        `${process.env.SERVER_URL!}/api/v1/search?q=${sanitizedQuery}`
+        `${process.env.SERVER_URL!}/api/v1/search?q=${sanitizedQuery}&p=${page}`
       );
 
       const data = await response.json();
 
       console.log(data);
 
+      if (!data.results || data.results.lenght == 0) {
+        return {
+          props: {
+            error: true,
+          },
+        };
+      }
+
       return {
         props: {
           total: data.total,
           results: data.results,
           searchQuery,
+          error: false,
         },
       };
     } catch (e) {
@@ -54,9 +65,11 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
       };
     }
   }
+
   return {
     props: {
       error: true,
     },
   };
+
 };

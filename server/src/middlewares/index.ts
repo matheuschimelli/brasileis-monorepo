@@ -1,2 +1,1 @@
-export { isAuth } from './isAuth'
-export { isAdmin } from './isAdmin'
+export { isAdmin, isAuthenticated } from './jwt-auth'

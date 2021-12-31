@@ -5,8 +5,8 @@ import { ExpressAdapter } from '@bull-board/express';
 import signale from 'signale';
 import 'dotenv/config';
 import basicAuth from 'express-basic-auth'
-import { queues as BullQueue } from './lib/Queue';
-import { startProcess } from './lib/Queue';
+import { queues as BullQueue } from './jobs';
+import { runQueues } from './jobs';
 import pingmydyno from 'pingmydyno';
 
 const host = process.env.HOST || '0.0.0.0'
@@ -14,16 +14,12 @@ const port = process.env.PORT || 8081
 
 if (process.env.NODE_ENV == 'production') {
   console.log("Running on production")
-  startProcess()
+  runQueues()
 }
-
-//import { BullMQAdapter } from '@bull-board/api/bullMQAdapter';
-//import BullMQ from './bullmq';
-//BullMQ.queues.map((queue) => new BullMQAdapter(queue)),
 
 const serverAdapter = new ExpressAdapter();
 createBullBoard({
-  queues: BullQueue.map((job) => new BullAdapter(job.queue)),
+  queues: BullQueue.map((job) => new BullAdapter(job)),
   serverAdapter,
 });
 
@@ -41,7 +37,7 @@ app.set('port', port)
 app.get('/ping', (req, res) => res.send("pong"))
 
 app.listen(port, () => {
-  signale.success('Server listening on port 8080');
+  signale.success('Worker Processor Server listening on port 8080');
   pingmydyno('https://blws.herokuapp.com/ping');
   pingmydyno('https://brasileis-dev-main-server.herokuapp.com/ping');
   pingmydyno('https://api.brasileis.com.br/ping');

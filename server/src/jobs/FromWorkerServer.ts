@@ -1,5 +1,5 @@
 import { Job } from 'bull'
-import Queue from './Queue'
+
 export default {
   key: 'MainServer',
   sandBoxFile: null,

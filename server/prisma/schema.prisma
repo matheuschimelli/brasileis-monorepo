@@ -1,49 +1,117 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch"]
 }
-
-// generator typegraphql {
-//   provider           = "typegraphql-prisma"
-//   output             = "../src/graphql/generated/type-graphql"
-//   emitTranspiledCode = false
-// }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-model BlockProperty {
-  id           String  @id @default(cuid())
-  value        String?
-  title        String?
-  number       String?
-  identifier   String?
-  comment      String?
-  year         Int?
-  author       String?
-  subsOnly     Boolean @default(false)
-  searchString String?
-
-  lawBlockId String   @unique
-  LawBlock   LawBlock @relation(fields: [lawBlockId], references: [id])
+model Slug {
+  id       String     @id @default(cuid())
+  title    String
+  value    String     @unique
+  lawBlock LawBlock[]
 }
 
-model LawBlock {
-  id         String         @id @default(cuid())
-  type       BlockType      @default(ARTICLE)
-  content    LawBlock[]     @relation("LawBlockToLawBlock")
-  properties BlockProperty?
-
-
+model LawComment {
+  id        String   @id @default(cuid())
+  title     String
+  text      String
+  author    User     @relation(fields: [userId], references: [id])
+  userId    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  LawBlock   LawBlock? @relation("LawBlockToLawBlock", fields: [lawBlockId], references: [id], onDelete: Cascade)
+  lawBlock   LawBlock? @relation(fields: [lawBlockId], references: [id])
   lawBlockId String?
+
+}
+
+model BlockAuthor {
+  id   String @id @default(cuid())
+  name String
+
+  lawBlock LawBlock[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LawBlock {
+  id       String    @id @default(cuid())
+  type     BlockType @default(ARTIGO_LEI)
+  isActive Boolean   @default(true)
+
+  source String? //url to be crawled
+
+  version Int     @default(1)
+  isRef   Boolean @default(false)
+
+  index Int @default(1)
+
+  title        String?
+  name         String?
+  value        String?
+  originalText String?
+  searchText   String?
+
+  identifier String?
+
+  artigo    String?
+  inciso    String?
+  paragrafo String?
+  aliena    String?
+
+  comments LawComment[]
+
+  year DateTime?
+
+  subsOnly     Boolean @default(false)
+  searchString String?
+  urlSlug      String?
+
+  slug   Slug?   @relation(fields: [slugId], references: [id])
+  slugId String?
+
+
+  // - - - - - - - - - - - -
+  // SELF RELATIONS
+  // - - - - - - - - - - - -
+
+  // 'Belongs to' creates a relationship to the master block which carry all childrens blocks
+  // 'Belongs to' refers to a block with belongs to a master block which owns a lot of blocks
+  // A block belongs to a block
+  belongsTo           LawBlock?  @relation("LawBlockBelongsToMasterLawBlock", fields: [belongsToLawBlockId], references: [id], onDelete: Cascade)
+  belongsToLawBlockId String?
+  // a block owns blocks
+  ownsBlocks          LawBlock[] @relation("LawBlockBelongsToMasterLawBlock")
+
+  // a parent block has a content
+  // a child block has a parent
+
+
+  content       LawBlock[] @relation("LawBlockHasContent") // parent block
+  parentBlock   LawBlock?  @relation("LawBlockHasContent", fields: [parentBlockId], references: [id], onDelete: Cascade)
+  parentBlockId String?
+
+  // parentBlock   LawBlock? @relation("BlockContentParent", fields: [parentBlockId], references: [id], onDelete: Cascade)
+  // parentBlockId String?
+  // content LawBlock[] @relation("BlockContentParent")
+
+  isRelatedTo    LawBlock?  @relation("BlockRelatedBlock", fields: [relatedBlockId], references: [id])
+  relatedBlockId String?
+  relatedBlocks  LawBlock[] @relation("BlockRelatedBlock")
+
+  author        BlockAuthor? @relation(fields: [blockAuthorId], references: [id])
+  blockAuthorId String?
+
+  crawler   Crawler? @relation(fields: [crawlerId], references: [id], onDelete: Cascade)
+  crawlerId String?  @unique
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Post {
@@ -53,7 +121,7 @@ model Post {
   content   String?
   published Boolean  @default(false)
   authorId  String
-  User      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Profile {
@@ -80,10 +148,52 @@ model User {
   profile       Profile?
   posts         Post[]
   subscriptions Subscription[]
-  Customer      Customer?
+  customer      Customer?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  LawComment LawComment[]
+}
+
+model CrawlerType {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+  customCode  String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Crawler   Crawler[]
+}
+
+model Crawler {
+  id          String       @id @default(uuid())
+  name        String
+  crawlerType CrawlerType? @relation(fields: [crawlerTypeId], references: [id])
+
+  description   String
+  isUrlOnly     Boolean @default(true) // check if crawler only crawls by the given url
+  source        String?
+  cron          String
+  notifyUpdates Boolean @default(true)
+
+  slug                 String?
+  mainBlockTitle       String?
+  mainBlockDescription String?
+  version              Int?      @default(1)
+  blockType            BlockType @default(CODIGO)
+
+  originalHtml      String?
+  pageTextToCompare String?
+
+
+  lawBlock LawBlock?
+
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  lawBlockId String?  @unique
+
+  crawlerTypeId String?
 }
 
 model Customer {
@@ -137,14 +247,16 @@ enum UserRole {
 }
 
 enum BlockType {
-  LAW
-  JURISPRUDENCE
-  ARTICLE
-  PARAGRAPH
-  INCISE
-  ALINEA
-  UNIQUE_PARAGRAPH
+  NORMA
+  PORTARIA
+  DECRETO
+  LEI
+  JURISPRUDENCIA
+  ARTIGO_LEI
+  PARAGRAFO_LEI
+  INCISO_LEI
+  ALINEA_LEI
+  PARAGRAFO_UNICO_LEI
   INFO
-  CODE
-  CONSTITUTION
+  CODIGO
 }

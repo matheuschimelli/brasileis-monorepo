@@ -9,7 +9,6 @@ import helmet from 'helmet'
 import errorHandler from 'errorhandler'
 import cors from 'cors'
 import signale from 'signale'
-import { IRequest } from '../types'
 declare var process: {
   env: {
     SESSION_SECRET: string
@@ -29,7 +28,7 @@ interface ServerParams {
 }
 
 interface Middleware {
-  <T>(req: Request | IRequest & T, res: Response, next: NextFunction): void;
+  <T>(req: Request & T, res: Response, next: NextFunction): void;
   res?: Response;
 }
 
@@ -78,6 +77,7 @@ class Server {
     }))
     this.app.use(cors())
     this.app.use(express.urlencoded({ extended: true }))
+    this.app.use(express.json({ limit: '100mb' }))
 
     this.app.use((req, res, next) => {
       if (req.originalUrl === '/api/v1/checkout/webhook') {
@@ -88,7 +88,7 @@ class Server {
     });
 
     this.app.use(compression())
-    if (process.env.NODE_ENV === 'development') this.app.use(errorHandler())
+    //if (process.env.NODE_ENV === 'development') this.app.use(errorHandler())
 
     return this
   }
@@ -157,12 +157,15 @@ class Server {
     if (process.env.NODE_ENV === 'development') {
       this.app!.use(errorHandler())
     } else {
-      // @ts-ignore
-      this!.app.use(function (err: Error, _, res: Response) {
-        // @TODO fix error handler. Change console to sentry or something else
-        console.error(err)
-        res.status(500).send('<pre>Server Error: Please try again in a few minutes</pre>')
-      })
+      this.app!.use((err: any, req: Request, res: Response, next: NextFunction) => {
+        return res.status(500).json(err.message)
+      });
+
+      // // @ts-ignore
+      // this!.app.use((req: Request, res: Response) => {
+      //   // @TODO fix error handler. Change console to sentry or something else
+      //   return res.status(500).send('<pre>Server Error: Please try again in a few minutes</pre>')
+      // })
     }
   }
 
@@ -172,8 +175,8 @@ class Server {
     this.handleErrors()
     this.server?.listen(this.port, () => {
       signale.success(`Server listening on port ${this.port}`)
-      signale.success(`GraphQl path: ${this.apolloServer?.graphqlPath}`)
-      signale.success(`GraphQl Subscriptions path: ${this.apolloServer?.subscriptionsPath}`)
+      // signale.success(`GraphQl path: ${this.apolloServer?.graphqlPath}`)
+      // signale.success(`GraphQl Subscriptions path: ${this.apolloServer?.subscriptionsPath}`)
     })
   }
 }

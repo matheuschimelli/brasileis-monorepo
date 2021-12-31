@@ -1,26 +1,29 @@
 import dotenv from 'dotenv'
+import 'module-alias/register'
 import morgan from 'morgan'
 import { createBullBoard } from '@bull-board/api'
 import { BullAdapter } from '@bull-board/api/bullAdapter'
 import { ExpressAdapter } from '@bull-board/express'
 import basicAuth from 'express-basic-auth'
-
-import Server from './lib/server'
+import Server from '@lib/server'
 import routes from './routes'
-import jwtAuth from './middlewares/jwtAuth'
-import Queue from './jobs/Queue'
+import { jwtAuth } from '@middlewares/jwt-auth'
+import { runQueues, queues } from '@modules/jobs/jobs'
 
+import { initTelegramBot, sendAlertToTelegram } from '@modules/server-notifier/server-notifier-service'
+sendAlertToTelegram(`
+🛑Erro em: handle-code-lawBlock🛑
+    Erro: 
+    `);
+
+initTelegramBot()
+runQueues()
 
 const serverAdapter = new ExpressAdapter()
 dotenv.config({ path: '.env' })
 
-//Queue.process()
-// Queue.WorkerJobs.workerServer.add({ msg: `DATA SENT FROM MAIN SERVER ${Date.now()}` })
-// Queue.WorkerJobs.jobProcessor.add({ data: 'custom data job add processor, process on slaver' })
-
 createBullBoard({
-  queues: Queue.queues.map(queue => new BullAdapter(queue.bull))
-    .concat(Queue.jobQueues.map(queue => new BullAdapter(queue))),
+  queues: queues.map(queue => new BullAdapter(queue)),
   serverAdapter: serverAdapter
 })
 serverAdapter.setBasePath('/admin/queues')
