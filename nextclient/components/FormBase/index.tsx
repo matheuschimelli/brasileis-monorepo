@@ -36,7 +36,7 @@ export default function FormBase({
     const router = useRouter()
     const { id: dataId } = router.query
 
-    const loadedFormData = useData(`${process.env.NEXT_PUBLIC_NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${dataId}`)
+    const loadedFormData = useData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${dataId}`)
 
     const { handleInputChange, form, initFormData, handleSubmit } = useForm({
         ...initSchema
@@ -60,7 +60,7 @@ export default function FormBase({
                 const res = await handleCreate.mutate(
                     1,
                     'PUT',
-                    `${process.env.NEXT_PUBLIC_NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${loadedFormData.data.id}`,
+                    `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${loadedFormData.data.id}`,
                     {
                         ...form,
                     }
