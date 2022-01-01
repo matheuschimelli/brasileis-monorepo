@@ -3,7 +3,8 @@ import React, { useState, useContext, createContext, useEffect } from "react";
 import { useCookie } from "react-use";
 import { useRouter } from "next/router";
 
-const SERVER_URL = process.env.SERVER_URL || "https://api.brasileis.com.br";
+const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_NEXT_PUBLIC_SERVER_URL || "https://api.brasileis.com.br";
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
 type Props = {
   children: React.ReactNode;
@@ -34,7 +35,7 @@ function delete_cookie(name: string) {
 }
 
 const fetchUser = async (token: string) => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user`, {
+  const res = await fetch(`${NEXT_PUBLIC_SERVER_URL}/api/v1/user`, {
     headers: {
       Authorization: `Bearer ${token}`,
       "Content-Type": "application/json",
@@ -48,7 +49,7 @@ const fetchUser = async (token: string) => {
 };
 
 const handleGoogleResponse = async (googleToken: any) => {
-  const res = await fetch(`${SERVER_URL}/api/v1/user/verify`, {
+  const res = await fetch(`${NEXT_PUBLIC_SERVER_URL}/api/v1/user/verify`, {
     method: "POST",
     body: JSON.stringify({
       ...googleToken,

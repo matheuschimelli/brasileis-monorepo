@@ -3,7 +3,7 @@ dotenv.config({ path: '.env' })
 
 export default {
   publicRuntimeConfig: {
-    SERVER_URL: process.env.SERVER_URL,
+    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     CLIENT_URL: process.env.CLIENT_URL,
   },
   // Target (https://go.nuxtjs.dev/config-target)
@@ -170,7 +170,7 @@ export default {
   },
 
   axios: {
-    baseURL: process.env.SERVER_URL,
+    baseURL: process.env.NEXT_PUBLIC_SERVER_URL,
   },
 
   apollo: {
@@ -185,8 +185,8 @@ export default {
         scheme: 'oauth2',
         endpoints: {
           authorization: 'https://accounts.google.com/o/oauth2/auth',
-          token: `${process.env.SERVER_URL}/user/verify`,
-          userInfo: `${process.env.SERVER_URL}/user`, // 'https://www.googleapis.com/oauth2/v3/userinfo',
+          token: `${process.env.NEXT_PUBLIC_SERVER_URL}/user/verify`,
+          userInfo: `${process.env.NEXT_PUBLIC_SERVER_URL}/user`, // 'https://www.googleapis.com/oauth2/v3/userinfo',
           logout: `${process.env.CLIENT_URL}/logout`,
         },
         token: {

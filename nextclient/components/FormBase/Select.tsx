@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function Select(props: Props) {
-    const { data, error }: { data: any[]; error: any } = useData(`${process.env.SERVER_URL}/api/v1/${props.apiPath}`);
+    const { data, error }: { data: any[]; error: any } = useData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${props.apiPath}`);
     const [selectedValue, setSelectedValue] = useState<any>();
 
 

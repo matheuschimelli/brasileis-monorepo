@@ -36,7 +36,7 @@ export default function FormBase({
     const router = useRouter()
     const { id: dataId } = router.query
 
-    const loadedFormData = useData(`${process.env.SERVER_URL}/api/v1/${apiRoute}/${dataId}`)
+    const loadedFormData = useData(`${process.env.NEXT_PUBLIC_NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${dataId}`)
 
     const { handleInputChange, form, initFormData, handleSubmit } = useForm({
         ...initSchema
@@ -60,7 +60,7 @@ export default function FormBase({
                 const res = await handleCreate.mutate(
                     1,
                     'PUT',
-                    `${process.env.SERVER_URL}/api/v1/${apiRoute}/${loadedFormData.data.id}`,
+                    `${process.env.NEXT_PUBLIC_NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${loadedFormData.data.id}`,
                     {
                         ...form,
                     }
@@ -87,7 +87,7 @@ export default function FormBase({
 
 
             } else {
-                const res = await handleCreate.mutate(1, 'POST', `${process.env.SERVER_URL}/api/v1/${apiRoute}`, {
+                const res = await handleCreate.mutate(1, 'POST', `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}`, {
                     ...form,
                 });
 
@@ -137,7 +137,7 @@ export default function FormBase({
 
     const deleteData = async () => {
         setIsDialogLoading(true)
-        await handleDelete.mutate(2, "DELETE", `${process.env.SERVER_URL}/api/v1/${apiRoute}/${loadedFormData.data.id}`, {
+        await handleDelete.mutate(2, "DELETE", `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${loadedFormData.data.id}`, {
             ...form,
         });
         toast({

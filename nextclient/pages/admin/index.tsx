@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     console.log(token)
 
     const isAdmin = async () => {
-        const res = await getData(`${process.env.SERVER_URL}/api/v1/user/check-admin`, token)
+        const res = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/check-admin`, token)
         const response = await res.json()
 
         if (response.isAdmin) return true

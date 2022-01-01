@@ -36,7 +36,7 @@ export default function Preco() {
     const response = await checkout.mutate(
       1,
       "POST",
-      `${process.env.SERVER_URL}/api/v1/checkout/create-session`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/checkout/create-session`,
       {
         priceId: "price_1JzQdKLTXJv5fJAh9w8MSPMl",
         authToken,

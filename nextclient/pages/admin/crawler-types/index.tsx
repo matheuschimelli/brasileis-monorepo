@@ -18,7 +18,7 @@ export default function Swibc({ crawlers }: { crawlers: any[] }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const { token } = context.req.cookies
     const isAdmin = await checkAdmin(token)
-    const crawlersReq = await getData(`${process.env.SERVER_URL}/api/v1/crawler-types`, token)
+    const crawlersReq = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/crawler-types`, token)
     const crawlers = await crawlersReq.json()
 
     if (isAdmin) {
