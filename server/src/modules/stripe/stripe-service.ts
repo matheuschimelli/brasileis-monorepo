@@ -14,7 +14,7 @@ import {
  * 
  * \Downloads\stripe_1.7.8_windows_x86_64 
  */
-const YOUR_DOMAIN = process.env.SERVER_URL || 'http://localhost:8080';
+const YOUR_DOMAIN = process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:8080';
 const CLIENT_URL = process.env.CLIENT_URL || 'http://localhost:3000'
 const STRIPE_KEY = "whsec_ky3ZplETQIfQeUEJMvLlZeukCAXn2ufN"
 

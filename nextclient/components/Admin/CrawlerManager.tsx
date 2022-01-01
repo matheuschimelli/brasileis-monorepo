@@ -8,7 +8,7 @@ export default function CrawlerManager({ id }: Props) {
 
     const runCrawler = useMutate()
     const handleRun = async () => {
-        await runCrawler.mutate(1, 'POST', `${process.env.SERVER_URL}/api/v1/crawlers/run-crawler/${id}`)
+        await runCrawler.mutate(1, 'POST', `${process.env.NEXT_PUBLIC_NEXT_PUBLIC_SERVER_URL}/api/v1/crawlers/run-crawler/${id}`)
     }
 
     return (

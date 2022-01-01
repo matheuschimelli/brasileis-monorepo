@@ -19,7 +19,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { token } = context.req.cookies
     const isAdmin = await checkAdmin(token)
 
-    const crawlersReq = await getData(`${process.env.SERVER_URL}/api/v1/crawlers`, token)
+    const crawlersReq = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/crawlers`, token)
     const crawlers = await crawlersReq.json()
     console.log(crawlers)
 

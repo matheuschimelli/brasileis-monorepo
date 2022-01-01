@@ -46,7 +46,7 @@ export default function Component({ subscriptions }: Props) {
     )
   }
   const openStripePanel = async () => {
-    const request = await getData(`${process.env.SERVER_URL}/api/v1/checkout/portal`, token!)
+    const request = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/checkout/portal`, token!)
 
     const data: any = await request.json()
     console.log('DATAAAA', data)
@@ -154,7 +154,7 @@ export default function Component({ subscriptions }: Props) {
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   const token = req.cookies.token
-  const request = await getData(`${process.env.SERVER_URL}/api/v1/user/subscriptions`, token)
+  const request = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/subscriptions`, token)
   const data: any = await request.json()
 
   if (!token || !data) {

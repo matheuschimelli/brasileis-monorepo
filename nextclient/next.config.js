@@ -3,7 +3,7 @@ module.exports = {
   swcMinify: false,
   reactStrictMode: true,
   env: {
-    SERVER_URL: process.env.SERVER_URL,
+    NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
     GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   },
 };
