@@ -3,7 +3,7 @@ import React, { useState, useContext, createContext, useEffect } from "react";
 import { useCookie } from "react-use";
 import { useRouter } from "next/router";
 
-const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_NEXT_PUBLIC_SERVER_URL || "https://api.brasileis.com.br";
+const NEXT_PUBLIC_SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || "https://api.brasileis.com.br";
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
 
 type Props = {
