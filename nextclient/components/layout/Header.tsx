@@ -21,12 +21,12 @@ import {
   MenuList,
   MenuDivider,
   InputGroup,
-  InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import SearchForm from "./SearchForm";
 import { useAuth } from "../../lib/auth";
+
 
 type Props = {
   searchQuery?: string;
@@ -58,6 +58,7 @@ export function HeaderNotAuthenticated({
         backgroundColor="white"
         shadow="base"
         zIndex="9999"
+        gridGap="2"
       >
         <Box>
           <Link href="/" passHref>
@@ -69,19 +70,17 @@ export function HeaderNotAuthenticated({
         <Spacer />
 
         <SearchForm searchQuery={searchQuery} />
-        <Slide direction="right" in={isOpenSearchbar}>
+        {/* <Slide direction="right" in={isOpenSearchbar}>
           <Box
             width={{ base: "container.sm" }}
             display={{ base: "flex", md: "none" }}
+            mt="4"
+
           >
 
-            <InputGroup>
-
-              <Input variant="filled" placeholder="Pesquisar" />
-              <InputRightElement children={<Button>p</Button>} />
-            </InputGroup>
+            <SearchForm searchQuery={searchQuery} />
           </Box>
-        </Slide>
+        </Slide> */}
 
         <Spacer />
 
@@ -144,13 +143,13 @@ export function HeaderNotAuthenticated({
           justifyItems="center"
           display={{ base: "flex", md: "none" }}
         >
-          <IconButton
+          {/* <IconButton
             variant="outline"
             colorScheme="blue"
             aria-label="Menu"
             onClick={onToggleSearchBar}
             icon={isOpen ? <CloseIcon /> : <SearchIcon />}
-          />
+          /> */}
           <IconButton
             variant="outline"
             colorScheme="blue"
@@ -195,14 +194,15 @@ export function HeaderNotAuthenticated({
             Casos de uso
           </Text>
           <Text
-            as="a"
-            href="/"
+            cursor="pointer"
             py="2"
             fontWeight={600}
             color={useColorModeValue("gray.600", "gray.200")}
+            onClick={showAuthPropmpt}
           >
             Login
           </Text>
+
         </Box>
       </Collapse>
     </>

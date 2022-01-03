@@ -56,63 +56,88 @@
   },
   "mappings": {
     "properties": {
-      "blockId": {
-        "type": "text"
+      "identifier": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "name": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "originalText": {
+        "type": "text",
+        "term_vector": "with_positions_offsets",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "searchText": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "slug": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "source": {
-        "type": "text"
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "title": {
         "type": "text",
-        "index_options": "offsets",
-        "term_vector": "with_positions_offsets",
-        "analyzer": "brasileis_default_analyser",
-        "search_analyzer": "brasileis_search_analyser"
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
-      "name": {
-        "type": "text"
+      "type": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       },
       "value": {
         "type": "text",
-        "index_options": "offsets",
         "term_vector": "with_positions_offsets",
-        "analyzer": "brasileis_default_analyser",
-        "search_analyzer": "brasileis_search_analyser"
-      },
-      "original_text": {
-        "type": "text",
-        "index_options": "offsets",
-        "term_vector": "with_positions_offsets",
-        "analyzer": "brasileis_default_analyser",
-        "search_analyzer": "brasileis_search_analyser"
-      },
-      "search_text": {
-        "type": "text",
-        "index_options": "offsets",
-        "term_vector": "with_positions_offsets",
-        "analyzer": "brasileis_default_analyser",
-        "search_analyzer": "brasileis_search_analyser"
-      },
-      "identifier": {
-        "type": "keyword"
-      },
-      "block_type": {
-        "type": "keyword"
-      },
-      "slug": {
-        "type": "text"
-      },
-      "indexed_at": {
-        "type": "date"
-      },
-      "index_updated_at": {
-        "type": "date"
-      },
-      "law_created_at": {
-        "type": "date"
-      },
-      "law_updated_at": {
-        "type": "date"
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
       }
     }
   }
