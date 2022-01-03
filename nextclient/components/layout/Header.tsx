@@ -12,16 +12,12 @@ import {
   Collapse,
   Text,
   useColorModeValue,
-  Input,
-  Slide,
   Image,
   Menu,
   MenuButton,
   MenuItem,
   MenuList,
   MenuDivider,
-  InputGroup,
-  InputRightElement,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
 import SearchForm from "./SearchForm";
@@ -51,7 +47,7 @@ export function HeaderNotAuthenticated({
         paddingTop="4"
         paddingBottom="4"
         align="center"
-        position={{ base: "fixed", md: "fixed" }}
+        position={{ base: "relative", md: "fixed" }}
         left="0"
         right="0"
         top="0"

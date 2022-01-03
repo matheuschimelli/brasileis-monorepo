@@ -5,6 +5,7 @@ import {
     findAll,
     search as searchBlock,
     findBlockById,
+    contentLawBlockNumbers
 } from '@modules/law-block/law-block-service'
 
 export const index = async (req: Request, res: Response) => {
@@ -12,7 +13,7 @@ export const index = async (req: Request, res: Response) => {
     return res.send(lawBlock)
 }
 
-export const findAllById = async (req: Request, res: Response) => {
+export const getAllById = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const data = await findAll(id)
@@ -22,7 +23,7 @@ export const findAllById = async (req: Request, res: Response) => {
         return res.status(500).send("Não foi possível encontrar leis.")
     }
 }
-export const findSingleBlock = async (req: Request, res: Response) => {
+export const getSingleBlock = async (req: Request, res: Response) => {
     try {
         const { id } = req.params
         const data = await findBlockById(id)
@@ -57,3 +58,14 @@ export const remove = async (req: Request, res: Response) => {
     }
 }
 
+export const getCodeNumbers = async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params
+        const law = await contentLawBlockNumbers(id)
+        return res.send(law)
+
+    } catch (error: any) {
+        console.log(error)
+        return res.status(500).send("Nada alterado")
+    }
+}

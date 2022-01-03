@@ -3,19 +3,23 @@ import { isAuthenticated } from '@middlewares/jwt-auth'
 import {
     index,
     remove,
-    findAllById,
+    getAllById,
     search,
-    findSingleBlock
+    getSingleBlock,
+    getCodeNumbers
 } from '@modules/law-block/law-block-controller'
 
 const lawBlockRoutes = express.Router()
 
-lawBlockRoutes.get('/:slug/:id', findAllById)
-lawBlockRoutes.get('/s/:id', findSingleBlock)
-lawBlockRoutes.get('/search', search)
 lawBlockRoutes.get('/', isAuthenticated, index)
+lawBlockRoutes.get('/s/:id', getSingleBlock)
+lawBlockRoutes.get('/search', search)
+lawBlockRoutes.get('/code-numbers/:id', getCodeNumbers)
+
+lawBlockRoutes.get('/:slug/:id', getAllById)
 lawBlockRoutes.delete('/:id', isAuthenticated, remove)
-lawBlockRoutes.get('/:id', findSingleBlock)
+lawBlockRoutes.get('/:id', getSingleBlock)
+
 
 
 export default lawBlockRoutes

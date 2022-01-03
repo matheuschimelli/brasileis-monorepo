@@ -396,7 +396,12 @@ export const findBlockById = async (id: string) => {
             id: id
         },
         include: {
-            slug: true,
+            slug: {
+                select: {
+                    title: true,
+                    value: true
+                }
+            },
             belongsTo: {
                 select: {
                     title: true,
@@ -404,12 +409,23 @@ export const findBlockById = async (id: string) => {
                     type: true,
                 }
             },
-            parentBlock: true,
+            parentBlock: {
+                select: {
+                    title: true,
+                    name: true,
+                    value: true,
+                    type: true,
+                    id: true,
+                    updatedAt: true,
+                    createdAt: true
+                }
+            },
             content: {
                 include: {
                     content: true
                 }
-            }
+            },
+
         }
 
     })
@@ -454,4 +470,38 @@ export const removeLawBlock = async (id: string) => {
     })
     await elasticSearchRemove({ documentId: lawBlock.id })
     return lawBlock
+}
+
+export const contentLawBlockNumbers = async (id: string) => {
+    const lawBlock = await prisma.lawBlock.findFirst({
+        where: {
+            id
+        },
+        select: {
+            name: true,
+            ownsBlocks: {
+                select: {
+                    name: true,
+                    id: true,
+                    slug: {
+                        select: {
+                            title: true,
+                            value: true
+                        }
+                    }
+                },
+                where: {
+                    type: 'ARTIGO_LEI'
+                },
+                orderBy: {
+                    index: 'asc'
+                },
+
+            },
+            value: true,
+        }
+    })
+    if (!lawBlock) throw new Error("Bloco de lei não encontrado")
+
+    return lawBlock.ownsBlocks
 }

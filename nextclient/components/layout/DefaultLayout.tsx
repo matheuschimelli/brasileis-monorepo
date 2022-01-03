@@ -46,8 +46,8 @@ export default function DefaultLayout({ children, title, searchQuery }: Props) {
       </Head>
        */}
       <Header searchQuery={searchQuery} />
-      <Stack as="main" px={{ base: "4", sm: "4", md: "20" }} py="12">
-        <Box mt={["10"]}>{children}</Box>
+      <Stack as="main" px={{ base: "0", sm: "4", md: "20" }} py={["0", "0", "12"]}>
+        <Box mt={["0", "10", "10"]}>{children}</Box>
       </Stack>
       <Footer />
     </>

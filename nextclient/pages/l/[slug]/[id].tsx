@@ -16,7 +16,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const { slug, id } = context.query
 
-    const req = await fetch(`http://localhost:8080/api/v1/law-block/${slug}/${id}`)
+    const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/law-block/${slug}/${id}`)
     const data = await req.json()
 
     if (!data) {
