@@ -4,10 +4,10 @@ import {
   Flex,
   Text,
 } from "@chakra-ui/react";
-import Sidebar from './Sidebar'
 import { ArticleRender } from "./ArticleRender";
 import SidebarLawBlocks from "../SidebarLawBlocks";
 import LawTabs from "./LawTabs";
+
 export default function LawRender({ data }: { data: any }) {
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "0", md: "1" }}>
