@@ -3,30 +3,30 @@ import DefaultLayout from "../../../components/layout/DefaultLayout";
 import LawFinder from "../../../components/LawFinder";
 
 type Props = {
-    data: any
+    lawBlockData: any
+    codeNumbersData: any
 }
-const Busca = ({ data }: Props) => {
+const Busca = ({ lawBlockData, codeNumbersData }: Props) => {
     return (
-        <DefaultLayout title={data.name}>
-            <LawFinder data={data} />
+        <DefaultLayout title={lawBlockData.name}>
+            <LawFinder lawBlockData={lawBlockData} codeNumbersData={codeNumbersData} />
         </DefaultLayout>
     );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
         const id = context.params!.id?.toString()
-        const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/law-block/${id}`)
-        const data = await req.json()
-        console.log(data)
 
-        if (!data) {
-            return {
-                notFound: true,
-            };
-        }
+        const reqLawBlock = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/law-block/${id}`)
+        const lawBlockData = await reqLawBlock.json()
+
+        const reqCodeNumbers = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/law-block/code-numbers/${lawBlockData.block.belongsToLawBlockId}`)
+        const codeNumbersData = await reqCodeNumbers.json()
+
+        if (!lawBlockData) return { notFound: true };
 
         return {
-            props: { data }, // will be passed to the page component as props
+            props: { lawBlockData, codeNumbersData }, // will be passed to the page component as props
         };
     } catch (err) {
         return {
