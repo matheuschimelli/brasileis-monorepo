@@ -44,7 +44,7 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
   return (
     <Box
       width={{ base: "container.sm" }}
-      display={{ base: "none", md: "flex" }}
+      display={{ md: "flex" }}
       as="form"
       onSubmit={handleSubmit}
 
@@ -60,9 +60,10 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
           onChange={handleParam}
           value={query}
           autoComplete="off" />
-        <InputRightElement w="5rem"
+
+        <InputRightElement w="6rem"
           children={
-            <>
+            <Box display="flex" flexDir="row" gridGap="1">
               {query !== "" ? (<Button type="button" size='sm' onClick={clearInput}>
                 <Center>
                   <CloseIcon />
@@ -74,7 +75,7 @@ export default function SearchForm({ searchQuery }: { searchQuery?: string }) {
                 </Center>
               </Button>
 
-            </>
+            </Box>
           }
         />
       </InputGroup>

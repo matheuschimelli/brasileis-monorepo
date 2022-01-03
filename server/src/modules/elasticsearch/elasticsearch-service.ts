@@ -1,7 +1,8 @@
 import elasticSearchClient from "@lib/elasticsearch-client"
 
-const esIndex = process.env.NODE_ENV === 'development' ? 'development' : 'brasileis_prod'
+const esIndex = process.env.NODE_ENV !== 'production' ? 'development' : 'brasileis_prod'
 
+console.log("INDEX", esIndex)
 
 export const check = async () => {
     const info = await elasticSearchClient.info()
