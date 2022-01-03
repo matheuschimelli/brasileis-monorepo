@@ -13,20 +13,25 @@ const Busca = ({ data }: Props) => {
     );
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    console.log(context)
-    const id = context.params!.id?.toString()
-    const req = await fetch(`http://localhost:8080/api/v1/law-block/${id}`)
-    const data = await req.json()
-    console.log(data)
+    try {
+        const id = context.params!.id?.toString()
+        const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/law-block/${id}`)
+        const data = await req.json()
+        console.log(data)
 
-    if (!data) {
+        if (!data) {
+            return {
+                notFound: true,
+            };
+        }
+
+        return {
+            props: { data }, // will be passed to the page component as props
+        };
+    } catch (err) {
         return {
             notFound: true,
         };
     }
-
-    return {
-        props: { data }, // will be passed to the page component as props
-    };
 };
 export default Busca;
