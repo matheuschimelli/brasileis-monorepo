@@ -29,7 +29,7 @@ export default function SidebarLawBlocks({ children, title, fixContent }: Props)
       bg="#f2f1ef"
       width={{ sm: "auto", md: "450px" }}
       position={{ sm: "relative", md: "sticky" }}
-      top={{ sm: "0", md: 20 }}
+      top={{ sm: "0", md: "60px" }}
       alignItems="start"
       justifyItems="start"
       justifyContent="start"
@@ -47,8 +47,10 @@ export default function SidebarLawBlocks({ children, title, fixContent }: Props)
         <Heading as="h1" fontSize={["xl", "xl", "3xl"]} fontWeight="bold" pb="5">
           {title}
         </Heading >
+        <Box height="100%">
+          {children}
+        </Box>
 
-        {children}
       </Collapse>
 
     </Box>

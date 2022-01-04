@@ -92,7 +92,7 @@ export default function LawTabs({ data }: Props) {
     return (
 
         <Tabs >
-            <TabList>
+            <TabList position="sticky" >
                 <Tab title="Jurisprudência relacionada" >
                     <Icon as={ReferenceIcon} boxSize={6} color="blue.600" />
                 </Tab>
@@ -103,7 +103,7 @@ export default function LawTabs({ data }: Props) {
                     <Icon as={CommentIcon} boxSize={6} color="blue.600" />
                 </Tab>
             </TabList>
-            <Box overflowY="scroll" height="container.sm" >
+            <Box position="relative" overflowY="scroll" height={["auto", "auto", "450"]}>
                 <TabPanels mb="200">
                     <TabPanel>
                         <RenderReferences data={data} />
