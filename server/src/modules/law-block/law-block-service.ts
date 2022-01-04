@@ -380,15 +380,26 @@ export const findAll = async (id: string) => {
     }
 }
 
-const generateTitle = (articleType: BlockType) => {
+const generateTextType = (articleType: BlockType) => {
     if (articleType == 'ARTIGO_LEI') return 'artigo'
     if (articleType == 'CODIGO') return 'código'
     if (articleType == 'DECRETO') return 'decreto'
     if (articleType == 'INCISO_LEI') return 'inciso'
     if (articleType == 'PARAGRAFO_LEI') return 'parágrafo'
-    if (articleType == 'PARAGRAFO_UNICO_LEI') return 'parágrafo unico'
     if (articleType == 'ALINEA_LEI') return 'alínea'
+    return ''
+}
 
+const renderName = (name: string) => {
+
+    const number = Number(name)
+
+    if (number) {
+        if (number < 11) {
+            return `${name}°`
+        }
+    }
+    return name
 }
 
 export const findBlockById = async (id: string) => {
@@ -431,12 +442,24 @@ export const findBlockById = async (id: string) => {
     })
 
     if (block) {
-        if (block.type !== 'ARTIGO_LEI') {
 
+
+        const generateTitle = (parentBlockTitle: string, blockType: BlockType) => {
+
+            if (blockType !== "ARTIGO_LEI") {
+                const parentArticleType = block.parentBlock?.type!
+                const parentArticleName = block.parentBlock?.name
+
+                return `${parentBlockTitle} ${generateTextType(parentArticleType)} ${parentArticleName} ${generateTextType(blockType)} ${renderName(block.name!)}`
+
+            }
+
+            return `${parentBlockTitle} ${generateTextType(blockType)} ${renderName(block.name!)}`
         }
+        //  ${block.parentBlock ? generateTitle(block.parentBlock.type) : ''} ${block.parentBlock ? block.parentBlock.name : ''} ${generateTitle(block.type)} ${block.name}
         return {
             details: {
-                title: `${block?.belongsTo?.title} ${block.parentBlock ? generateTitle(block.parentBlock.type) : ''} ${block.parentBlock ? block.parentBlock.name : ''} ${generateTitle(block.type)} ${block.name}`,
+                title: generateTitle(block?.belongsTo?.title!, block.type),
                 description: block.value,
                 updatedAt: block.updatedAt,
                 createdAt: block.createdAt,

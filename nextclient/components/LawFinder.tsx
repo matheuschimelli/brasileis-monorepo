@@ -32,19 +32,20 @@ export default function LawFinder({
 
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }}>
-      <Box
-        w="100%"
-        background="#f2f1ef"
-        p="2"
-        shadow={["none", "none", "base"]}
-        display="flex"
-        flexDir="row"
-        justifyContent="space-between"
-        position="sticky"
-        top={["0.2", "0.2", "72px"]}
-        zIndex="docked"
-      >
-        {getPreviusLink() &&
+      {getPreviusLink() &&
+        <Box
+          w="100%"
+          background="#f2f1ef"
+          p="2"
+          shadow={["none", "none", "base"]}
+          display="flex"
+          flexDir="row"
+          justifyContent="space-between"
+          position="sticky"
+          top={["0.2", "0.2", "72px"]}
+          zIndex="docked"
+        >
+
           <Link passHref href={`/finder/${getPreviusLink().slug.value}/${getPreviusLink().id}`}>
             <Button
               as="a"
@@ -55,18 +56,20 @@ export default function LawFinder({
               Artigo {getPreviusLink().name}
             </Button>
           </Link>
-        }
-        <Link passHref href={`/finder/${getNextLink().slug.value}/${getNextLink().id}`}>
-          <Button
-            as="a"
-            colorScheme='blue'
-            variant="outline"
-            size="sm"
-            rightIcon={<ArrowForwardIcon />}>
-            Artigo {getNextLink().name}
-          </Button>
-        </Link>
-      </Box>
+
+
+          <Link passHref href={`/finder/${getNextLink().slug.value}/${getNextLink().id}`}>
+            <Button
+              as="a"
+              colorScheme='blue'
+              variant="outline"
+              size="sm"
+              rightIcon={<ArrowForwardIcon />}>
+              Artigo {getNextLink().name}
+            </Button>
+          </Link>
+        </Box>
+      }
 
       <Flex shadow={["none", "none", "base"]} flexDirection={["column", "column", "row"]}>
         <SidebarLawBlocks title={lawBlockData.details.title}>
