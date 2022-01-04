@@ -47,13 +47,13 @@ export function HeaderNotAuthenticated({
         paddingTop="4"
         paddingBottom="4"
         align="center"
-        position={{ base: "relative", md: "fixed" }}
+        position={{ base: "relative", md: "sticky" }}
         left="0"
         right="0"
         top="0"
         backgroundColor="white"
-        shadow="base"
-        zIndex="9999"
+        shadow="xs"
+        zIndex="sticky"
         gridGap="2"
       >
         <Box>

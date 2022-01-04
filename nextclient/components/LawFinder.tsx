@@ -31,7 +31,7 @@ export default function LawFinder({
 
 
   return (
-    <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "0", md: "1" }}>
+    <Box maxW={{ base: "3xl", lg: "7xl" }}>
       <Box
         w="100%"
         background="#f2f1ef"
@@ -40,6 +40,9 @@ export default function LawFinder({
         display="flex"
         flexDir="row"
         justifyContent="space-between"
+        position="sticky"
+        top={["0.2", "0.2", "72px"]}
+        zIndex="docked"
       >
         {getPreviusLink() &&
           <Link passHref href={`/finder/${getPreviusLink().slug.value}/${getPreviusLink().id}`}>
@@ -96,7 +99,7 @@ export default function LawFinder({
           <Text fontSize={["xl", "xl", "3xl"]} fontWeight="bold" px={["4", "4", "0"]} pt={["4", "4", "0"]}>
             {lawBlockData.details.title}
           </Text>
-          <Box shadow="sm" px="4">
+          <Box px="4">
             <ArticleRender
               article={lawBlockData.block}
               renderContent
