@@ -89,12 +89,12 @@ export function useProvideAuth() {
   };
 
   const initializeGoogleAuth = () => {
-
-    google.accounts.id.initialize({
-      client_id: "333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com",
-      callback: handleCallback,
-    });
-
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: "333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com",
+        callback: handleCallback,
+      });
+    }
   };
 
   const showAuthPropmpt = () => {
