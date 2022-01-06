@@ -43,7 +43,7 @@ export default function SidebarContent(props: any) {
                     color={useColorModeValue("brand.500", "white")}
                     fontWeight="semibold"
                 >
-                    Choc UI
+                    Brasileis Admin
                 </Text>
             </Flex>
             <Flex
