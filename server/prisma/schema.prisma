@@ -1,3 +1,9 @@
+//
+//
+//
+// sistema de feed
+// 1 - os blocos são linkados com determinado tópico
+// 2 -
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
