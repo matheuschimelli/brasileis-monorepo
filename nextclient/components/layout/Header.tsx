@@ -19,7 +19,8 @@ import {
   MenuList,
   MenuDivider,
 } from "@chakra-ui/react";
-import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import LoginModal from "./LoginModal";
 import SearchForm from "./SearchForm";
 import { useAuth } from "../../lib/auth";
 
@@ -36,10 +37,17 @@ export function HeaderNotAuthenticated({
   const { isOpen, onToggle } = useDisclosure();
   const { isOpen: isOpenSearchbar, onToggle: onToggleSearchBar } =
     useDisclosure();
+
   const { user, logout, showAuthPropmpt } = useAuth();
+  const {
+    isOpen: isOpenLoginModal,
+    onOpen: onOpenLoginModal,
+    onClose: onCloseLoginModal
+  } = useDisclosure()
 
   return (
     <>
+      <LoginModal isOpen={isOpenLoginModal} onClose={onCloseLoginModal} />
       <Flex
         as="nav"
         flexDirection="row"

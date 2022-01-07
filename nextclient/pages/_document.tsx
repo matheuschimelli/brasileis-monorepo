@@ -12,6 +12,12 @@ class MyDocument extends Document {
     return (
       <Html lang="pt-BR">
         <Head >
+          <meta name="google-signin-client_id" content="333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com" />
+
+          <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+          <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+
           <script
             src="https://accounts.google.com/gsi/client"
             async
