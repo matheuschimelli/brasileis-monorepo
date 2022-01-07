@@ -101,6 +101,7 @@ export function useProvideAuth() {
   const showAuthPropmpt = () => {
     if (window.google) {
       delete_cookie("g_state");
+      initializeGoogleAuth()
 
       //@ts-ignore
       google.accounts.id.prompt((notification) => {
