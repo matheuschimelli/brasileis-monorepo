@@ -75,6 +75,7 @@ export function useProvideAuth() {
   const [value, updateCookie, deleteCookie] = useCookie("token");
   const router = useRouter();
 
+
   const handleCallback = async (googleToken: any) => {
     const token = await handleGoogleResponse(googleToken);
 
@@ -133,8 +134,19 @@ export function useProvideAuth() {
     }
   };
 
+
   useEffect(() => {
-    initializeGoogleAuth();
+    if (window) {
+      if (window.google) {
+        window.google.accounts.id.initialize({
+          client_id: "333116093929-juqamijpbup7ju9eutj2c3ir9mrmfsvt.apps.googleusercontent.com",
+          callback: handleCallback,
+        });
+      }
+    }
+  })
+
+  useEffect(() => {
     const acessToken = value;
     const userData = localStorage.getItem("auth");
 
