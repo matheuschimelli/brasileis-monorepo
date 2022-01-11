@@ -101,3 +101,8 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 
 ```
+
+## fix heroku build if necessary - package.json
+ "heroku-postbuild": "npm run migrate",
+    "heroku-cleanup": "curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh&&./node-prune node_modules"
+  
