@@ -5,10 +5,23 @@ import { DefaultSeo } from "next-seo";
 import { useRouter } from 'next/router'
 import * as ga from '../lib/ga'
 
-
-//@ts-ignore
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps }: { Component: any, pageProps: any }) {
   const router = useRouter()
+
+  useEffect(() => {
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/firebase-messaging-sw.js").then(
+          function (registration) {
+            console.log("Service Worker registration successful with scope: ", registration.scope);
+          },
+          function (err) {
+            console.log("Service Worker registration failed: ", err);
+          }
+        );
+      });
+    }
+  }, [])
 
   useEffect(() => {
     const handleRouteChange = (url: string) => {
