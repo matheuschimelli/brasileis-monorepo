@@ -62,7 +62,7 @@ export function HeaderNotAuthenticated({
         zIndex="sticky"
         gridGap="2"
       >
-        <Box>
+        <Box display={["none", "none", "flex"]}>
           <Link href="/" passHref>
             <Heading as="a" size="md" textTransform="uppercase">
               Brasileis
@@ -152,13 +152,36 @@ export function HeaderNotAuthenticated({
             onClick={onToggleSearchBar}
             icon={isOpen ? <CloseIcon /> : <SearchIcon />}
           /> */}
-          <IconButton
+          {/* <IconButton
+          
             variant="outline"
             colorScheme="blue"
             aria-label="Menu"
             onClick={onToggle}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-          />
+          /> */}
+          {user && (
+            <Box w="32px">
+              <Menu isLazy>
+                <MenuButton>
+                  <Image
+                    borderRadius="full"
+                    boxSize="32px"
+                    src={user.profile.picture}
+                    alt={user.name}
+                  />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Biblioteca</MenuItem>
+                  <MenuItem>Feed</MenuItem>
+                  <MenuDivider />
+                  <Link href="configuracoes/minha-conta"><MenuItem>Minha Conta</MenuItem></Link>
+                  <MenuDivider />
+                  <MenuItem onClick={logout}>Sair</MenuItem>
+                </MenuList>
+              </Menu>
+            </Box>
+          )}
         </Stack>
       </Flex>
       <Collapse in={isOpen} animateOpacity>

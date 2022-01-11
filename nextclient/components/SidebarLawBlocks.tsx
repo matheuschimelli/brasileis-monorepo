@@ -35,6 +35,7 @@ export default function SidebarLawBlocks({ children, title, fixContent }: Props)
       justifyContent="start"
       padding={["4", "2", "8"]}
       height={fixContent ? sidebarHeight : "auto"}
+
     >
       <Button variant='outline' onClick={() => onToggle()} display={["block", "block", "none"]}>
         <Center>

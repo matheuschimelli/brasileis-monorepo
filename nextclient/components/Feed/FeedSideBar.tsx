@@ -27,8 +27,8 @@ export default function FeedSidebar({ children, title, fixContent }: Props) {
     return (
         <Box
             bg="#f2f1ef"
-            width={{ sm: "auto", md: "450px" }}
-            position={{ sm: "relative", md: "sticky" }}
+            width={{ sm: "100%", md: "450px" }}
+            position={["absolute", "absolute", "sticky"]}
             top={{ sm: "0", md: "60px" }}
             alignItems="start"
             justifyItems="start"
