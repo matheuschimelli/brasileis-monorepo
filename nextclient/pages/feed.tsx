@@ -1,32 +1,35 @@
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../components/layout/DefaultLayout";
 import FeedContent from "../components/Feed/FeedContent";
+import { getData } from "../lib/hooks";
 
 type Props = {
-    data: any
+    feedData: any
+    token?: string,
+    followingTopics: any
 }
-const Busca = ({ data }: Props) => {
+const Busca = ({ feedData, token, followingTopics }: Props) => {
     return (
         <DefaultLayout title="Feed">
-            <FeedContent data={data} />
+            <FeedContent feedData={feedData} followingTopics={followingTopics} token={token} />
         </DefaultLayout>
     );
 };
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+    const token = req.cookies.token
 
-    const { slug, id } = context.query
+    const request = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/feed`, token)
+    const feedData = await request.json()
 
-    // const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/law-block/${slug}/${id}`)
-    // const data = await req.json()
-
-    // if (!data) {
-    //     return {
-    //         notFound: true,
-    //     };
-    // }
+    const requestFollowingTopics = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/following-topics`, token)
+    const followingTopicsData = await requestFollowingTopics.json()
 
     return {
-        props: { data: true }, // will be passed to the page component as props
+        props: {
+            feedData,
+            followingTopics: followingTopicsData.followingTopics,
+            token
+        }, // will be passed to the page component as props
     };
 };
 export default Busca;

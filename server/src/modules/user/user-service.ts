@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { OAuth2Client } from 'google-auth-library'
 import { generateToken } from '../../utils/jwt'
 import prisma from '../../lib/prisma'
+import { generateUserFeed } from '@modules/feed/feed-service'
 
 const client = new OAuth2Client(process.env.GOOGLE_ID, process.env.GOOGLE_SECRET)
 const tokenExpirationTime = '7d'
@@ -162,4 +163,68 @@ export const checkAdmin = async (req: Request, res: Response) => {
 
 }
 
+export const getUserFeed = async (req: Request, res: Response) => {
 
+  const { id: userId } = req.user!
+  try {
+    const feed = await generateUserFeed(userId, 10, 0)
+    return res.json(feed)
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send("Não foi possível carregar seu feed agora. Tente mais tarde.")
+  }
+}
+
+export const followTopics = async (req: Request, res: Response) => {
+  const { topicsIds } = req.body
+  const { id } = req.user!
+  console.log(topicsIds)
+  try {
+    const followTopics = await prisma.user.update({
+      where:
+      {
+        id
+      },
+      data: {
+        followingTopics: {
+          set: topicsIds.map((id: string) => ({ id: id }))
+        }
+      },
+      include: {
+        followingTopics: true
+      }
+    })
+
+    return res.send({ success: true, followTopics })
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ success: false })
+  }
+}
+
+export const followingTopics = async (req: Request, res: Response) => {
+  const { id } = req.user!
+  try {
+    const followingTopics = await prisma.user.findUnique({
+      where: {
+        id
+      },
+      select: {
+        followingTopics: {
+          orderBy: {
+            name: 'asc'
+          },
+          select: {
+            id: true,
+            name: true
+          }
+        }
+      }
+    })
+    return res.send(followingTopics)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ success: false })
+  }
+}

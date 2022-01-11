@@ -3,7 +3,7 @@ import useSWR from 'swr'
 import { useAuth } from './auth'
 export type MutationType = 'POST' | 'GET' | 'PUT' | 'DELETE'
 
-export async function getData(url: string, token: string) {
+export async function getData(url: string, token?: string | null) {
 
     const response = await fetch(url, {
         method: 'GET',
@@ -16,8 +16,7 @@ export async function getData(url: string, token: string) {
     return response
 }
 
-export function useData(url: string) {
-    const { token } = useAuth()
+export function useData(url: string, token?: string | null) {
 
     const fetcher = (urlToFetch: string) => fetch(urlToFetch, {
         headers: new Headers({
@@ -30,6 +29,7 @@ export function useData(url: string) {
     const { data, error } = useSWR(url, fetcher)
     return { data, error }
 }
+
 
 export const useForm = (formType: any) => {
 
@@ -67,7 +67,6 @@ export const useForm = (formType: any) => {
 
 export const useMutate = () => {
     const { token } = useAuth()
-
     const [loading, setLoading] = useState<any[]>([])
     const [success, setSuccess] = useState<boolean | undefined>(undefined)
     const [response, setResponse] = useState<string | any>()

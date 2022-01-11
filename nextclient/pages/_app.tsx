@@ -3,7 +3,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { ProvideAuth } from "../lib/auth";
 import { DefaultSeo } from "next-seo";
 import { useRouter } from 'next/router'
-
 import * as ga from '../lib/ga'
 
 
@@ -38,11 +37,13 @@ function MyApp({ Component, pageProps }) {
         }}
         canonical="https://brasileis.com.br"
       />
-      <ProvideAuth>
-        <ChakraProvider>
+
+      <ChakraProvider>
+        <ProvideAuth>
           <Component {...pageProps} />
-        </ChakraProvider>
-      </ProvideAuth>
+        </ProvideAuth>
+      </ChakraProvider>
+
     </>
   );
 }

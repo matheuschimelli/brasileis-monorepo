@@ -16,7 +16,8 @@ type CrawlerInput = {
     version: number
     isUrlOnly?: boolean
     notifyUpdates?: boolean
-    blockType: BlockType
+    blockType: BlockType,
+    topicId: string
 
 }
 export const index = async (page: number) => {
@@ -48,7 +49,8 @@ export const create = async ({
     version,
     crawlerTypeId,
     slug,
-    blockType
+    blockType,
+    topicId
 }: CrawlerInput) => {
     const newCrawler = await prisma.crawler.create({
         data: {
@@ -66,6 +68,11 @@ export const create = async ({
             crawlerType: {
                 connect: {
                     id: crawlerTypeId
+                }
+            },
+            topic: {
+                connect: {
+                    id: topicId
                 }
             }
         }
@@ -86,7 +93,8 @@ export const update = async ({
     notifyUpdates,
     crawlerTypeId,
     slug,
-    blockType
+    blockType,
+    topicId
 }: CrawlerInput) => {
     const updateCrawler = await prisma.crawler.update({
         where: {
@@ -107,6 +115,11 @@ export const update = async ({
             crawlerType: {
                 connect: {
                     id: crawlerTypeId
+                }
+            },
+            topic: {
+                connect: {
+                    id: topicId
                 }
             }
         }

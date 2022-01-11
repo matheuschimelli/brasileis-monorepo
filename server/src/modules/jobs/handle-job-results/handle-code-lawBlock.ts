@@ -1,4 +1,5 @@
 import prisma from "@lib/prisma"
+import { createFeedItem } from "@modules/feed/feed-service"
 import { createLawBlockFromArray, updateLawBlockFromArray } from "@modules/law-block/law-block-service"
 import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service"
 import { BlockType } from "@prisma/client"
@@ -22,6 +23,8 @@ type CrawlerParams = {
     lawBlockId: string;
     crawlerTypeId: string;
     blockType: BlockType;
+    topicId?: string;
+
     crawlerType: {
         id: string;
         name: string;
@@ -62,6 +65,7 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
         if (!masterLawBlock) {
             const newMasterLawBlock = await prisma.lawBlock.create({
                 data: {
+
                     isActive: true,
                     type: crawlerParams.blockType,
                     source: crawlerParams.source,
@@ -88,6 +92,13 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
             })
             console.log(`CREATED NEW BLOCK ${newMasterLawBlock?.id}`)
 
+            /*
+            adicionar no painel do crawler
+             - topico a ser listado
+            */
+
+
+
             if (newMasterLawBlock) {
                 const masterParentId = newMasterLawBlock.id
 
@@ -97,6 +108,17 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
                     masterParentId,
                     name: newMasterLawBlock.title!,
                     masterLawBlock: newMasterLawBlock
+                })
+
+                await createFeedItem({
+
+                    title: `Novo ${generateTextType(crawlerParams.blockType)} adicionado ${crawlerParams.blockType}`,
+                    content: JSON.stringify({
+                        description: `Novo ${generateTextType(crawlerParams.blockType)}`,
+                        lawBlockId: `${crawlerParams.id}`
+                    }),
+                    topicId: crawlerParams.topicId!,
+                    lawBlockId: newMasterLawBlock.id
                 })
             }
 
@@ -112,8 +134,10 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
 
                 await updateLawBlockFromArray({
                     newData: jobData.result.articles,
-                    masterBlockId: masterLawBlock.id
+                    masterBlockId: masterLawBlock.id,
+                    topicId: crawlerParams.topicId!
                 })
+
                 await removeOldBlocksFromES.add({ masterBlockId: masterLawBlock.id })
 
             } else {
@@ -129,4 +153,8 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
         `);
         return Promise.reject(err)
     }
+}
+
+function generateTextType(blockType: string) {
+    throw new Error("Function not implemented.")
 }

@@ -35,10 +35,8 @@ export function HeaderNotAuthenticated({
   searchQuery?: string;
 }) {
   const { isOpen, onToggle } = useDisclosure();
-  const { isOpen: isOpenSearchbar, onToggle: onToggleSearchBar } =
-    useDisclosure();
 
-  const { user, logout, showAuthPropmpt } = useAuth();
+  const { user, logout, showAuthPropmpt, token } = useAuth();
   const {
     isOpen: isOpenLoginModal,
     onOpen: onOpenLoginModal,
