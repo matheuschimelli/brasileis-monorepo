@@ -25,9 +25,21 @@ const lawParser = (window: DOMWindow, document: Document) => {
         const paragraphAlineaRegex = /^((^(^(^M{0,4}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})) (-))).*(:))/;
 
         const removeAnchors = () => {
+            // remove anchors
             Array.from(document.querySelector("body")!.querySelectorAll("a")).forEach((e: any) => e.remove())
             Array.from(document.querySelector("body")!.querySelectorAll("script")).forEach(e => e.remove())
+            // remove all strikes
+            Array.from(document.querySelector("body")!.querySelectorAll("strike")).forEach(e => e.remove())
 
+
+            // remove spans with a line stroke
+            var allSpans = Array.from(document.querySelectorAll("span"))
+            var reg = /(text-decoration: line-through;)/
+
+            for (const span of allSpans) {
+                var css = span.style.cssText
+                if (reg.test(css)) span.remove()
+            }
         }
 
 
@@ -214,6 +226,7 @@ const lawParser = (window: DOMWindow, document: Document) => {
         throw new Error("JSDOM: Document is undefined or doesn't exist. ")
     }
 }
+
 export const request = async (url: string): Promise<Html> => {
     try {
         const {
