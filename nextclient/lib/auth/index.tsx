@@ -135,6 +135,18 @@ export function useProvideAuth() {
     }
   };
 
+  useEffect(() => {
+    const acessToken = value;
+    const userData = localStorage.getItem("auth");
+
+    if (acessToken && userData) {
+      setUser(JSON.parse(userData));
+      setToken(acessToken);
+    } else {
+      setUser(null);
+      showAuthPropmpt();
+    }
+  }, [value]);
 
   useEffect(() => {
     if (window) {
@@ -147,18 +159,7 @@ export function useProvideAuth() {
     }
   })
 
-  useEffect(() => {
-    const acessToken = value;
-    const userData = localStorage.getItem("auth");
 
-    if (acessToken && userData) {
-      setUser(JSON.parse(userData));
-      setToken(acessToken);
-    } else {
-      setUser(null);
-      showAuthPropmpt();
-    }
-  }, []);
 
   return {
     initializeGoogleAuth,

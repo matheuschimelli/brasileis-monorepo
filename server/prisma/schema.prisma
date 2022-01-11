@@ -1,9 +1,3 @@
-//
-//
-//
-// sistema de feed
-// 1 - os blocos são linkados com determinado tópico
-// 2 -
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch"]
@@ -55,7 +49,7 @@ model LawBlock {
   version Int     @default(1)
   isRef   Boolean @default(false)
 
-  index Int @default(1)
+  index Int?
 
   title        String?
   name         String?
@@ -80,6 +74,9 @@ model LawBlock {
 
   slug   Slug?   @relation(fields: [slugId], references: [id])
   slugId String?
+
+  feedItem   FeedItem?
+  feedItemId String?
 
 
   // - - - - - - - - - - - -
@@ -115,6 +112,9 @@ model LawBlock {
 
   crawler   Crawler? @relation(fields: [crawlerId], references: [id], onDelete: Cascade)
   crawlerId String?  @unique
+
+  topic   Topic?  @relation(fields: [topicId], references: [id])
+  topicId String?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -159,6 +159,53 @@ model User {
   createdAt  DateTime     @default(now())
   updatedAt  DateTime     @updatedAt
   LawComment LawComment[]
+
+  followingTopics Topic[]
+  readFeedItems   FeedItem[]
+
+}
+
+model Feed {
+  id   String @id @default(cuid())
+  name String
+
+  feedItems FeedItem[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model FeedItem {
+  id      String @id @default(cuid())
+  title   String
+  content Json
+
+  lawBlock   LawBlock? @relation(fields: [lawBlockId], references: [id])
+  lawBlockId String?   @unique
+
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  topicId   String
+
+  readBy User[]
+
+  feed   Feed?   @relation(fields: [feedId], references: [id])
+  feedId String?
+}
+
+model Topic {
+  id          String @id @default(cuid())
+  name        String
+  description String
+
+  feedItems FeedItem[]
+  followers User[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  lawBlock LawBlock[]
+  crawler  Crawler[]
 }
 
 model CrawlerType {
@@ -200,6 +247,9 @@ model Crawler {
   lawBlockId String?  @unique
 
   crawlerTypeId String?
+
+  topic   Topic  @relation(fields: [topicId], references: [id])
+  topicId String
 }
 
 model Customer {

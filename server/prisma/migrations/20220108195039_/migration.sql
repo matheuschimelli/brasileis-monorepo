@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "LawBlock" ALTER COLUMN "index" DROP NOT NULL,
+ALTER COLUMN "index" DROP DEFAULT;

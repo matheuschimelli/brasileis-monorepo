@@ -3,6 +3,7 @@ import { Box, Text, Button, useToast } from '@chakra-ui/react'
 import { MutationType, useData, useForm, useMutate } from '../../lib/hooks'
 import router, { useRouter } from 'next/router';
 import AlertDialog from './ConfirmDialog';
+import { useAuth } from '../../lib/auth';
 type Props = {
     formTitle: string
     children: React.ReactNode
@@ -35,8 +36,9 @@ export default function FormBase({
 
     const router = useRouter()
     const { id: dataId } = router.query
+    const { token } = useAuth()
 
-    const loadedFormData = useData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${dataId}`)
+    const loadedFormData = useData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${apiRoute}/${dataId}`, token)
 
     const { handleInputChange, form, initFormData, handleSubmit } = useForm({
         ...initSchema

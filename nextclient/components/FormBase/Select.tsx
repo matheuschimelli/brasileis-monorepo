@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import { Select as ChakraSelect } from "chakra-react-select";
 import { FormControl, FormLabel } from "@chakra-ui/react";
 import { useData } from "../../lib/hooks";
+import { useAuth } from "../../lib/auth";
 
 type Props = {
     name: string;
@@ -18,7 +19,9 @@ type Props = {
 };
 
 export default function Select(props: Props) {
-    const { data, error }: { data: any[]; error: any } = useData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${props.apiPath}`);
+    const { token } = useAuth()
+
+    const { data, error }: { data: any[]; error: any } = useData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${props.apiPath}`, token);
     const [selectedValue, setSelectedValue] = useState<any>();
 
 

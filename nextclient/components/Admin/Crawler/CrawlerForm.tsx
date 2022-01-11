@@ -88,6 +88,14 @@ export default function CrawlerForm() {
                 dataLabel='name'
                 dataValue='id'
             />
+            <Select
+                name="topicId"
+                label="Tópico do item a ser criado"
+                apiPath='topics'
+                placeholder='Selecione um tópico'
+                dataLabel='name'
+                dataValue='id'
+            />
         </FormBase>
 
     )
