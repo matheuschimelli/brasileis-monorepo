@@ -429,7 +429,7 @@ export async function updateLawBlockFromArray(
     }
 }
 
-export const findAll = async (id: string) => {
+export const findAll = async (id: string, skip: number, take?: number) => {
     const block = await prisma.lawBlock.findFirst({
         where: {
             id
@@ -437,6 +437,8 @@ export const findAll = async (id: string) => {
         include: {
             slug: true,
             ownsBlocks: {
+                skip,
+                take: take || 10,
                 orderBy: {
                     index: 'asc'
                 }

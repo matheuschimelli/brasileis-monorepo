@@ -14,9 +14,12 @@ export const index = async (req: Request, res: Response) => {
 }
 
 export const getAllById = async (req: Request, res: Response) => {
+    const { skip } = req.query
+    if (!skip) return res.send({ success: false, message: 'Missing skip items' })
+
     try {
         const { id } = req.params
-        const data = await findAll(id)
+        const data = await findAll(id, Number(skip), 10)
         return res.send(data)
     } catch (err: any) {
         console.log(err)
