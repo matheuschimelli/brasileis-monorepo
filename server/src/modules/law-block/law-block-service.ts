@@ -461,7 +461,7 @@ export const findAll = async (id: string) => {
     }
 }
 
-const generateTextType = (articleType: BlockType) => {
+export const generateTextType = (articleType: BlockType) => {
     if (articleType == 'ARTIGO_LEI') return 'artigo'
     if (articleType == 'CODIGO') return 'código'
     if (articleType == 'DECRETO') return 'decreto'
