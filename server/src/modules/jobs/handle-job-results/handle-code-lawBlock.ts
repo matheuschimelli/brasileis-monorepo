@@ -1,6 +1,10 @@
 import prisma from "@lib/prisma"
 import { createFeedItem } from "@modules/feed/feed-service"
-import { createLawBlockFromArray, updateLawBlockFromArray } from "@modules/law-block/law-block-service"
+import {
+    createLawBlockFromArray,
+    updateLawBlockFromArray,
+    generateTextType
+} from "@modules/law-block/law-block-service"
 import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service"
 import { BlockType } from "@prisma/client"
 import { removeOldBlocksFromES } from "../jobs"
@@ -155,6 +159,3 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
     }
 }
 
-function generateTextType(blockType: string) {
-    throw new Error("Function not implemented.")
-}
