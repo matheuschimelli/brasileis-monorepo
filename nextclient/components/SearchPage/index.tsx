@@ -1,4 +1,5 @@
 import { Box, Stack, Heading, Text, Flex, Link } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import SearchPagination from "./Pagination";
 import SearchFilter from "./SearchFilter";
@@ -10,9 +11,16 @@ type Props = {
 };
 
 export default function SearchPage({ results, total, error }: Props) {
+  const router = useRouter();
 
   const handleOptionsChange = (options: any[]) => {
-
+    console.log(options)
+    router.push({
+      query: {
+        ...router.query,
+        filters: options
+      }
+    })
   }
 
   return (

@@ -25,21 +25,52 @@ export default function Busca({ results, error, total, searchQuery }: Props) {
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   const searchQuery = query.q;
   const page = query.p
+  const filters = query.filters
+
+  const getFilters = () => {
+    if (typeof filters == "object") {
+      var r = filters.map(e => {
+        return JSON.parse(e)
+      })
+      return r
+    } else {
+      if (filters) {
+        return [JSON.parse(filters)]
+      } else {
+        return []
+      }
+    }
+
+  }
+
+
   const sanitizedQuery = searchQuery
     ?.toString()
     .trim()
     .toLowerCase()
     .normalize();
 
+  //...(getFilters().lenght !==0 && { filters: getFilters() })
+
   if (!!sanitizedQuery) {
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/search?q=${sanitizedQuery}&p=${page}`
-      );
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/search`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          q: sanitizedQuery,
+          p: page,
+          filters: getFilters()
+        })
+      });
+
 
       const data = await response.json();
 
-      console.log(data);
 
       if (!data.results || data.results.lenght == 0) {
         return {

@@ -16,55 +16,53 @@ type Props = {
 }
 export default function SearchFilter({ onChange }: Props) {
     return (
-        <Accordion>
-            <AccordionItem>
-                <h2>
-                    <AccordionButton>
-                        <Box flex='1' textAlign='left'>
-                            Código
-                        </Box>
-                        <AccordionIcon />
-                    </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                    <CheckboxGroup colorScheme='blue' onChange={onChange}>
+        <CheckboxGroup colorScheme='blue' onChange={onChange}>
+
+            <Accordion>
+                <AccordionItem>
+                    <h2>
+                        <AccordionButton>
+                            <Box flex='1' textAlign='left'>
+                                Código
+                            </Box>
+                            <AccordionIcon />
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
                         <Stack spacing={[1, 5]} direction={['column', 'column']}>
-                            <Checkbox value='cc'>Código Civil</Checkbox>
-                            <Checkbox value='cp'>Código Penal</Checkbox>
-                            <Checkbox value='cdc'>Código de Defesa do Consumidor</Checkbox>
-                            <Checkbox value='cpc'>Código de Processo Civil</Checkbox>
-                            <Checkbox value='cpp'>Código de Processo Penal</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cc" })}>Código Civil</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cp" })}>Código Penal</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cdc" })}>Código de Defesa do Consumidor</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cpc" })}>Código de Processo Civil</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cpp" })}>Código de Processo Penal</Checkbox>
 
                         </Stack>
-                    </CheckboxGroup>
-                </AccordionPanel>
-            </AccordionItem>
 
-            <AccordionItem>
-                <h2>
-                    <AccordionButton>
-                        <Box flex='1' textAlign='left'>
-                            Tipo
-                        </Box>
-                        <AccordionIcon />
-                    </AccordionButton>
-                </h2>
-                <AccordionPanel pb={4}>
-                    <CheckboxGroup colorScheme='blue' >
+                    </AccordionPanel>
+                </AccordionItem>
+
+                <AccordionItem>
+                    <h2>
+                        <AccordionButton>
+                            <Box flex='1' textAlign='left'>
+                                Tipo
+                            </Box>
+                            <AccordionIcon />
+                        </AccordionButton>
+                    </h2>
+                    <AccordionPanel pb={4}>
+
                         <Stack spacing={[1, 5]} direction={['column', 'column']}>
-                            <Checkbox value='cc'>Artigo</Checkbox>
-                            <Checkbox value='cp'>Inciso</Checkbox>
-                            <Checkbox value='cdc'>Alínea</Checkbox>
-                            <Checkbox value='cpc'>Parágrafo</Checkbox>
-                            <Checkbox value='cpp'>Parágrafo Único</Checkbox>
-                            <Checkbox value='cpp'>Decreto</Checkbox>
-                            <Checkbox value='cpp'>Lei</Checkbox>
-                            <Checkbox value='cpp'>Portaria</Checkbox>
-
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "artigo_lei" })}>Artigo</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "inciso_lei" })}>Inciso</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "alinea_lei" })}>Alínea</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "paragrafo_lei" })}>Parágrafo</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "blockType", value: "paragrafo_unico_lei" })}>Parágrafo Único</Checkbox>
                         </Stack>
-                    </CheckboxGroup>
-                </AccordionPanel>
-            </AccordionItem>
-        </Accordion>
+
+                    </AccordionPanel>
+                </AccordionItem>
+            </Accordion>
+        </CheckboxGroup>
     )
 }

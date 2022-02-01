@@ -79,15 +79,13 @@ export const upsert = async ({ docId, document }: { docId: string, document: ESD
     }
 }
 
-const generateESQuery = (searchTerm: string) => {
-    return {
+const generateESQueryWithFilter = (searchTerm: string, filters: any[]) => {
+
+    const baseSearch = {
         query: {
             multi_match: {
                 query: searchTerm,
-                fields: [
-                    'originalText',
-                    'title'
-                ]
+                fields: ['originalText', 'title']
             }
         },
         _source: [
@@ -102,12 +100,8 @@ const generateESQuery = (searchTerm: string) => {
         highlight: {
             order: 'score',
             type: 'fvh',
-            pre_tags: [
-                '<mark>'
-            ],
-            post_tags: [
-                '</mark>'
-            ],
+            pre_tags: ['<mark>'],
+            post_tags: ['</mark>'],
             fragment_size: 300,
             fields: {
                 originalText: {
@@ -137,22 +131,99 @@ const generateESQuery = (searchTerm: string) => {
             }
         }
     }
+
+    var customSearch = {
+        "query": {
+            "bool": {
+                "filter": [],
+                "must": {
+                    "multi_match": {
+                        "query": searchTerm,
+                        "fields": ["originalText", "title"]
+                    }
+                }
+            }
+        },
+        "_source": [
+            "title",
+            "updatedAt",
+            "slug",
+            "originalText",
+            "source",
+            "identifier",
+            "blockType"
+        ],
+        "highlight": {
+            "order": "score",
+            "type": "fvh",
+            "pre_tags": ["<mark>"],
+            "post_tags": ["</mark>"],
+            "fragment_size": 300,
+            "fields": {
+                "originalText": {
+                    "number_of_fragments": 1
+                }
+            },
+            "highlight_query": {
+                "bool": {
+                    "must": {
+                        "match": {
+                            "originalText": {
+                                "query": ""
+                            }
+                        }
+                    },
+                    "should": {
+                        "match_phrase": {
+                            "originalText": {
+                                "query": searchTerm,
+                                "slop": 1,
+                                "boost": 10
+                            }
+                        }
+                    },
+                    "minimum_should_match": 0
+                }
+            }
+        }
+    }
+
+    const generateCustomSearch = () => {
+        const blockTypeFilterGenrated = filters.map((option) => {
+            return {
+                term: {
+                    [option.field]: option.value
+                }
+            }
+        }
+        )
+        //@ts-ignore
+        customSearch["query"]["bool"]["filter"] = blockTypeFilterGenrated
+        return customSearch
+    }
+
+    if (filters && filters.length !== 0) {
+        return generateCustomSearch()
+    }
+
+    return baseSearch
 }
+
 
 export const search = async ({
     searchQuery,
     page,
-    filterOptions
+    filters
 }: {
     searchQuery: string,
     page: number,
-    filterOptions?: any
+    filters?: any
 }) => {
     if (!searchQuery) throw new Error("Pesquisa não pode ser em branco")
 
     try {
 
-        const queryDsl = generateESQuery(searchQuery)
+        const queryDsl = generateESQueryWithFilter(searchQuery, filters)
         console.log(queryDsl)
 
         const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
@@ -195,3 +266,4 @@ export const remove = async ({ documentId }: { documentId: string }) => {
         throw new Error(error)
     }
 }
+

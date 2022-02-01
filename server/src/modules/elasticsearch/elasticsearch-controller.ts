@@ -3,7 +3,7 @@ import { search as esSearch } from '@modules/elasticsearch/elasticsearch-service
 
 
 export const search = async (req: Request, res: Response) => {
-    const { q: query, p: page, filter } = req.query
+    const { q: query, p: page, filters } = req.body
 
     const pageNumber = page ? Number(page) : 1
 
@@ -46,13 +46,13 @@ export const search = async (req: Request, res: Response) => {
             }
         }
     }
-    console.log("SEARCH QUERY", generateSearchString(fixedQuery, synonyms))
+
 
     try {
         const results = await esSearch({
             searchQuery: generateSearchString(fixedQuery, synonyms) || fixedQuery,
             page: pageNumber,
-
+            filters
         })
         return res.send(results)
     } catch (err) {
