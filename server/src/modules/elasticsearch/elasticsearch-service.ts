@@ -47,7 +47,19 @@ export const findAll = async (): Promise<any[] | null> => {
     return docsResult
 }
 
-export const upsert = async ({ docId, document }: { docId: string, document: any }) => {
+type ESDocument = {
+    blockType: string,
+    name: string,
+    title: string,
+    value: string,
+    originalText: string,
+    searchText: string,
+    searchString: string,
+    identifier: string,
+    source: string,
+    slug: string
+}
+export const upsert = async ({ docId, document }: { docId: string, document: ESDocument }) => {
     try {
         const doc = await elasticSearchClient.update({
             index: esIndex,
@@ -73,17 +85,19 @@ const generateESQuery = (searchTerm: string) => {
             multi_match: {
                 query: searchTerm,
                 fields: [
-                    'originalText^2',
+                    'originalText',
                     'title'
                 ]
             }
         },
         _source: [
-            'title',
-            'updatedAt',
-            'slug',
-            'originalText',
-            'source'
+            "title",
+            "updatedAt",
+            "slug",
+            "originalText",
+            "source",
+            "type",
+            "identifier"
         ],
         highlight: {
             order: 'score',
@@ -127,10 +141,12 @@ const generateESQuery = (searchTerm: string) => {
 
 export const search = async ({
     searchQuery,
-    page
+    page,
+    filterOptions
 }: {
     searchQuery: string,
-    page: number
+    page: number,
+    filterOptions?: any
 }) => {
     if (!searchQuery) throw new Error("Pesquisa não pode ser em branco")
 

@@ -1,0 +1,102 @@
+{
+    "settings": {
+        "index": {
+            "analysis": {
+                "analyzer": {
+                    "brasileis_default_analyser": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": [
+                            "html_strip"
+                        ],
+                        "filter": [
+                            "lowercase",
+                            "trim",
+                            "stop",
+                            "br_stemmer",
+                            "brazilian_stopwords",
+                            "asciifolding",
+                            "classic",
+                            "filter_shingle"
+                        ]
+                    },
+                    "brasileis_search_analyser": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "char_filter": [
+                            "html_strip"
+                        ],
+                        "filter": [
+                            "lowercase",
+                            "trim",
+                            "stop",
+                            "br_stemmer",
+                            "brazilian_stopwords",
+                            "asciifolding",
+                            "classic"
+                        ]
+                    }
+                },
+                "filter": {
+                    "br_stemmer": {
+                        "type": "stemmer",
+                        "name": "brazilian"
+                    },
+                    "brazilian_stopwords": {
+                        "type": "stop",
+                        "stopwords": "_brazilian_"
+                    },
+                    "filter_shingle": {
+                        "type": "shingle",
+                        "output_unigrams": "true"
+                    }
+                }
+            }
+        }
+    },
+    "mappings": {
+        "properties": {
+            "identifier": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "name": {
+                "type": "text",
+                "fields": {
+                    "keyword": {
+                        "type": "keyword",
+                        "ignore_above": 256
+                    }
+                }
+            },
+            "originalText": {
+                "type": "text",
+                "term_vector": "with_positions_offsets"
+            },
+            "searchText": {
+                "type": "text"
+            },
+            "slug": {
+                "type": "text"
+            },
+            "source": {
+                "type": "text"
+            },
+            "title": {
+                "type": "text"
+            },
+            "blockType": {
+                "type": "text"
+            },
+            "value": {
+                "type": "text",
+                "term_vector": "with_positions_offsets"
+            }
+        }
+    }
+}

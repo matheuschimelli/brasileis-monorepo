@@ -13,7 +13,6 @@ export const crawlerArtigsoLeiJsDom = queue('crawler-artigos-lei-jsdom', crawler
 
 export const runQueues = () => {
     signale.success('🐂 Bull running');
-    workerServer.add({}, { repeat: { cron: '* * * * *' } })
 }
 
 

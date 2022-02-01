@@ -1,0 +1,73 @@
+{
+    "query": {
+        "bool": {
+            "must": {
+                "multi_match": {
+                    "query": "pena",
+                    "fields": [
+                        "originalText",
+                        "title"
+                    ]
+                }
+            },
+            "filter": [
+                {
+                    "term": {
+                        "identifier": "cdc"
+                    }
+                },
+                {
+                    "term": {
+                        "type": "PARAGRAFO_LEI"
+                    }
+                }
+            ]
+        }
+    },
+    "_source": [
+        "title",
+        "updatedAt",
+        "slug",
+        "originalText",
+        "source",
+        "identifier",
+        "type"
+    ],
+    "highlight": {
+        "order": "score",
+        "type": "fvh",
+        "pre_tags": [
+            "<mark>"
+        ],
+        "post_tags": [
+            "</mark>"
+        ],
+        "fragment_size": 300,
+        "fields": {
+            "originalText": {
+                "number_of_fragments": 1
+            }
+        },
+        "highlight_query": {
+            "bool": {
+                "must": {
+                    "match": {
+                        "originalText": {
+                            "query": ""
+                        }
+                    }
+                },
+                "should": {
+                    "match_phrase": {
+                        "originalText": {
+                            "query": "pena",
+                            "slop": 1,
+                            "boost": 10
+                        }
+                    }
+                },
+                "minimum_should_match": 0
+            }
+        }
+    }
+}

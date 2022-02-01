@@ -69,13 +69,27 @@ class Server {
     this.app.disable('x-powered-by')
     this.app.set('host', this.host)
     this.app.set('port', Number(this.port))
+
+    const corsList = this.cors
+    const corsOptionsDelegate = function (req: any, callback: any) {
+      let corsOptions
+      if (corsList?.indexOf(req.header('Origin')) !== -1) {
+        corsOptions = { origin: true, credentials: true } // reflect (enable) the requested origin in the CORS response
+      } else {
+        corsOptions = { origin: false, credentials: true } // disable CORS for this request
+      }
+      callback(null, corsOptions) // callback expects two parameters: error and options
+    }
+    this.app!.use(cors(corsOptionsDelegate))
+
+
     this.app.get('/tired', ({ res }: Middleware) => res!.send('Tired?'))
     this.app.use(helmet({
       contentSecurityPolicy:
         (process.env.NODE_ENV === 'production')
           ? undefined : false
     }))
-    this.app.use(cors())
+
     this.app.use(express.urlencoded({ extended: true }))
     this.app.use(express.json({ limit: '100mb' }))
 
@@ -170,7 +184,6 @@ class Server {
   }
 
   async boostrap() {
-    if (this.cors && this.cors.length !== 0) this.useCors()
     await this.useApolloServer()
     this.handleErrors()
     this.server?.listen(this.port, () => {
