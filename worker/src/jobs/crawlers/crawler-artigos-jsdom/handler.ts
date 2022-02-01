@@ -7,7 +7,7 @@ const handler = async (job: Job) => {
         const jobOptions = job.data
         const jobData = jobOptions.jobData
 
-        const { articles, pageHtml, pageText } = await crawlJsDom(jobData.source)
+        const { articles, pageHtml, pageText } = await crawlJsDom(jobData.source, jobData)
 
         if (articles.length == 0 || !articles) throw new Error("Not articles were found from the provided url source")
 
