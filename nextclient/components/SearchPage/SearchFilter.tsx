@@ -16,9 +16,9 @@ type Props = {
 }
 export default function SearchFilter({ onChange }: Props) {
     return (
-        <CheckboxGroup colorScheme='blue' onChange={onChange}>
+        <CheckboxGroup colorScheme='blue' onChange={onChange} >
 
-            <Accordion>
+            <Accordion allowToggle>
                 <AccordionItem>
                     <h2>
                         <AccordionButton>
@@ -30,11 +30,11 @@ export default function SearchFilter({ onChange }: Props) {
                     </h2>
                     <AccordionPanel pb={4}>
                         <Stack spacing={[1, 5]} direction={['column', 'column']}>
-                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cc" })}>Código Civil</Checkbox>
-                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cp" })}>Código Penal</Checkbox>
-                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cdc" })}>Código de Defesa do Consumidor</Checkbox>
-                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cpc" })}>Código de Processo Civil</Checkbox>
-                            <Checkbox value={JSON.stringify({ field: "blockType", value: "cpp" })}>Código de Processo Penal</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "identifier", value: "cc" })}>Código Civil</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "identifier", value: "cp" })}>Código Penal</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "identifier", value: "cdc" })}>Código de Defesa do Consumidor</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "identifier", value: "cpc" })}>Código de Processo Civil</Checkbox>
+                            <Checkbox value={JSON.stringify({ field: "identifier", value: "cpp" })}>Código de Processo Penal</Checkbox>
 
                         </Stack>
 
