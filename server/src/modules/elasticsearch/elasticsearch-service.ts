@@ -135,7 +135,15 @@ const generateESQueryWithFilter = (searchTerm: string, filters: any[]) => {
     var customSearch = {
         "query": {
             "bool": {
-                "filter": [],
+                "filter": [
+                    {
+                        "bool": {
+                            "should": [
+
+                            ]
+                        }
+                    }
+                ],
                 "must": {
                     "multi_match": {
                         "query": searchTerm,
@@ -198,7 +206,8 @@ const generateESQueryWithFilter = (searchTerm: string, filters: any[]) => {
         }
         )
         //@ts-ignore
-        customSearch["query"]["bool"]["filter"] = blockTypeFilterGenrated
+        customSearch.query.bool.filter[0].bool.should = blockTypeFilterGenrated
+        //["bool"]["filter"]["bool"]["should"] 
         return customSearch
     }
 
@@ -224,7 +233,6 @@ export const search = async ({
     try {
 
         const queryDsl = generateESQueryWithFilter(searchQuery, filters)
-        console.log(queryDsl)
 
         const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
 

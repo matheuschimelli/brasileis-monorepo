@@ -5,6 +5,8 @@ import { search as esSearch } from '@modules/elasticsearch/elasticsearch-service
 export const search = async (req: Request, res: Response) => {
     const { q: query, p: page, filters } = req.body
 
+    console.log('REQ BODYU', req.body)
+
     const pageNumber = page ? Number(page) : 1
 
     const str = query as string

@@ -12,6 +12,7 @@ import {
   Collapse,
   Text,
   useColorModeValue,
+  useColorMode,
   Image,
   Menu,
   MenuButton,
@@ -42,6 +43,8 @@ export function HeaderNotAuthenticated({
     onOpen: onOpenLoginModal,
     onClose: onCloseLoginModal
   } = useDisclosure()
+
+  const { colorMode, toggleColorMode } = useColorMode()
 
   return (
     <>
@@ -117,6 +120,9 @@ export function HeaderNotAuthenticated({
               </Button>
             </>
           )}
+          <Button onClick={toggleColorMode}>
+            Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
+          </Button>
           {user && (
             <Menu isLazy>
               <MenuButton>
@@ -160,6 +166,7 @@ export function HeaderNotAuthenticated({
             onClick={onToggle}
             icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
           /> */}
+
           {user && (
             <Box w="32px">
               <Menu isLazy>
