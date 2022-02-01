@@ -10,10 +10,6 @@ export const search = async (req: Request, res: Response) => {
     const str = query as string
     let fixedQuery = str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
 
-    if (fixedQuery.indexOf("art.") !== -1) {
-        fixedQuery = fixedQuery.replace("art.", "artigo")
-    }
-
     var synonyms = [{
         words: 'cpc, cpc15, CPC, CPC15, código de processo',
         target: 'código de processo civil'
@@ -28,15 +24,10 @@ export const search = async (req: Request, res: Response) => {
     {
         words: 'cc, CC',
         target: 'codigo civil'
-    },
-    {
-        words: 'art, ar, art., arti,',
-        target: 'artigo'
     }
     ]
 
     const generateSearchString = (searchString: string, synonyms: any[]) => {
-        console.log("SEARCH STRING", searchString)
         for (const syn of synonyms) {
             const wordList = syn.words
                 .normalize("NFD")
@@ -44,10 +35,7 @@ export const search = async (req: Request, res: Response) => {
                 .toLowerCase()
                 .split(",")
 
-            console.log(wordList)
-
             for (const word of wordList) {
-                console.log(word)
                 if (searchString.indexOf(word) !== -1) {
                     return searchString
                         .replace(word, syn.target)
@@ -58,7 +46,7 @@ export const search = async (req: Request, res: Response) => {
             }
         }
     }
-    console.log(generateSearchString(fixedQuery, synonyms))
+    console.log("SEARCH QUERY", generateSearchString(fixedQuery, synonyms))
 
     try {
         const results = await esSearch({
