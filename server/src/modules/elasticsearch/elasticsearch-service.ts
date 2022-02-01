@@ -153,6 +153,7 @@ export const search = async ({
     try {
 
         const queryDsl = generateESQuery(searchQuery)
+        console.log(queryDsl)
 
         const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
 
