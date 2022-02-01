@@ -15,7 +15,6 @@ exports.crawlerArtigosLei = (0, bull_1.queue)('crawler-artigos-lei', (0, job_uti
 exports.crawlerArtigsoLeiJsDom = (0, bull_1.queue)('crawler-artigos-lei-jsdom', handler_2.default);
 const runQueues = () => {
     signale_1.default.success('🐂 Bull running');
-    exports.workerServer.add({}, { repeat: { cron: '* * * * *' } });
 };
 exports.runQueues = runQueues;
 const sendResult = async ({ queue, data, result }) => {

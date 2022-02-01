@@ -100,7 +100,7 @@ async function insertArticle({ article, parentId, codeName, masterParentId }: {
     await elasticSearchUpsert({
         docId: newArticle.id,
         document: {
-            type: article.type as BlockType,
+            blockType: article.type as BlockType,
             name: article.name,
             title: `${codeName} artigo ${article.name}`,
             value: article.value,
@@ -109,7 +109,7 @@ async function insertArticle({ article, parentId, codeName, masterParentId }: {
             searchString: article.searchString,
             identifier: article.identifier,
             source: article.source,
-            slug: newArticle.urlSlug
+            slug: newArticle.urlSlug!
         }
     })
 

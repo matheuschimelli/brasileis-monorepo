@@ -1,13 +1,20 @@
 import { Box, Stack, Heading, Text, Flex, Link } from "@chakra-ui/react";
-import React from "react";
+import React, { useState } from "react";
 import SearchPagination from "./Pagination";
+import SearchFilter from "./SearchFilter";
 
 type Props = {
   results?: [];
   total?: any;
   error?: boolean;
 };
+
 export default function SearchPage({ results, total, error }: Props) {
+
+  const handleOptionsChange = (options: any[]) => {
+
+  }
+
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "8", md: "12" }}>
       <Stack
@@ -26,8 +33,11 @@ export default function SearchPage({ results, total, error }: Props) {
           top="20"
         >
           <Text fontSize="xl" >
-            Filtros de busca
+            Filtrar
           </Text>
+          <Box mt="10" w="100%">
+            <SearchFilter onChange={(e) => handleOptionsChange(e)} />
+          </Box>
         </Flex>
 
         {error ? (
