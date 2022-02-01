@@ -385,7 +385,7 @@ export async function updateLawBlockFromArray(
                                         },
                                         create: {
                                             value: newArticle.slug.value,
-                                            title: 'CDC'
+                                            title: `${masterBlockData.title}`
                                         }
                                     }
                                 },

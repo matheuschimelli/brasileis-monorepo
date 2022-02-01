@@ -3,7 +3,7 @@ import { DOMWindow, JSDOM } from 'jsdom'
 
 type Html = string
 
-const lawParser = (window: DOMWindow, document: Document) => {
+const lawParser = (window: DOMWindow, document: Document, crawlerData: any) => {
 
     if (document) {
         var rawParagraphs: any = null
@@ -187,6 +187,7 @@ const lawParser = (window: DOMWindow, document: Document) => {
                 return 'alínea.'
             }
         }
+
         function orderedProcessor(paragraph: any, index: number) {
             paragraph = paragraph.textContent.trim()
 
@@ -200,9 +201,9 @@ const lawParser = (window: DOMWindow, document: Document) => {
                     source: window.location.href,
                     version: 1,
                     searchText: '',
-                    identifier: 'cdc',
+                    identifier: crawlerData.slug,
                     slug: {
-                        value: 'cdc'
+                        value: crawlerData.slug
                     }
                 })
             }
@@ -250,7 +251,7 @@ export const request = async (url: string): Promise<Html> => {
     }
 }
 
-export const processHtml = (html: Html, url: string) => {
+export const processHtml = (html: Html, url: string, crawlerData: any) => {
     const dom = new JSDOM(html, {
         resources: "usable",
         runScripts: "dangerously",
@@ -260,7 +261,7 @@ export const processHtml = (html: Html, url: string) => {
     const window = dom.window
     const document = dom.window.document
 
-    const articles = lawParser(window, document)
+    const articles = lawParser(window, document, crawlerData)
 
     return articles
 
@@ -283,10 +284,10 @@ const getPageText = (html: string, url: string) => {
     return text
 }
 
-export const crawlJsDom = async (url: string) => {
+export const crawlJsDom = async (url: string, jobData: any) => {
     try {
         const html = await request(url)
-        const articles = processHtml(html, url)
+        const articles = processHtml(html, url, jobData)
         const pageText = getPageText(html, url)
 
         return { articles, pageHtml: html, pageText }
