@@ -1,6 +1,7 @@
 import elasticSearchClient from "@lib/elasticsearch-client"
 
 const esIndex = process.env.NODE_ENV !== 'production' ? 'development' : 'brasileis_prod'
+//const esIndex = 'brasileis_prod'
 
 console.log("INDEX", esIndex)
 
@@ -233,6 +234,7 @@ export const search = async ({
     try {
 
         const queryDsl = generateESQueryWithFilter(searchQuery, filters)
+        console.log("DSL", JSON.stringify(queryDsl))
 
         const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
 
