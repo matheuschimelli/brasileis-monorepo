@@ -44,6 +44,8 @@ model LawBlock {
   type     BlockType @default(ARTIGO_LEI)
   isActive Boolean   @default(true)
 
+  checksum String?
+
   source String? //url to be crawled
 
   version Int     @default(1)

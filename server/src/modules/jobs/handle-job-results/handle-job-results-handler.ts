@@ -6,7 +6,7 @@ import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-se
  * Brasileis job result handler - How it Works (or how should it works)
  * 
  * 1. The main server wich have access to database call a redis queue to the worker server
- * this queue contains necessary data to run the worker to process the crawler or else thing
+ * this queue contains the necessary data to run the worker to process the crawler or else thing
  * 
  * 2. After the worker server has done the work it will calls another redis queue called jobResults
  * 
