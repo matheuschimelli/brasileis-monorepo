@@ -26,6 +26,9 @@ const handler = async (job: Job) => {
             if (isSameHour && isSameMinute) {
                 console.log(crawler)
                 console.log("has same time. calling to run")
+                sendAlertToTelegram(`
+                Running Crawler: ${crawler.name}
+                    `);
                 await processOnWorker({
                     id: crawler.id,
                     queue: crawler.crawlerType?.name!,
