@@ -7,7 +7,7 @@ import internalCrawlerHandler from '@modules/jobs/auto-es-index-updater/handler'
 import internalCrawlerWorkerHandler from '@modules/jobs/auto-es-index-updater/worker-handler'
 import reIndexPostgresDataToElasticSearchHandler from '@modules/jobs/reindex-postgres-data-to-elasticsearch/handler'
 import reIndexPostgresDataToElasticSearchHandlerWorker from '@modules/jobs/reindex-postgres-data-to-elasticsearch/worker-handler'
-
+import checkIfEsIsRunningHandler from '@modules/jobs/check-if-elasticsearch-is-running/handler'
 
 export const WorkerServer = queue('WorkerServer')
 export const jobResults = queue('JobResults', handleJobResults)
@@ -20,9 +20,13 @@ export const autoEsIndexUpdaterWorker = queue('autoEsIndexUpdaterWorker', intern
 export const reIndexPostgresDataToElasticSearch = queue('reIndexPostgresDataToElasticSearch', reIndexPostgresDataToElasticSearchHandler)
 export const reIndexPostgresDataToElasticSearchWorker = queue('reIndexPostgresDataToElasticSearchWorker', reIndexPostgresDataToElasticSearchHandlerWorker)
 
+export const checkIfESIsRunning = queue('check if elasticsearch is running', checkIfEsIsRunningHandler)
+
+
 
 export const runQueues = () => {
     cronJobChecker.add({}, { repeat: { cron: '* * * * *' } })
+    checkIfESIsRunning.add({}, { repeat: { cron: '* * * * *' } })
     autoEsIndexUpdater.add({}, { repeat: { cron: '0 1 * * *' } })
     reIndexPostgresDataToElasticSearch.add({}, { repeat: { cron: '0 1 * * 0' } })
 
@@ -37,7 +41,8 @@ export const queues = [
     autoEsIndexUpdater,
     autoEsIndexUpdaterWorker,
     reIndexPostgresDataToElasticSearch,
-    reIndexPostgresDataToElasticSearchWorker
+    reIndexPostgresDataToElasticSearchWorker,
+    checkIfESIsRunning
 ]
 
 export const runQueue = (name: string) => {
