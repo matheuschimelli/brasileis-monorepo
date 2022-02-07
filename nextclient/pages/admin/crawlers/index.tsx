@@ -5,12 +5,15 @@ import AdminLayout from "../../../components/Admin/AdminLayout";
 import CrudBar from "../../../components/Admin/CrudBar";
 import ShowItems from "../../../components/Admin/ShowItems";
 import { checkAdmin } from "../../../lib/checkAdmin";
+import CrawlerOptions from "../../../components/Admin/CrawlerOptions";
 
 export default function Swibc({ crawlers }: { crawlers: any[] }) {
     return (
         <AdminLayout title="Crawlers - Brasileis Admin">
+            <CrawlerOptions />
             <CrudBar title='Crawlers' path="crawlers" />
             <ShowItems data={crawlers} itemTitle="name" itemValue="id" pathTo="crawlers" viewMode="grid" />
+
         </AdminLayout>
     );
 }

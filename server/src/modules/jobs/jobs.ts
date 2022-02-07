@@ -5,6 +5,9 @@ import removeOldBlocksFromEsHandler from '@modules/jobs/remove-old-jobs-from-ela
 import removeOldBlocksFromEsHandlerWorker from '@modules/jobs/remove-old-jobs-from-elasticsearch/remove-woker-handler'
 import internalCrawlerHandler from '@modules/jobs/auto-es-index-updater/handler'
 import internalCrawlerWorkerHandler from '@modules/jobs/auto-es-index-updater/worker-handler'
+import reIndexPostgresDataToElasticSearchHandler from '@modules/jobs/reindex-postgres-data-to-elasticsearch/handler'
+import reIndexPostgresDataToElasticSearchHandlerWorker from '@modules/jobs/reindex-postgres-data-to-elasticsearch/worker-handler'
+
 
 export const WorkerServer = queue('WorkerServer')
 export const jobResults = queue('JobResults', handleJobResults)
@@ -14,9 +17,15 @@ export const removeOldBlocksFromESWorker = queue('removeOldBlocksFromESWorker', 
 export const autoEsIndexUpdater = queue('autoEsIndexUpdater', internalCrawlerHandler)
 export const autoEsIndexUpdaterWorker = queue('autoEsIndexUpdaterWorker', internalCrawlerWorkerHandler)
 
+export const reIndexPostgresDataToElasticSearch = queue('reIndexPostgresDataToElasticSearch', reIndexPostgresDataToElasticSearchHandler)
+export const reIndexPostgresDataToElasticSearchWorker = queue('reIndexPostgresDataToElasticSearchWorker', reIndexPostgresDataToElasticSearchHandlerWorker)
+
+
 export const runQueues = () => {
     cronJobChecker.add({}, { repeat: { cron: '* * * * *' } })
-    autoEsIndexUpdater.add({}, { repeat: { cron: '*/59 * * * *' } })
+    autoEsIndexUpdater.add({}, { repeat: { cron: '0 1 * * *' } })
+    reIndexPostgresDataToElasticSearch.add({}, { repeat: { cron: '0 1 * * 0' } })
+
 }
 
 export const queues = [
@@ -26,7 +35,9 @@ export const queues = [
     removeOldBlocksFromES,
     removeOldBlocksFromESWorker,
     autoEsIndexUpdater,
-    autoEsIndexUpdaterWorker
+    autoEsIndexUpdaterWorker,
+    reIndexPostgresDataToElasticSearch,
+    reIndexPostgresDataToElasticSearchWorker
 ]
 
 export const runQueue = (name: string) => {

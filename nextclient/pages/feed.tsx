@@ -21,6 +21,8 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
     const request = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/feed`, token)
     const feedData = await request.json()
 
+    console.log(feedData)
+
     const requestFollowingTopics = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/following-topics`, token)
     const followingTopicsData = await requestFollowingTopics.json()
 

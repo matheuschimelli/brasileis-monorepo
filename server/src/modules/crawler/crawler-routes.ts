@@ -6,7 +6,8 @@ import {
     createController,
     updateController,
     removeController,
-    runCrawlerController
+    runCrawlerController,
+    reindexController
 } from '@modules/crawler/crawler-controller'
 import { checkValidation, isAdmin, isAuthenticated } from '@middlewares/jwt-auth'
 
@@ -19,7 +20,7 @@ crawlerRoutes.post('/', isAuthenticated, isAdmin, validate(), checkValidation, c
 crawlerRoutes.put('/:id', isAuthenticated, isAdmin, validate(), checkValidation, updateController)
 crawlerRoutes.delete('/:id', isAuthenticated, isAdmin, removeController)
 crawlerRoutes.post('/run-crawler/:id', isAuthenticated, isAdmin, runCrawlerController)
-
+crawlerRoutes.post('/run-reindex', isAuthenticated, isAdmin, reindexController)
 
 // isAuthenticated, isAdmin,
 

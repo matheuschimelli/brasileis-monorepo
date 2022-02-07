@@ -22,6 +22,18 @@ type UpdateParams = {
     masterBlockId?: string,
     topicId: string
 }
+export const getTotalOfBlocks = async () => {
+    return await prisma.lawBlock.count()
+}
+
+export const getAllBlocksIds = async () => {
+    return await prisma.lawBlock.findMany({
+        select: {
+            id: true
+        }
+    })
+}
+
 export const allBlocks = async () => {
     return await prisma.lawBlock.findMany({
         include: {
@@ -486,6 +498,47 @@ const renderName = (name: string) => {
     return name
 }
 
+export const findBlockForReindex = async (id: string) => {
+    const block = await prisma.lawBlock.findUnique({
+        where: {
+            id
+        },
+        include: {
+            belongsTo: {
+                select: {
+                    title: true,
+                    name: true
+                }
+            },
+            slug: {
+                select: {
+                    value: true
+                }
+            }
+        }
+    })
+    /**
+     * 
+     *     await elasticSearchUpsert({
+        docId: newArticle.id,
+        document: {
+            blockType: article.type as BlockType,
+            name: article.name,
+            title: `${codeName} artigo ${article.name}`,
+            value: article.value,
+            originalText: article.originalText,
+            searchText: article.searchText,
+            searchString: article.searchString,
+            identifier: article.identifier,
+            source: article.source,
+            slug: newArticle.urlSlug!
+        }
+    })
+
+     */
+
+    return block
+}
 export const findBlockById = async (id: string) => {
     const block = await prisma.lawBlock.findUnique({
         where: {
