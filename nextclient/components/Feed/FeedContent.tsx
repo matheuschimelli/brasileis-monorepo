@@ -263,9 +263,12 @@ export default function FeedContent({
                                 >
                                     <Text fontSize="sm">postado a {dayjs().from(feed.createdAt, true)}</Text>
 
-                                    <Link passHref href={`/l/${feed.lawBlock.slug.value}/${feed.lawBlock.id}`}>
-                                        <Text as="a" fontSize="xl" pb="4">Atualização em: {feed.topic.name}</Text>
-                                    </Link>
+                                    {feed.lawBlock && feed.lawBlock.slug && (
+                                        <Link passHref href={`/l/${feed.lawBlock.slug.value}/${feed.lawBlock.id}`}>
+                                            <Text as="a" fontSize="xl" pb="4">Atualização em: {feed.topic.name}</Text>
+                                        </Link>
+                                    )}
+
                                     <Text pb="4" color="gray.600">{JSON.parse(feed.content).description}</Text>
                                     {/* <Box
                                         className="boxFooter"

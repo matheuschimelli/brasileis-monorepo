@@ -22,6 +22,18 @@ type UpdateParams = {
     masterBlockId?: string,
     topicId: string
 }
+export const getTotalOfBlocks = async () => {
+    return await prisma.lawBlock.count()
+}
+
+export const getAllBlocksIds = async () => {
+    return await prisma.lawBlock.findMany({
+        select: {
+            id: true
+        }
+    })
+}
+
 export const allBlocks = async () => {
     return await prisma.lawBlock.findMany({
         include: {
@@ -320,108 +332,109 @@ export async function updateLawBlockFromArray(
 
     if (masterBlockData) {
         for (const newArticle of newData!) {
-            const oldArticle = await prisma.lawBlock.findFirst({
-                where: {
-                    belongsTo: {
-                        id: masterBlockId,
+            if (newArticle.type !== "TITULO_SECAO") {
+
+                const oldArticle = await prisma.lawBlock.findFirst({
+                    where: {
+                        belongsTo: {
+                            id: masterBlockId,
+                        },
+                        type: newArticle.type,
+                        source: newArticle.source,
+                        title: `${masterBlockData.name} artigo ${newArticle.name}`,
+                        name: newArticle.name,
+                        identifier: newArticle.identifier,
+                        slug: {
+                            value: newArticle.slug.value
+                        }
                     },
-                    type: newArticle.type,
-                    source: newArticle.source,
-                    title: newArticle.title,
-                    name: newArticle.name,
-                    identifier: newArticle.identifier,
-                    slug: {
-                        value: {
-                            contains: newArticle.slug
-                        }
-                    }
-                },
-                include: {
-                    belongsTo: {
-                        select: {
-                            name: true,
+                    include: {
+                        belongsTo: {
+                            select: {
+                                name: true,
 
-                        }
-                    }
-                }
-            })
-            if (oldArticle) {
-                if (oldArticle.value !== newArticle.value) {
-
-                    const articleToBeUpdated = await prisma.lawBlock.findUnique({
-                        where: {
-                            id: oldArticle.id
-                        }
-                    })
-
-                    if (articleToBeUpdated) {
-                        // crate a new lawblock and replace the old onw with the new one
-
-                        const articleUpdate1 = await prisma.lawBlock.create({
-
-                            data: {
-                                ...(articleToBeUpdated.parentBlockId && {
-                                    parentBlock: {
-                                        connect: {
-                                            id: articleToBeUpdated.parentBlockId
-                                        }
-                                    }
-                                }),
-                                isActive: true,
-                                index: articleToBeUpdated.index,
-                                type: newArticle.type as BlockType,
-                                name: newArticle.name,
-                                title: `${masterBlockData.title} artigo ${newArticle.name}`,
-                                value: newArticle.value,
-                                originalText: newArticle.originalText,
-                                searchText: newArticle.searchText,
-                                searchString: newArticle.searchString,
-                                identifier: newArticle.identifier,
-                                source: newArticle.source,
-                                slug: {
-                                    connectOrCreate: {
-                                        where: {
-                                            value: newArticle.slug.value
-                                        },
-                                        create: {
-                                            value: newArticle.slug.value,
-                                            title: `${masterBlockData.title}`
-                                        }
-                                    }
-                                },
-                                urlSlug: createSlug(`${newArticle.slug.value} ${newArticle.name} ${handleArticleType(newArticle.type)} `),
-                                belongsTo: {
-                                    connect: {
-                                        id: masterBlockData.id
-                                    }
-                                }
                             }
-                        })
+                        }
+                    }
+                })
+                if (oldArticle) {
+                    if (oldArticle.value !== newArticle.value) {
 
-                        // set the old article as outdated
-                        const articleUpdate = await prisma.lawBlock.update({
+                        const articleToBeUpdated = await prisma.lawBlock.findUnique({
                             where: {
                                 id: oldArticle.id
-                            },
-                            data: {
-                                isActive: false,
-                                index: null,
-                                value: newArticle.value,
-                                originalText: newArticle.originalText,
-                                title: 'Artigo alterado ou revogado'
                             }
                         })
 
-                        await createFeedItem({
-                            title: `Alteração de artigo do ${oldArticle.belongsTo?.name}`,
-                            content: JSON.stringify({
-                                description: `O artigo ${oldArticle.name} do ${oldArticle.belongsTo?.name} foi alterado`,
-                                lawBlockId: `${articleUpdate.id}`,
-                                importance: 'hight'
-                            }),
-                            topicId: topicId,
-                            lawBlockId: articleUpdate.id
-                        })
+                        if (articleToBeUpdated) {
+                            // crate a new lawblock and replace the old onw with the new one
+
+                            const articleUpdate1 = await prisma.lawBlock.create({
+
+                                data: {
+                                    ...(articleToBeUpdated.parentBlockId && {
+                                        parentBlock: {
+                                            connect: {
+                                                id: articleToBeUpdated.parentBlockId
+                                            }
+                                        }
+                                    }),
+                                    isActive: true,
+                                    index: articleToBeUpdated.index,
+                                    type: newArticle.type as BlockType,
+                                    name: newArticle.name,
+                                    title: `${masterBlockData.title} artigo ${newArticle.name}`,
+                                    value: newArticle.value,
+                                    originalText: newArticle.originalText,
+                                    searchText: newArticle.searchText,
+                                    searchString: newArticle.searchString,
+                                    identifier: newArticle.identifier,
+                                    source: newArticle.source,
+                                    slug: {
+                                        connectOrCreate: {
+                                            where: {
+                                                value: newArticle.slug.value
+                                            },
+                                            create: {
+                                                value: newArticle.slug.value,
+                                                title: `${masterBlockData.title}`
+                                            }
+                                        }
+                                    },
+                                    urlSlug: createSlug(`${newArticle.slug.value} ${newArticle.name} ${handleArticleType(newArticle.type)} `),
+                                    belongsTo: {
+                                        connect: {
+                                            id: masterBlockData.id
+                                        }
+                                    }
+                                }
+                            })
+
+                            // set the old article as outdated
+                            const articleUpdate = await prisma.lawBlock.update({
+                                where: {
+                                    id: oldArticle.id
+                                },
+                                data: {
+                                    isActive: false,
+                                    index: null,
+                                    value: newArticle.value,
+                                    originalText: newArticle.originalText,
+                                    title: 'Artigo alterado ou revogado'
+                                }
+                            })
+
+                            await createFeedItem({
+                                title: `Alteração de artigo do ${oldArticle.belongsTo?.name}`,
+                                content: JSON.stringify({
+                                    description: `O artigo ${oldArticle.name} do ${oldArticle.belongsTo?.name} foi alterado`,
+                                    lawBlockId: `${articleUpdate.id}`,
+                                    importance: 'hight'
+                                }),
+                                topicId: topicId,
+                                lawBlockId: articleUpdate.id
+                            })
+                        }
                     }
                 }
             }
@@ -485,6 +498,47 @@ const renderName = (name: string) => {
     return name
 }
 
+export const findBlockForReindex = async (id: string) => {
+    const block = await prisma.lawBlock.findUnique({
+        where: {
+            id
+        },
+        include: {
+            belongsTo: {
+                select: {
+                    title: true,
+                    name: true
+                }
+            },
+            slug: {
+                select: {
+                    value: true
+                }
+            }
+        }
+    })
+    /**
+     * 
+     *     await elasticSearchUpsert({
+        docId: newArticle.id,
+        document: {
+            blockType: article.type as BlockType,
+            name: article.name,
+            title: `${codeName} artigo ${article.name}`,
+            value: article.value,
+            originalText: article.originalText,
+            searchText: article.searchText,
+            searchString: article.searchString,
+            identifier: article.identifier,
+            source: article.source,
+            slug: newArticle.urlSlug!
+        }
+    })
+
+     */
+
+    return block
+}
 export const findBlockById = async (id: string) => {
     const block = await prisma.lawBlock.findUnique({
         where: {

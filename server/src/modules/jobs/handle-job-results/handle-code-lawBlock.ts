@@ -1,3 +1,4 @@
+import { createHash } from 'crypto'
 import prisma from "@lib/prisma"
 import { createFeedItem } from "@modules/feed/feed-service"
 import {
@@ -9,6 +10,7 @@ import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-se
 import { BlockType } from "@prisma/client"
 import { removeOldBlocksFromES } from "../jobs"
 import { JobResult } from "./handle-job-results-handler"
+const SECRET = 'BRASILEIS';
 
 type CrawlerParams = {
     id: string;
@@ -38,7 +40,15 @@ type CrawlerParams = {
         updatedAt: string;
     };
 }
-export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: JobResult, crawlerParams: CrawlerParams }) => {
+export const handleLawBlockCode = async (
+    {
+        jobData,
+        crawlerParams
+    }: {
+        jobData: JobResult,
+        crawlerParams: CrawlerParams
+    }) => {
+
     try {
         const masterLawBlock = await prisma.lawBlock.findFirst({
             where: {
@@ -64,6 +74,7 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
                 content: true
             }
         })
+
         console.log(`block exists? ${masterLawBlock?.id}`)
 
         if (!masterLawBlock) {
@@ -75,6 +86,7 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
                     source: crawlerParams.source,
                     title: crawlerParams.mainBlockTitle,
                     originalText: jobData.result.pageText,
+                    checksum: createHash('sha256').update(`${jobData.result.pageText}`).digest('hex'),
                     crawler: {
                         connect: {
                             id: crawlerParams.id
@@ -128,12 +140,10 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
 
         } else {
 
-            console.log(`mater block exist checking content ${masterLawBlock.id}`)
+            const originalChecksum = masterLawBlock.checksum
+            const newCheckSum = createHash('sha256').update(`${jobData.result.pageText}`).digest('hex') // use obData.result.pageHtml to test
 
-            const oldPageText = masterLawBlock.originalText
-            const newPageText = jobData.result.pageText
-
-            if (oldPageText?.trim() !== newPageText.trim()) {
+            if (originalChecksum !== newCheckSum) {
                 console.log(`mater block HAS UPDATE ${masterLawBlock.id}`)
 
                 await updateLawBlockFromArray({
@@ -143,6 +153,7 @@ export const handleLawBlockCode = async ({ jobData, crawlerParams }: { jobData: 
                 })
 
                 await removeOldBlocksFromES.add({ masterBlockId: masterLawBlock.id })
+                return Promise.resolve()
 
             } else {
                 console.log("master block not need to update")

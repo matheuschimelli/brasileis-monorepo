@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { index, show, create, update, remove, runCrawler } from "@modules/crawler/crawler-service"
 import { body } from 'express-validator'
+import { reIndexPostgresDataToElasticSearch, runQueue } from '@modules/jobs/jobs'
 
 
 export const validate = () => {
@@ -70,4 +71,11 @@ export const runCrawlerController = async (req: Request, res: Response) => {
     if (crawler.success) return res.send(crawler)
 
     return res.status(400).send(crawler)
+}
+
+export const reindexController = async (req: Request, res: Response) => {
+
+    runQueue('reIndexPostgresDataToElasticSearch')?.add({})
+
+    return res.status(200).send("ok")
 }
