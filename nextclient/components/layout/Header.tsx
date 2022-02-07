@@ -120,9 +120,18 @@ export function HeaderNotAuthenticated({
               </Button>
             </>
           )}
-          <Button onClick={toggleColorMode}>
+          <Link
+            href="/indice"
+            passHref
+          >
+            <Box as="a">
+              Índice
+            </Box>
+
+          </Link>
+          {/* <Button onClick={toggleColorMode}>
             Toggle {colorMode === 'light' ? 'Dark' : 'Light'}
-          </Button>
+          </Button> */}
           {user && (
             <Menu isLazy>
               <MenuButton>

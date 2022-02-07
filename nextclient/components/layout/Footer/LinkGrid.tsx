@@ -4,7 +4,15 @@ import { Box, SimpleGrid, SimpleGridProps, Stack } from "@chakra-ui/react";
 import { FooterHeading } from "./FooterHeading";
 
 export const LinkGrid = (props: SimpleGridProps) => (
-  <SimpleGrid columns={2} {...props}>
+  <SimpleGrid columns={3} {...props}>
+    <Box minW="130px">
+      <FooterHeading mb="4">Legislação e Jurisprudência</FooterHeading>
+      <Stack>
+        <Link href="/indice">Índice de Leis</Link>
+        <Link href="/jurisprudencia">Jurisprudência</Link>
+        {/* <Link href="casos-de-uso">Casos de uso</Link> */}
+      </Stack>
+    </Box>
     <Box minW="130px">
       <FooterHeading mb="4">Soluções</FooterHeading>
       <Stack>

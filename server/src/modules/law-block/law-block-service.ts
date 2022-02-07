@@ -4,12 +4,13 @@ import { upsert as elasticSearchUpsert, remove as elasticSearchRemove } from '@m
 import slugify from 'slugify'
 import { createFeedItem } from '@modules/feed/feed-service'
 
-type IterateInsertParams = {
+type CreateLawBlockFromArrayParams = {
     data: any[]
     masterParentId: string
     name: string
     codeName: string
     masterLawBlock: any
+    version?: number
 }
 
 type UpdateParams = {
@@ -64,12 +65,16 @@ const handleArticleType = (articleType: BlockType) => {
     if (articleType == 'ALINEA_LEI') return 'alinea'
 }
 
-async function insertArticle({ article, parentId, codeName, masterParentId }: {
+async function insertArticle({ article, parentId, codeName, masterParentId, version }: {
     article: any,
     parentId?: string,
     codeName: string,
     masterParentId: string
+    version?: number
 }): Promise<{ id: string, name: string, type: BlockType }> {
+
+    const blockVersion = () => version ? version : 1
+
     const newArticle = await prisma.lawBlock.create({
         data: {
             ...(parentId && {
@@ -89,6 +94,7 @@ async function insertArticle({ article, parentId, codeName, masterParentId }: {
             searchString: article.searchString,
             identifier: article.identifier,
             source: article.source,
+            version: blockVersion(),
             slug: {
                 connectOrCreate: {
                     where: {
@@ -131,7 +137,7 @@ async function insertArticle({ article, parentId, codeName, masterParentId }: {
         type: article.type
     }
 }
-export async function createLawBlockFromArray({ data, masterParentId, codeName }: IterateInsertParams) {
+export async function createLawBlockFromArray({ data, masterParentId, codeName, version }: CreateLawBlockFromArrayParams) {
 
     var lastInsert = {
         type: null,
@@ -165,7 +171,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         // Lida com as hipóteses possíveis de artigos
 
         if (article.type as BlockType == 'ARTIGO_LEI') {
-            const { id, name, type } = await insertArticle({ article, codeName, parentId: masterParentId, masterParentId })
+            const { id, name, type } = await insertArticle({ article, codeName, parentId: masterParentId, masterParentId, version })
             lastInsert.id = id
             lastInsert.name = name
             lastInsert.type = 'ARTIGO_LEI'
@@ -175,7 +181,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = 'PARAGRAFO_UNICO_LEI'
@@ -185,7 +191,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = 'PARAGRAFO_LEI'
@@ -195,7 +201,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -205,7 +211,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ARTIGO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -217,7 +223,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -228,7 +234,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -238,7 +244,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'PARAGRAFO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -249,7 +255,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -258,7 +264,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -268,7 +274,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -278,7 +284,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'INCISO_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -289,7 +295,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'ALINEA_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -298,7 +304,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'INCISO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -307,7 +313,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'PARAGRAFO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -316,7 +322,7 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
         else if (lastInsert.type == 'ALINEA_LEI' && article.type as BlockType == 'PARAGRAFO_UNICO_LEI') {
             if (lastInsert.id) {
                 //@ts-ignore
-                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId })
+                const { id, name, type } = await insertArticle({ article, codeName, parentId: lastArticleId, masterParentId, version })
                 lastInsert.id = id
                 lastInsert.name = name
                 lastInsert.type = type
@@ -328,118 +334,140 @@ export async function createLawBlockFromArray({ data, masterParentId, codeName }
 export async function updateLawBlockFromArray(
     { newData, masterBlockId, topicId }: UpdateParams) {
 
-    const masterBlockData = await prisma.lawBlock.findUnique({ where: { id: masterBlockId } })
+    const masterBlockData = await prisma.lawBlock.findUnique({
+        where: { id: masterBlockId }
+    })
+    var version = masterBlockData?.version
 
-    if (masterBlockData) {
-        for (const newArticle of newData!) {
-            if (newArticle.type !== "TITULO_SECAO") {
+    const newVersion = version!++
 
-                const oldArticle = await prisma.lawBlock.findFirst({
-                    where: {
-                        belongsTo: {
-                            id: masterBlockId,
-                        },
-                        type: newArticle.type,
-                        source: newArticle.source,
-                        title: `${masterBlockData.name} artigo ${newArticle.name}`,
-                        name: newArticle.name,
-                        identifier: newArticle.identifier,
-                        slug: {
-                            value: newArticle.slug.value
-                        }
-                    },
-                    include: {
-                        belongsTo: {
-                            select: {
-                                name: true,
-
-                            }
-                        }
-                    }
-                })
-                if (oldArticle) {
-                    if (oldArticle.value !== newArticle.value) {
-
-                        const articleToBeUpdated = await prisma.lawBlock.findUnique({
-                            where: {
-                                id: oldArticle.id
-                            }
-                        })
-
-                        if (articleToBeUpdated) {
-                            // crate a new lawblock and replace the old onw with the new one
-
-                            const articleUpdate1 = await prisma.lawBlock.create({
-
-                                data: {
-                                    ...(articleToBeUpdated.parentBlockId && {
-                                        parentBlock: {
-                                            connect: {
-                                                id: articleToBeUpdated.parentBlockId
-                                            }
-                                        }
-                                    }),
-                                    isActive: true,
-                                    index: articleToBeUpdated.index,
-                                    type: newArticle.type as BlockType,
-                                    name: newArticle.name,
-                                    title: `${masterBlockData.title} artigo ${newArticle.name}`,
-                                    value: newArticle.value,
-                                    originalText: newArticle.originalText,
-                                    searchText: newArticle.searchText,
-                                    searchString: newArticle.searchString,
-                                    identifier: newArticle.identifier,
-                                    source: newArticle.source,
-                                    slug: {
-                                        connectOrCreate: {
-                                            where: {
-                                                value: newArticle.slug.value
-                                            },
-                                            create: {
-                                                value: newArticle.slug.value,
-                                                title: `${masterBlockData.title}`
-                                            }
-                                        }
-                                    },
-                                    urlSlug: createSlug(`${newArticle.slug.value} ${newArticle.name} ${handleArticleType(newArticle.type)} `),
-                                    belongsTo: {
-                                        connect: {
-                                            id: masterBlockData.id
-                                        }
-                                    }
-                                }
-                            })
-
-                            // set the old article as outdated
-                            const articleUpdate = await prisma.lawBlock.update({
-                                where: {
-                                    id: oldArticle.id
-                                },
-                                data: {
-                                    isActive: false,
-                                    index: null,
-                                    value: newArticle.value,
-                                    originalText: newArticle.originalText,
-                                    title: 'Artigo alterado ou revogado'
-                                }
-                            })
-
-                            await createFeedItem({
-                                title: `Alteração de artigo do ${oldArticle.belongsTo?.name}`,
-                                content: JSON.stringify({
-                                    description: `O artigo ${oldArticle.name} do ${oldArticle.belongsTo?.name} foi alterado`,
-                                    lawBlockId: `${articleUpdate.id}`,
-                                    importance: 'hight'
-                                }),
-                                topicId: topicId,
-                                lawBlockId: articleUpdate.id
-                            })
-                        }
-                    }
-                }
-            }
+    const newMasterBlock = await prisma.lawBlock.create({
+        data: {
+            ...masterBlockData,
+            version: newVersion
         }
+    })
+    if (newMasterBlock) {
+        createLawBlockFromArray({
+            data: newData!,
+            masterLawBlock: newMasterBlock,
+            masterParentId: newMasterBlock.id,
+            version: newVersion,
+            name: newMasterBlock.title!,
+            codeName: newMasterBlock.title!
+        })
     }
+
+    // if (masterBlockData) {
+    //     for (const newArticle of newData!) {
+    //         if (newArticle.type !== "TITULO_SECAO") {
+
+    //             const oldArticle = await prisma.lawBlock.findFirst({
+    //                 where: {
+    //                     belongsTo: {
+    //                         id: masterBlockId,
+    //                     },
+    //                     type: newArticle.type,
+    //                     source: newArticle.source,
+    //                     name: newArticle.name,
+    //                     identifier: newArticle.identifier,
+    //                     slug: {
+    //                         value: newArticle.slug.value
+    //                     }
+    //                 },
+    //                 include: {
+    //                     belongsTo: {
+    //                         select: {
+    //                             name: true,
+
+    //                         }
+    //                     }
+    //                 }
+    //             })
+
+    //             if (oldArticle) {
+    //                 if (oldArticle.value !== newArticle.value) {
+
+    //                     const articleToBeUpdated = await prisma.lawBlock.findUnique({
+    //                         where: {
+    //                             id: oldArticle.id
+    //                         }
+    //                     })
+
+    //                     if (articleToBeUpdated) {
+    //                         // crate a new lawblock and replace the old onw with the new one
+
+    //                         const articleUpdate1 = await prisma.lawBlock.create({
+
+    //                             data: {
+    //                                 ...(articleToBeUpdated.parentBlockId && {
+    //                                     parentBlock: {
+    //                                         connect: {
+    //                                             id: articleToBeUpdated.parentBlockId
+    //                                         }
+    //                                     }
+    //                                 }),
+    //                                 isActive: true,
+    //                                 index: articleToBeUpdated.index,
+    //                                 type: newArticle.type as BlockType,
+    //                                 name: newArticle.name,
+    //                                 title: `${masterBlockData.title} artigo ${newArticle.name}`,
+    //                                 value: newArticle.value,
+    //                                 originalText: newArticle.originalText,
+    //                                 searchText: newArticle.searchText,
+    //                                 searchString: newArticle.searchString,
+    //                                 identifier: newArticle.identifier,
+    //                                 source: newArticle.source,
+    //                                 slug: {
+    //                                     connectOrCreate: {
+    //                                         where: {
+    //                                             value: newArticle.slug.value
+    //                                         },
+    //                                         create: {
+    //                                             value: newArticle.slug.value,
+    //                                             title: `${masterBlockData.title}`
+    //                                         }
+    //                                     }
+    //                                 },
+    //                                 urlSlug: createSlug(`${newArticle.slug.value} ${newArticle.name} ${handleArticleType(newArticle.type)} `),
+    //                                 belongsTo: {
+    //                                     connect: {
+    //                                         id: masterBlockData.id
+    //                                     }
+    //                                 }
+    //                             }
+    //                         })
+
+    //                         // set the old article as outdated
+    //                         const articleUpdate = await prisma.lawBlock.update({
+    //                             where: {
+    //                                 id: oldArticle.id
+    //                             },
+    //                             data: {
+    //                                 isActive: false,
+    //                                 index: null,
+    //                                 value: newArticle.value,
+    //                                 originalText: newArticle.originalText,
+    //                                 title: 'Artigo alterado ou revogado'
+    //                             }
+    //                         })
+
+    //                         // await createFeedItem({
+    //                         //     title: `Alteração de artigo do ${oldArticle.belongsTo?.name}`,
+    //                         //     content: JSON.stringify({
+    //                         //         description: `O artigo ${oldArticle.name} do ${oldArticle.belongsTo?.name} foi alterado`,
+    //                         //         lawBlockId: `${articleUpdate.id}`,
+    //                         //         importance: 'hight'
+    //                         //     }),
+    //                         //     topicId: topicId,
+    //                         //     lawBlockId: articleUpdate.id
+    //                         // })
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 export const findAll = async (id: string, skip: number, take?: number) => {

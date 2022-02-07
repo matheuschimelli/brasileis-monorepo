@@ -1,6 +1,6 @@
 import { createHash } from 'crypto'
 import prisma from "@lib/prisma"
-import { createFeedItem } from "@modules/feed/feed-service"
+//import { createFeedItem } from "@modules/feed/feed-service"
 import {
     createLawBlockFromArray,
     updateLawBlockFromArray,
@@ -126,16 +126,16 @@ export const handleLawBlockCode = async (
                     masterLawBlock: newMasterLawBlock
                 })
 
-                await createFeedItem({
+                // await createFeedItem({
 
-                    title: `Novo ${generateTextType(crawlerParams.blockType)} adicionado ${crawlerParams.blockType}`,
-                    content: JSON.stringify({
-                        description: `Novo ${generateTextType(crawlerParams.blockType)}`,
-                        lawBlockId: `${crawlerParams.id}`
-                    }),
-                    topicId: crawlerParams.topicId!,
-                    lawBlockId: newMasterLawBlock.id
-                })
+                //     title: `Novo ${generateTextType(crawlerParams.blockType)} adicionado ${crawlerParams.blockType}`,
+                //     content: JSON.stringify({
+                //         description: `Novo ${generateTextType(crawlerParams.blockType)}`,
+                //         lawBlockId: `${crawlerParams.id}`
+                //     }),
+                //     topicId: crawlerParams.topicId!,
+                //     lawBlockId: newMasterLawBlock.id
+                // })
             }
 
         } else {

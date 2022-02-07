@@ -6,27 +6,27 @@ type Topic = {
     description?: string
 }
 export const findAll = async () => {
-    const allTopics = await prisma.topic.findMany({})
+    const allTopics = await prisma.category.findMany({})
     return allTopics
 }
 
 export const findOneById = async (id: string) => {
-    const topic = await prisma.topic.findUnique({
+    const category = await prisma.category.findUnique({
         where: {
             id
         },
         include: {
-            lawBlock: true,
+            lawBlocks: true,
             feedItems: true,
         }
     })
 
-    return topic
+    return category
 }
 
 export const create = async (topicData: Topic) => {
 
-    const newTopic = await prisma.topic.create({
+    const newTopic = await prisma.category.create({
         data: {
             name: topicData.description!,
             description: topicData.description!,
@@ -35,21 +35,21 @@ export const create = async (topicData: Topic) => {
     return newTopic
 }
 
-export const update = async (topic: Topic) => {
-    const updateTopic = await prisma.topic.update({
+export const update = async (category: Topic) => {
+    const updateTopic = await prisma.category.update({
         where: {
-            id: topic.id!
+            id: category.id!
         },
         data: {
-            name: topic.description!,
-            description: topic.description!,
+            name: category.description!,
+            description: category.description!,
         }
     })
     return updateTopic
 }
 
 export const remove = async (id: string) => {
-    const removeTopic = await prisma.topic.delete({
+    const removeTopic = await prisma.category.delete({
         where: {
             id
         }

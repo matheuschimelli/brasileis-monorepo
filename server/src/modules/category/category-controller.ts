@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import * as topicSservice from '@modules/topic/topic-service'
+import * as categoryService from '@modules/category/category-service'
 import { body } from 'express-validator'
 
 
@@ -12,7 +12,7 @@ export const validate = () => {
 
 export const index = async (req: Request, res: Response) => {
     try {
-        const topic = await topicSservice.findAll()
+        const topic = await categoryService.findAll()
         return res.send(topic)
     } catch (error) {
         console.log(error)
@@ -23,7 +23,7 @@ export const index = async (req: Request, res: Response) => {
 export const show = async (req: Request, res: Response) => {
     const { id } = req.params
     try {
-        const topic = await topicSservice.findOneById(id)
+        const topic = await categoryService.findOneById(id)
         return res.send(topic)
 
     } catch (error) {
@@ -35,7 +35,7 @@ export const show = async (req: Request, res: Response) => {
 export const create = async (req: Request, res: Response) => {
     const { name, description } = req.body
     try {
-        const topic = await topicSservice.create({
+        const topic = await categoryService.create({
             name,
             description
         })
@@ -51,7 +51,7 @@ export const update = async (req: Request, res: Response) => {
     const { id } = req.params
     const { name, description } = req.body
     try {
-        const topic = await topicSservice.update({
+        const topic = await categoryService.update({
             id,
             name,
             description
@@ -67,7 +67,7 @@ export const update = async (req: Request, res: Response) => {
 export const remove = async (req: Request, res: Response) => {
     const { id } = req.params
     try {
-        const topic = await topicSservice.remove(id)
+        const topic = await categoryService.remove(id)
         return res.send(topic)
 
     } catch (error) {

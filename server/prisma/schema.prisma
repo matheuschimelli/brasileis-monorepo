@@ -120,6 +120,23 @@ model LawBlock {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  categories Category[]
+}
+
+model Category {
+  id          String @id @default(cuid())
+  name        String
+  description String
+  editedBy    User[]
+
+  lawBlocks LawBlock[]
+  feedItems FeedItem[]
+
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  crawlers  Crawler[]
 }
 
 model Post {
@@ -165,6 +182,8 @@ model User {
   followingTopics Topic[]
   readFeedItems   FeedItem[]
 
+  editedCategories Category[]
+
 }
 
 model Feed {
@@ -191,8 +210,10 @@ model FeedItem {
 
   readBy User[]
 
-  feed   Feed?   @relation(fields: [feedId], references: [id])
-  feedId String?
+  feed       Feed?      @relation(fields: [feedId], references: [id])
+  feedId     String?
+  categories Category[]
+
 }
 
 model Topic {
@@ -250,8 +271,10 @@ model Crawler {
 
   crawlerTypeId String?
 
-  topic   Topic  @relation(fields: [topicId], references: [id])
-  topicId String
+  topic   Topic?  @relation(fields: [topicId], references: [id])
+  topicId String?
+
+  categories Category[]
 }
 
 model Customer {

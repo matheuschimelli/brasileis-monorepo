@@ -8,6 +8,7 @@ import Textarea from '../../../components/FormBase/TextArea'
 
 import Select from '../../FormBase/Select'
 import SimpleSelect from '../../FormBase/SimpleSelect'
+import SelectMany from '../../FormBase/SelectMany'
 
 export default function CrawlerForm() {
     return (
@@ -88,10 +89,10 @@ export default function CrawlerForm() {
                 dataLabel='name'
                 dataValue='id'
             />
-            <Select
-                name="topicId"
-                label="Tópico do item a ser criado"
-                apiPath='topics'
+            <SelectMany
+                name="categories"
+                label="Categorias dos blocos do Crawler"
+                apiPath='categories'
                 placeholder='Selecione um tópico'
                 dataLabel='name'
                 dataValue='id'
