@@ -3,14 +3,13 @@ import type { GetServerSideProps } from "next";
 import AdminLayout from "../../../components/Admin/AdminLayout";
 import CrudBar from "../../../components/Admin/CrudBar";
 import { checkAdmin } from "../../../lib/checkAdmin";
-import TopicForm from "../../../components/Admin/Topic/TopicForm";
+import CategoryForm from "../../../components/Admin/Category/CategoryForm";
 
 export default function EditCrawler() {
-
     return (
-        <AdminLayout title="Tópicos">
-            <CrudBar title='Tópicos' path="topics" />
-            <TopicForm />
+        <AdminLayout title="Categorias">
+            <CrudBar title='Categorias' path="categories" />
+            <CategoryForm />
         </AdminLayout>
     );
 }

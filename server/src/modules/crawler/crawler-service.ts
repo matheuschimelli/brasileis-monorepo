@@ -17,7 +17,7 @@ type CrawlerInput = {
     isUrlOnly?: boolean
     notifyUpdates?: boolean
     blockType: BlockType,
-    topicId: string
+    categories: string[]
 
 }
 export const index = async (page: number) => {
@@ -34,6 +34,9 @@ export const show = async (id: string) => {
     const crawler = await prisma.crawler.findUnique({
         where: {
             id: id
+        },
+        include: {
+            categories: true
         }
     })
     return crawler
@@ -50,8 +53,14 @@ export const create = async ({
     crawlerTypeId,
     slug,
     blockType,
-    topicId
+    categories
 }: CrawlerInput) => {
+    const getCategories = () => {
+        return categories.map((category: any) => {
+            if (category.id) return { id: category.id }
+            return { id: category }
+        })
+    }
     const newCrawler = await prisma.crawler.create({
         data: {
             cron,
@@ -70,10 +79,9 @@ export const create = async ({
                     id: crawlerTypeId
                 }
             },
-            topic: {
-                connect: {
-                    id: topicId
-                }
+            categories: {
+                connect: getCategories()
+
             }
         }
     })
@@ -94,8 +102,18 @@ export const update = async ({
     crawlerTypeId,
     slug,
     blockType,
-    topicId
+    categories
 }: CrawlerInput) => {
+    console.log("CATEGORIES", categories)
+    const getCategories = () => {
+        return categories.map((category: any) => {
+            if (category.id) return { id: category.id }
+            return { id: category }
+        })
+    }
+
+    console.log(getCategories())
+
     const updateCrawler = await prisma.crawler.update({
         where: {
             id
@@ -117,11 +135,12 @@ export const update = async ({
                     id: crawlerTypeId
                 }
             },
-            topic: {
-                connect: {
-                    id: topicId
-                }
+            categories: {
+                set: getCategories()
             }
+        },
+        include: {
+            categories: true
         }
     })
     return updateCrawler

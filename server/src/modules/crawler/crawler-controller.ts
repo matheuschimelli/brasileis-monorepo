@@ -14,7 +14,7 @@ export const validate = () => {
         body('version', 'Versão do bloco não pode estar em branco').notEmpty(),
         body('slug', 'Sigla do bloco não pode estar em branco').notEmpty(),
         body('blockType', 'Tipo não pode estar em branco').notEmpty(),
-        body('topicId', 'Tópico não pode estar em branco').notEmpty(),
+        body('categories', 'Categorias não pode estar em branco').isArray().notEmpty(),
 
         body('cron', 'Cron não é válido').isString().matches(/^(\*|([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])|\*\/([0-9]|1[0-9]|2[0-9]|3[0-9]|4[0-9]|5[0-9])) (\*|([0-9]|1[0-9]|2[0-3])|\*\/([0-9]|1[0-9]|2[0-3])) (\*|([1-9]|1[0-9]|2[0-9]|3[0-1])|\*\/([1-9]|1[0-9]|2[0-9]|3[0-1])) (\*|([1-9]|1[0-2])|\*\/([1-9]|1[0-2])) (\*|([0-6])|\*\/([0-6]))$/).notEmpty(),
     ]

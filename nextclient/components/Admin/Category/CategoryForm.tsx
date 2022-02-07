@@ -1,28 +1,28 @@
 import React from 'react'
 import FormBase from '../../FormBase'
-import Input from '../../../components/FormBase/Input'
-import Textarea from '../../../components/FormBase/TextArea'
+import Input from '../../FormBase/Input'
+import Textarea from '../../FormBase/TextArea'
 
-export default function TopicForm() {
+export default function CategoryForm() {
     return (
         <FormBase
             create
-            formTitle="Editar Tópico"
+            formTitle="Editar Categoria"
             initSchema={{ name: String, description: String }}
-            apiRoute="topics"
+            apiRoute="categories"
             method="POST"
         >
             <Input
                 name="name"
-                label="Nome do Tópico"
+                label="Nome da Categoria"
                 type="text"
                 helper="Use um nome descritivo"
-                placeholder="Nome do Tópico"
+                placeholder="Nome da Categoria"
             />
 
             <Textarea
                 name="description"
-                label="Descrição do tópico"
+                label="Descrição da Categoria"
                 type="text"
             />
         </FormBase>
