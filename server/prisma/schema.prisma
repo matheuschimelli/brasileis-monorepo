@@ -121,7 +121,37 @@ model LawBlock {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  categories Category[]
+  categories     Category[]
+  jurisprudencia Jurisprudencia[]
+}
+
+model Jurisprudencia {
+  id       String @id @default(cuid())
+  source   String
+  checkSum String
+
+  tipo      TipoJudiciario
+  instancia Instancia
+
+  tribunal String
+  estado   String
+  comarca  String?
+
+  dataJulgamento DateTime?
+  dataPublicacao DateTime?
+
+  ementa           String?
+  integra          String?
+  numeroProcesso   String?
+  orgaoJulgador    String?
+  relator          String?
+  segredoDeJustica String?
+  keyWords         String?
+
+  legislacao LawBlock[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Category {
@@ -340,4 +370,15 @@ enum BlockType {
   PARAGRAFO_UNICO_LEI
   INFO
   CODIGO
+}
+
+enum TipoJudiciario {
+  JUSTICA_ESTADUAL
+  JUSTICA_FEDERAL
+}
+
+enum Instancia {
+  PRIMEIRA_INSTANCIA
+  SEGUNDA_INSTANCIA
+  TERCEIRA_INSTANCIA
 }

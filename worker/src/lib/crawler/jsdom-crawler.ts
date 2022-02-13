@@ -34,12 +34,56 @@ const lawParser = (window: DOMWindow, document: Document, crawlerData: any) => {
 
             // remove spans with a line stroke
             var allSpans = Array.from(document.querySelectorAll("span"))
+            var allPs = Array.from(document.querySelectorAll("p"))
+            var allDiv = Array.from(document.querySelectorAll("div"))
+            var allFont = Array.from(document.querySelectorAll("font"))
+
             var reg = /(text-decoration: line-through;)/
 
             for (const span of allSpans) {
                 var css = span.style.cssText
                 if (reg.test(css)) span.remove()
             }
+            for (const p of allPs) {
+                var css = p.style.cssText
+                if (reg.test(css)) p.remove()
+            }
+            for (const div of allDiv) {
+                var css = div.style.cssText
+                if (reg.test(css)) div.remove()
+            }
+            for (const font of allFont) {
+                var css = font.style.cssText
+                if (reg.test(css)) font.remove()
+            }
+
+
+            // remove all anchors
+            Array.from(document.querySelectorAll("a")).forEach(a => a.remove())
+
+            // remove all line strike elements
+            Array.from(document.querySelectorAll("strike")).forEach(strike => strike.remove())
+
+            // remove all line-throught elements css
+            // NOT WORKING ON JSDOM @TODO FIX LATER
+            // const allElements = document.querySelectorAll("*")
+            // Array.from(document.querySelectorAll("*")).forEach((htmlElement) => {
+            //     //@ts-ignore
+            //     const styles = Object.values(htmlElement.style).filter(e => e !== "")
+            //     console.log("styles", styles)
+
+            //     for (const style of styles) {
+            //         console.log("STRLE", style)
+
+            //         if (style) {
+            //             //@ts-ignore
+            //             const itIncludesStyle = style.indexOf("line-through")
+            //             if (itIncludesStyle !== -1) {
+            //                 htmlElement.remove()
+            //             }
+            //         }
+            //     }
+            // })
         }
 
 

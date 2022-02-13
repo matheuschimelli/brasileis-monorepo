@@ -4,6 +4,8 @@ import Apify from 'apify'
 import type { Page } from "puppeteer";
 import { sendResult } from "../../";
 
+console.log("RUNNING ON SADBOX")
+
 export default async function (job: Job) {
   try {
     const jobOptions = job.data
@@ -13,7 +15,7 @@ export default async function (job: Job) {
       // useChrome: true,
       stealth: true,
       launchOptions: {
-        headless: true,
+        headless: false,
         args: [
           '--disable-gpu',
           '--disable-dev-shm-usage',

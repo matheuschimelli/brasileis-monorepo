@@ -15,10 +15,7 @@ const jobs_2 = require("./jobs");
 const pingmydyno_1 = __importDefault(require("pingmydyno"));
 const host = process.env.HOST || '0.0.0.0';
 const port = process.env.PORT || 8081;
-if (process.env.NODE_ENV == 'production') {
-    console.log("Running on production");
-    (0, jobs_2.runQueues)();
-}
+(0, jobs_2.runQueues)();
 const serverAdapter = new express_2.ExpressAdapter();
 (0, api_1.createBullBoard)({
     queues: jobs_1.queues.map((job) => new bullAdapter_1.BullAdapter(job)),

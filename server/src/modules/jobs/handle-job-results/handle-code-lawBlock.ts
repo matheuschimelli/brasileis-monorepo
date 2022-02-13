@@ -10,7 +10,6 @@ import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-se
 import { BlockType } from "@prisma/client"
 import { removeOldBlocksFromES } from "../jobs"
 import { JobResult } from "./handle-job-results-handler"
-const SECRET = 'BRASILEIS';
 
 type CrawlerParams = {
     id: string;
@@ -78,6 +77,8 @@ export const handleLawBlockCode = async (
         console.log(`block exists? ${masterLawBlock?.id}`)
 
         if (!masterLawBlock) {
+            const dataCheckSum = createHash('sha256').update(`${jobData.result.pageText}`).digest('hex')
+
             const newMasterLawBlock = await prisma.lawBlock.create({
                 data: {
 
@@ -86,7 +87,7 @@ export const handleLawBlockCode = async (
                     source: crawlerParams.source,
                     title: crawlerParams.mainBlockTitle,
                     originalText: jobData.result.pageText,
-                    checksum: createHash('sha256').update(`${jobData.result.pageText}`).digest('hex'),
+                    checksum: dataCheckSum,
                     crawler: {
                         connect: {
                             id: crawlerParams.id
@@ -113,8 +114,6 @@ export const handleLawBlockCode = async (
              - topico a ser listado
             */
 
-
-
             if (newMasterLawBlock) {
                 const masterParentId = newMasterLawBlock.id
 
@@ -139,21 +138,57 @@ export const handleLawBlockCode = async (
             }
 
         } else {
-
             const originalChecksum = masterLawBlock.checksum
             const newCheckSum = createHash('sha256').update(`${jobData.result.pageText}`).digest('hex') // use obData.result.pageHtml to test
 
             if (originalChecksum !== newCheckSum) {
                 console.log(`mater block HAS UPDATE ${masterLawBlock.id}`)
 
+                const dataCheckSum = createHash('sha256').update(`${jobData.result.pageText}`).digest('hex')
+                var version = masterLawBlock.version
+
+                const newVersion = ++version
+
+                console.log("version", newVersion)
+
+                const newMasterLawBlock = await prisma.lawBlock.create({
+                    data: {
+
+                        isActive: true,
+                        type: crawlerParams.blockType,
+                        source: crawlerParams.source,
+                        title: crawlerParams.mainBlockTitle,
+                        originalText: jobData.result.pageText,
+                        checksum: dataCheckSum,
+                        version: newVersion,
+                        crawler: {
+                            connect: {
+                                id: crawlerParams.id
+                            }
+                        },
+                        slug: {
+                            connectOrCreate: {
+                                where: {
+                                    value: crawlerParams.slug
+                                },
+                                create: {
+                                    title: crawlerParams.mainBlockTitle,
+                                    value: crawlerParams.slug,
+                                }
+                            }
+                        },
+
+                    }
+                })
+                console.log("RESULT ARTICLES", jobData.result.articles)
                 await updateLawBlockFromArray({
                     newData: jobData.result.articles,
-                    masterBlockId: masterLawBlock.id,
+                    masterBlockId: newMasterLawBlock.id,
                     topicId: crawlerParams.topicId!
                 })
 
+
                 await removeOldBlocksFromES.add({ masterBlockId: masterLawBlock.id })
-                return Promise.resolve()
 
             } else {
                 console.log("master block not need to update")

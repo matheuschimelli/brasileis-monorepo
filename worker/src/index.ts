@@ -12,10 +12,9 @@ import pingmydyno from 'pingmydyno';
 const host = process.env.HOST || '0.0.0.0'
 const port = process.env.PORT || 8081
 
-if (process.env.NODE_ENV == 'production') {
-  console.log("Running on production")
-  runQueues()
-}
+
+runQueues()
+
 
 const serverAdapter = new ExpressAdapter();
 createBullBoard({
@@ -26,6 +25,7 @@ createBullBoard({
 const app = express();
 
 serverAdapter.setBasePath('/admin/queues');
+
 app.use('/admin/queues', basicAuth({
   users: { 'painel': 'decontrole' },
   challenge: true,
