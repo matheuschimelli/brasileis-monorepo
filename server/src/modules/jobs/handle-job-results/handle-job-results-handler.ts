@@ -54,8 +54,6 @@ export const handler = async (job: Job) => {
     const jobData: JobResult = job.data
     const crawlerParams = jobData.data
 
-    console.log(jobData.result)
-
     try {
         if (crawlerParams.blockType == 'CODIGO') await handleLawBlockCode({ jobData, crawlerParams })
 

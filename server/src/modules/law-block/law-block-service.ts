@@ -337,24 +337,15 @@ export async function updateLawBlockFromArray(
     const masterBlockData = await prisma.lawBlock.findUnique({
         where: { id: masterBlockId }
     })
-    var version = masterBlockData?.version
 
-    const newVersion = version!++
-
-    const newMasterBlock = await prisma.lawBlock.create({
-        data: {
-            ...masterBlockData,
-            version: newVersion
-        }
-    })
-    if (newMasterBlock) {
-        createLawBlockFromArray({
+    if (masterBlockData) {
+        await createLawBlockFromArray({
             data: newData!,
-            masterLawBlock: newMasterBlock,
-            masterParentId: newMasterBlock.id,
-            version: newVersion,
-            name: newMasterBlock.title!,
-            codeName: newMasterBlock.title!
+            masterLawBlock: masterBlockData,
+            masterParentId: masterBlockData.id,
+            version: masterBlockData.version,
+            name: masterBlockData.title!,
+            codeName: masterBlockData.title!
         })
     }
 

@@ -11,10 +11,8 @@ import { jwtAuth } from '@middlewares/jwt-auth'
 import { runQueues, queues } from '@modules/jobs/jobs'
 
 import { initTelegramBot, sendAlertToTelegram } from '@modules/server-notifier/server-notifier-service'
-sendAlertToTelegram(`
-🛑Erro em: handle-code-lawBlock🛑
-    Erro: 
-    `);
+
+sendAlertToTelegram("Servidor iniciado")
 
 initTelegramBot()
 runQueues()
