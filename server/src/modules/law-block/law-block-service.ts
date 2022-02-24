@@ -498,7 +498,15 @@ export const findBlockById = async (id: string) => {
 
         const generateTitle = (parentBlockTitle: string, blockType: BlockType) => {
 
-            if (blockType !== "ARTIGO_LEI") {
+            if (blockType != "ARTIGO_LEI") {
+                const parentArticleType = block.parentBlock?.type!
+                const parentArticleName = block.parentBlock?.name
+
+                return `${parentBlockTitle} ${generateTextType(parentArticleType)} ${parentArticleName} ${generateTextType(blockType)} ${renderName(block.name!)}`
+
+            }
+
+            if (blockType = "ALINEA_LEI") {
                 const parentArticleType = block.parentBlock?.type!
                 const parentArticleName = block.parentBlock?.name
 
