@@ -5,7 +5,8 @@ import {
     findAll,
     search as searchBlock,
     findBlockById,
-    contentLawBlockNumbers
+    contentLawBlockNumbers,
+    getIndexOfLawBlocks
 } from '@modules/law-block/law-block-service'
 
 export const index = async (req: Request, res: Response) => {
@@ -68,6 +69,17 @@ export const getCodeNumbers = async (req: Request, res: Response) => {
         return res.send(law)
 
     } catch (error: any) {
+        console.log(error)
+        return res.status(500).send("Nada alterado")
+    }
+}
+
+export const getLawBlocksCodes = async (req: Request, res: Response) => {
+    try {
+        const data = await getIndexOfLawBlocks()
+        return res.send(data)
+
+    } catch (error) {
         console.log(error)
         return res.status(500).send("Nada alterado")
     }
