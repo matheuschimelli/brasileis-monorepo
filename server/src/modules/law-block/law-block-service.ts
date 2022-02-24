@@ -50,9 +50,16 @@ export const allBlocks = async () => {
  * 2. Com o id retornado 
  */
 
-const createSlug = (str: string) => {
-    return slugify(str)
+export const createSlug = (str: string) => {
 
+    return slugify(str, {
+        replacement: '-',
+        remove: /[*+~()'"!:@]/g,
+        lower: true,
+        strict: true,
+        locale: 'vi',
+        trim: true
+    })
 }
 
 const handleArticleType = (articleType: BlockType) => {

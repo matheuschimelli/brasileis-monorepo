@@ -49,16 +49,30 @@ export const findAll = async (): Promise<any[] | null> => {
 }
 
 type ESDocument = {
-    blockType: string,
-    name: string,
-    title: string,
-    value: string,
-    originalText: string,
-    searchText: string,
-    searchString: string,
-    identifier: string,
-    source: string,
-    slug: string
+    blockType: string | null
+    name?: string | null
+    title?: string | null
+    value?: string | null
+    originalText?: string | null
+    searchText?: string | null
+    searchString?: string | null
+    identifier?: string | null
+    source?: string | null
+    slug?: string | null
+
+    tipoJudiciario?: string | null
+    instancia?: string | null
+    tribunal?: string | null
+    estado?: string | null
+    comarca?: string | null
+    dataJulgamento?: Date | null
+    dataPublicacao?: Date | null
+    ementa?: string | null
+    numeroProcesso?: string | null
+    orgaoJulgador?: string | null
+    relator?: string | null
+    segredoDeJustica?: string | null
+
 }
 export const upsert = async ({ docId, document }: { docId: string, document: ESDocument }) => {
     try {
@@ -96,7 +110,8 @@ const generateESQueryWithFilter = (searchTerm: string, filters: any[]) => {
             "originalText",
             "source",
             "type",
-            "identifier"
+            "identifier",
+            "blockType"
         ],
         highlight: {
             order: 'score',

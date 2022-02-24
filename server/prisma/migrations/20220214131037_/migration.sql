@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "TipoJudiciario" ADD VALUE 'JUIZADO_ESPECIAL';

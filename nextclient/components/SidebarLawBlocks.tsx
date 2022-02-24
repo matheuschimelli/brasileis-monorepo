@@ -45,7 +45,7 @@ export default function SidebarLawBlocks({ children, title, fixContent }: Props)
 
       <Collapse in={isOpenResponsive} animateOpacity >
 
-        <Heading as="h1" fontSize={["xl", "xl", "3xl"]} fontWeight="bold" pb="5">
+        <Heading as="h1" fontSize={["xl", "xl", "2xl"]} fontWeight="bold" pb="5">
           {title}
         </Heading >
         <Box height="100%">
