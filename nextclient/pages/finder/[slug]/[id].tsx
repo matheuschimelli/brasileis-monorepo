@@ -15,6 +15,7 @@ const Busca = ({ lawBlockData, codeNumbersData }: Props) => {
 };
 export const getServerSideProps: GetServerSideProps = async (context) => {
     try {
+
         const id = context.params!.id?.toString()
 
         const reqLawBlock = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/law-block/${id}`)

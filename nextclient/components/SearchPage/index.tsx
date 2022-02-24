@@ -22,6 +22,13 @@ export default function SearchPage({ results, total, error }: Props) {
       }
     })
   }
+  const generateLink = (result: any) => {
+    if (result._source.blockType === "JURISPRUDENCIA") {
+      return `/finder/jurisprudencia/${result._id}`
+    }
+
+    return `/finder/${result._source.slug}/${result._id}`
+  }
 
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "8", md: "12" }}>
@@ -84,7 +91,7 @@ export default function SearchPage({ results, total, error }: Props) {
                     <Link
                       fontSize="xl"
                       fontWeight="bold"
-                      href={`/finder/${result._source.slug}/${result._id}`}
+                      href={generateLink(result)}
                       pb="10"
                       color="blue.600"
                     >
