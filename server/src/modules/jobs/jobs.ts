@@ -22,6 +22,20 @@ export const reIndexPostgresDataToElasticSearchWorker = queue('reIndexPostgresDa
 
 export const checkIfESIsRunning = queue('check if elasticsearch is running', checkIfEsIsRunningHandler)
 
+export const clearQueues = queue('clear queue', () => {
+    for (const q of queues) {
+        q.clean(0, 'delayed');
+        q.clean(0, 'wait');
+        q.clean(0, 'active');
+        q.clean(0, 'completed');
+        q.clean(0, 'failed');
+
+        let multi = q.multi();
+        multi.del(q.toKey('repeat'));
+        multi.exec();
+    }
+
+})
 
 
 export const runQueues = () => {
@@ -29,6 +43,8 @@ export const runQueues = () => {
     checkIfESIsRunning.add({}, { repeat: { cron: '* * * * *' } })
     autoEsIndexUpdater.add({}, { repeat: { cron: '0 1 * * *' } })
     reIndexPostgresDataToElasticSearch.add({}, { repeat: { cron: '0 1 * * 0' } })
+    clearQueues.add({}, { repeat: { cron: '5 22 * * *' } })
+
 
 }
 
@@ -42,7 +58,8 @@ export const queues = [
     autoEsIndexUpdaterWorker,
     reIndexPostgresDataToElasticSearch,
     reIndexPostgresDataToElasticSearchWorker,
-    checkIfESIsRunning
+    checkIfESIsRunning,
+    clearQueues
 ]
 
 export const runQueue = (name: string) => {
