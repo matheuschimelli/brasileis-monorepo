@@ -1,3 +1,4 @@
+import dayjs from '@lib/dayjs'
 import prisma from '@lib/prisma'
 import { Instancia, TipoJudiciario } from '@prisma/client'
 type Jurisprudencia = {
@@ -113,4 +114,37 @@ export const remove = async (id: string) => {
         }
     })
     return data
+}
+
+export const feed = async ({ page }: { page: Number }) => {
+    const itemPerPage = 8
+    const skipItems = Number(page) ? (Number(page) - 1) * itemPerPage : 0;
+
+    const today = dayjs().toISOString()
+    const fiveDaysAgo = dayjs().subtract(5, 'day').toISOString()
+
+    const latest = await prisma.jurisprudencia.findMany({
+        where: {
+            dataPublicacao: {
+                lte: today,
+                gte: fiveDaysAgo
+            }
+        },
+        orderBy: {
+            dataPublicacao: 'desc'
+        },
+        take: itemPerPage,
+        skip: skipItems,
+        select: {
+            id: true,
+            numeroProcesso: true,
+            ementa: true,
+            tribunal: true,
+            dataPublicacao: true,
+            dataJulgamento: true,
+            createdAt: true,
+            updated: true
+        }
+    })
+    return latest
 }

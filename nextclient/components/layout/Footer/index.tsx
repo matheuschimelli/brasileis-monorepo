@@ -8,6 +8,8 @@ import { SubscribeForm } from "./SubscribeForm";
 
 export const Footer = () => (
   <Box
+    position="relative"
+    display="flex"
     as="footer"
     role="contentinfo"
     mx="auto"
