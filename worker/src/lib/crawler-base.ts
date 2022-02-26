@@ -1,7 +1,6 @@
 import axios from "axios";
 import cheerio from 'cheerio';
-
-import { chromium } from "playwright";
+import { chromium } from "playwright-chromium";
 
 export const playwrightCrawler = async () => {
     const RESOURCE_EXCLUSTIONS = ['image', 'stylesheet', 'media', 'font', 'other'];
