@@ -1,0 +1,2 @@
+"heroku-cleanup": "curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh&&./node-prune node_modules"
+  
