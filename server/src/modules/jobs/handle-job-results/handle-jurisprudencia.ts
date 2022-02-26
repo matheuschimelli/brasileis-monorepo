@@ -3,7 +3,7 @@ import prisma from "@lib/prisma"
 //import { createFeedItem } from "@modules/feed/feed-service"
 import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service"
 import { BlockType, Instancia, TipoJudiciario } from "@prisma/client"
-import { upsert as upsertElasticSearch } from '@modules/elasticsearch/elasticsearch-service'
+import { upsert as upsertElasticSearch, remove as removeElasticSearch } from '@modules/elasticsearch/elasticsearch-service'
 import { createSlug } from '@modules/law-block/law-block-service'
 
 
@@ -156,6 +156,10 @@ export const handleJurisprudencia = async (
                     }
                 })
                 if (updatedJuris) {
+                    await removeElasticSearch({
+                        documentId: jurisId
+                    })
+
                     await upsertElasticSearch({
                         docId: updatedJuris.id,
                         document: {

@@ -2,13 +2,17 @@ import express from 'express'
 import { isAuthenticated } from '@middlewares/jwt-auth'
 import {
     index,
-    show
+    show,
+    getFeed
 } from '@modules/jurisprudencia/jurisprudencia-controller'
 
 const jurisprudenciaRoutes = express.Router()
 
 jurisprudenciaRoutes.get('/', isAuthenticated, index)
+jurisprudenciaRoutes.get('/feed', getFeed)
+
 jurisprudenciaRoutes.get('/:id', show)
+
 
 
 

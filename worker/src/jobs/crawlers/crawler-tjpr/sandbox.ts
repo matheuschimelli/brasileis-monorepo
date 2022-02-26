@@ -1,34 +1,11 @@
 import { Job } from "bull";
-import { chromium } from "playwright";
-import { crawlerTJPRJurisprudenciaWorker, sendResult } from "../../";
-
+import { crawlerTJPRJurisprudenciaWorker } from "../../";
+import { playwrightCrawler } from "../../../lib/crawler-base";
 
 export default async function (job: Job) {
-    const RESOURCE_EXCLUSTIONS = ['image', 'stylesheet', 'media', 'font', 'other'];
-
 
     try {
-        const browser = await chromium.launch({
-            headless: true,
-            args: [
-                '--disable-gpu',
-                '--disable-dev-shm-usage',
-                '--disable-setuid-sandbox',
-                '--no-first-run',
-                '--no-sandbox',
-                '--no-zygote',
-                '--single-process',
-                '--disable-accelerated-2d-canvas'
-            ],
-        })
-        const page = await browser.newPage()
-        const navigationPromise = page.waitForNavigation()
-
-        await page.route('**/*', (route) => {
-            return RESOURCE_EXCLUSTIONS.includes(route.request().resourceType())
-                ? route.abort()
-                : route.continue()
-        });
+        const { browser, navigationPromise, page } = await playwrightCrawler()
 
         await page.goto('https://portal.tjpr.jus.br/jurisprudencia/publico/pesquisa.do?actionType=pesquisar', {
             waitUntil: 'domcontentloaded'
@@ -44,9 +21,11 @@ export default async function (job: Job) {
                 await page.waitForSelector(".resultTable.jurisprudencia", {
                     state: "visible"
                 })
+
                 const pageLinks = await page.$eval(".resultTable.jurisprudencia", (e) => {
                     return Array.from(e.querySelectorAll("a")).map(a => a.href).filter(a => a.includes("https"))
                 })
+
                 for (const link of pageLinks) {
                     await crawlerTJPRJurisprudenciaWorker.add({
                         queue: "TJPRJurisprudencia Worker",
@@ -62,7 +41,6 @@ export default async function (job: Job) {
         await goNext()
 
         await browser.close()
-
     } catch (error) {
         console.log(error)
         return Promise.reject(error)

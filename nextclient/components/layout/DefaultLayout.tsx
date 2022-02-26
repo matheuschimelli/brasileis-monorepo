@@ -27,5 +27,5 @@ export default function DefaultLayout({ children, title, searchQuery }: Props) {
       <MobileNav />
       <Footer />
     </>
-  );
+  )
 }

@@ -16,6 +16,18 @@ export async function getData(url: string, token?: string | null) {
     return response
 }
 
+export async function getJson(url: string, token?: string | null) {
+
+    const response = await fetch(url, {
+        method: 'GET',
+
+        headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+        },
+    })
+    return response.json()
+}
 export function useData(url: string, token?: string | null) {
 
     const fetcher = (urlToFetch: string) => fetch(urlToFetch, {
