@@ -12,8 +12,7 @@
     "dev:queue": "nodemon",
     "start": "node dist/index.js",
     "start:queue": "node dist/queue.js",
-    "build": "npx playwright install && tsc -p .",
-    "heroku-cleanup": "curl -sf https://gobinaries.com/tj/node-prune | PREFIX=. sh&&./node-prune node_modules"
+    "build": "tsc -p ."
   },
   "devDependencies": {
     "@types/bull": "^3.15.3",
