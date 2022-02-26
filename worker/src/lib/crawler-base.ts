@@ -7,6 +7,7 @@ export const playwrightCrawler = async () => {
     const RESOURCE_EXCLUSTIONS = ['image', 'stylesheet', 'media', 'font', 'other'];
 
     const browser = await chromium.launch({
+        chromiumSandbox: false,
         headless: true,
         args: [
             '--disable-gpu',
