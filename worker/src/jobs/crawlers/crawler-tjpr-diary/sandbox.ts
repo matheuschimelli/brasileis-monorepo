@@ -77,7 +77,6 @@ export default async function (job: Job) {
                 });
 
                 const data = filterLinks(dataToBeFormated).filter(e => !!e)
-                console.log(data)
 
                 if (data.length === 0) {
                     console.log("Sem mais datas")
