@@ -50,7 +50,6 @@
     "jsdom": "^17.0.0",
     "pingmydyno": "^1.5.1",
     "playwright-chromium": "^1.20.0-alpha-feb-26-2022",
-    "puppeteer": "^13.2.0",
     "sanitize-html": "^2.5.1",
     "signale": "^1.4.0"
   }

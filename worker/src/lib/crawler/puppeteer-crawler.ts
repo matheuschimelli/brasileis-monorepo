@@ -1,4 +1,4 @@
-import puppeteer, { Browser, Page } from 'puppeteer'
+import { chromium, Browser, Page } from 'playwright-chromium'
 
 type CrawlerParams = {
     headless?: false
@@ -11,7 +11,7 @@ export default class Crawler {
         this.headless = params.headless
     }
     async lauchBrowser() {
-        const browser = await puppeteer.launch({
+        const browser = await chromium.launch({
             headless: this.headless,
             args: [
                 '--disable-gpu',
