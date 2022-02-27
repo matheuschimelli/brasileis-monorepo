@@ -32,8 +32,11 @@ export default async function (job: Job) {
                 const content = await page.content();
                 const body = await page.evaluate(() => document.querySelector("body")?.innerText)
 
+                //@ts-ignore
                 const h1s = await page.$$eval('h1', (els => els.map(h1 => h1.textContent)))
+                //@ts-ignore
                 const bs = await page.$$eval('b', (els => els.map(b => b.textContent)))
+                //@ts-ignore
                 const paragraphs = await page.$$eval('p', (els => els.map(p => p.textContent)))
 
                 const { htmlContent } = cleanHtml(content, url)
