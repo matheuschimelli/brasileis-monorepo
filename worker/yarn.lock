@@ -3642,28 +3642,6 @@ playwright-chromium@^1.20.0-alpha-feb-26-2022:
   dependencies:
     playwright-core "1.20.0-alpha-feb-26-2022"
 
-playwright-core@1.19.0-alpha-feb-8-2022:
-  version "1.19.0-alpha-feb-8-2022"
-  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.19.0-alpha-feb-8-2022.tgz#7fd75b9a4042f07a7f6bc4bb89e1baf30f911501"
-  integrity sha512-ougVvt9edHi3+3ZDq+MPS+h76VQELrU23XmMsMnYR3abWwtHtjLuUeZozddS7T3hxWfAf0uiwzfv7uraFMhwSw==
-  dependencies:
-    commander "8.3.0"
-    debug "4.3.3"
-    extract-zip "2.0.1"
-    https-proxy-agent "5.0.0"
-    jpeg-js "0.4.3"
-    mime "3.0.0"
-    pngjs "6.0.0"
-    progress "2.0.3"
-    proper-lockfile "4.1.2"
-    proxy-from-env "1.1.0"
-    rimraf "3.0.2"
-    socks-proxy-agent "6.1.1"
-    stack-utils "2.0.5"
-    ws "8.4.2"
-    yauzl "2.10.0"
-    yazl "2.5.1"
-
 playwright-core@1.20.0-alpha-feb-26-2022:
   version "1.20.0-alpha-feb-26-2022"
   resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.20.0-alpha-feb-26-2022.tgz#395327e8baedfafad556e548609bd0634aaf9281"
@@ -3687,13 +3665,6 @@ playwright-core@1.20.0-alpha-feb-26-2022:
     ws "8.4.2"
     yauzl "2.10.0"
     yazl "2.5.1"
-
-playwright@^1.19.0-alpha-feb-8-2022:
-  version "1.19.0-alpha-feb-8-2022"
-  resolved "https://registry.yarnpkg.com/playwright/-/playwright-1.19.0-alpha-feb-8-2022.tgz#074ed648d3efcfd2cf08c5755fe995de97589773"
-  integrity sha512-t4ePKcf+VytQZHiBWNrp1RYh+5qn3stLR1n8kRFWkFX4Qc3k5KUTiEyKnKAHx036BNRg/PEnptuTl29r2YIiJQ==
-  dependencies:
-    playwright-core "1.19.0-alpha-feb-8-2022"
 
 pngjs@6.0.0:
   version "6.0.0"
