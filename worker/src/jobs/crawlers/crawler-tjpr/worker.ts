@@ -92,6 +92,9 @@ export default async function (job: Job) {
                         //@ts-ignore
                         return toReplace.map((textToReplace) => {
                             if (key == "dataPublicacao" || key == "dataJulgamento") {
+                                const date2 = row
+                                    .replace(textToReplace, "")
+                                console.log("DATE2", date2)
 
                                 const date = row
                                     .replace(textToReplace, "")
