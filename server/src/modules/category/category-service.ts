@@ -1,10 +1,7 @@
 import prisma from '@lib/prisma'
+import { Topic } from '@modules/types'
 
-type Topic = {
-    id?: string
-    name?: string
-    description?: string
-}
+
 export const findAll = async () => {
     const allTopics = await prisma.category.findMany({})
     return allTopics

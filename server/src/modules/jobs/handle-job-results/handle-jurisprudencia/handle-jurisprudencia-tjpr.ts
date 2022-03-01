@@ -1,28 +1,18 @@
 import { createHash } from 'crypto'
 import prisma from "@lib/prisma"
-//import { createFeedItem } from "@modules/feed/feed-service"
+import {
+    sendAlertToTelegram
+} from "@modules/server-notifier/server-notifier-service"
+import { BlockType } from "@prisma/client"
+import {
+    upsert as upsertElasticSearch,
+    remove as removeElasticSearch
+} from '@modules/elasticsearch/elasticsearch-service'
+import { createSlug } from '@modules/law-block/law-block-service'
+import { Juris } from '@modules/types'
 
-import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service"
-import { Instancia, TipoJudiciario } from "@prisma/client"
 
-type Juris = {
-    comarca?: string
-    dataJulgamento?: string
-    dataPublicacao?: string
-    ementa?: string
-    integra?: string
-    numeroProcesso?: string
-    orgaoJulgador?: string
-    relator?: string
-    segredoDeJustica?: string
-    source: string
-    pageText: string
-    estado: string
-    tribunal: string
-    tipo: TipoJudiciario
-    instancia: Instancia
-}
-export const handleJurisprudencia = async (
+export const handleJurisprudenciaTJPR = async (
     {
         jobData,
     }: {
@@ -48,15 +38,21 @@ export const handleJurisprudencia = async (
         segredoDeJustica,
     } = jdata
 
+    console.log(jdata)
+
     try {
+        if (!numeroProcesso) return Promise.reject(`Missing numeroProcesso em ${source}`)
 
         const juris = await prisma.jurisprudencia.findFirst({
             where: {
-                source: source
+                numeroProcesso
             }
         })
-        if (!juris) {
-            await prisma.jurisprudencia.create({
+        if (juris) {
+            const newJuris = await prisma.jurisprudencia.update({
+                where: {
+                    id: juris.id
+                },
                 data: {
                     updated: true,
                     checkSum,
@@ -64,7 +60,17 @@ export const handleJurisprudencia = async (
                     instancia: "PRIMEIRA_INSTANCIA",
                     source,
                     tipo,
-                    tribunal,
+                    tribunal: {
+                        connectOrCreate: {
+                            create: {
+                                name: tribunal,
+                                slug: createSlug(tribunal)
+                            },
+                            where: {
+                                slug: createSlug(tribunal)
+                            }
+                        }
+                    },
                     comarca,
                     dataJulgamento,
                     dataPublicacao,
@@ -74,47 +80,107 @@ export const handleJurisprudencia = async (
                     orgaoJulgador,
                     relator,
                     segredoDeJustica,
+                    slug: createSlug(`${tribunal} ${comarca} ${numeroProcesso}`),
+
+                },
+                include: {
+                    tribunal: true
+                }
+            })
+            await upsertElasticSearch({
+                docId: newJuris.id,
+                document: {
+                    blockType: 'JURISPRUDENCIA' as BlockType,
+                    name: newJuris.numeroProcesso,
+                    title: `${newJuris.tribunal} jurisprudência ${newJuris.numeroProcesso}`,
+                    value: newJuris.numeroProcesso,
+                    originalText: newJuris.integra,
+                    searchText: newJuris.integra,
+                    searchString: newJuris.integra,
+                    identifier: newJuris.numeroProcesso,
+                    source: newJuris.source,
+                    slug: createSlug(`${newJuris.tribunal?.name} ${newJuris.comarca} ${newJuris.numeroProcesso}`),
+
+                    tipoJudiciario: newJuris.tipo,
+                    instancia: newJuris.instancia,
+                    tribunal: newJuris.tribunal?.name,
+                    estado: newJuris.estado,
+                    comarca: newJuris.comarca,
+                    dataJulgamento: newJuris.dataJulgamento,
+                    dataPublicacao: newJuris.dataPublicacao,
+                    ementa: newJuris.ementa,
+                    numeroProcesso: newJuris.numeroProcesso,
+                    orgaoJulgador: newJuris.orgaoJulgador,
+                    relator: newJuris.relator,
+                    segredoDeJustica: newJuris.segredoDeJustica
                 }
             })
         } else {
-            const jurisCheckSum = juris.checkSum
-            const jurisId = juris.id
-            if (jurisCheckSum !== checkSum) {
-                await prisma.jurisprudencia.create({
-                    data: {
-                        updated: true,
-                        checkSum,
-                        estado,
-                        instancia: "PRIMEIRA_INSTANCIA",
-                        source,
-                        tipo,
-                        tribunal,
-                        comarca,
-                        dataJulgamento,
-                        dataPublicacao,
-                        ementa,
-                        integra,
-                        numeroProcesso,
-                        orgaoJulgador,
-                        relator,
-                        segredoDeJustica,
-                        history: {
-                            connect: {
-                                id: jurisId
+
+            const newJuris = await prisma.jurisprudencia.create({
+                data: {
+                    updated: true,
+                    checkSum,
+                    estado,
+                    instancia: "PRIMEIRA_INSTANCIA",
+                    source,
+                    tipo,
+                    tribunal: {
+                        connectOrCreate: {
+                            create: {
+                                name: tribunal,
+                                slug: createSlug(tribunal)
+                            },
+                            where: {
+                                slug: createSlug(tribunal)
                             }
                         }
-                    }
-                })
-                await prisma.jurisprudencia.update({
-                    where: {
-                        id: jurisId
                     },
-                    data: {
-                        updated: false,
-                    }
-                })
+                    comarca,
+                    dataJulgamento,
+                    dataPublicacao,
+                    ementa,
+                    integra,
+                    numeroProcesso,
+                    orgaoJulgador,
+                    relator,
+                    segredoDeJustica,
+                    slug: createSlug(`${tribunal} ${comarca} ${numeroProcesso}`),
 
-            }
+                },
+                include: {
+                    tribunal: true
+                }
+            })
+
+            await upsertElasticSearch({
+                docId: newJuris.id,
+                document: {
+                    blockType: 'JURISPRUDENCIA' as BlockType,
+                    name: newJuris.numeroProcesso,
+                    title: `${newJuris.tribunal} jurisprudência ${newJuris.numeroProcesso}`,
+                    value: newJuris.numeroProcesso,
+                    originalText: newJuris.integra,
+                    searchText: newJuris.integra,
+                    searchString: newJuris.integra,
+                    identifier: newJuris.numeroProcesso,
+                    source: newJuris.source,
+                    slug: createSlug(`${newJuris.tribunal?.name} ${newJuris.comarca} ${newJuris.numeroProcesso}`),
+
+                    tipoJudiciario: newJuris.tipo,
+                    instancia: newJuris.instancia,
+                    tribunal: newJuris.tribunal?.name,
+                    estado: newJuris.estado,
+                    comarca: newJuris.comarca,
+                    dataJulgamento: newJuris.dataJulgamento,
+                    dataPublicacao: newJuris.dataPublicacao,
+                    ementa: newJuris.ementa,
+                    numeroProcesso: newJuris.numeroProcesso,
+                    orgaoJulgador: newJuris.orgaoJulgador,
+                    relator: newJuris.relator,
+                    segredoDeJustica: newJuris.segredoDeJustica
+                }
+            })
         }
     } catch (err) {
         sendAlertToTelegram(`

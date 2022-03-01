@@ -55,7 +55,7 @@ export default async function (job: Job) {
                 replace: ["Órgão Julgador: "],
             },
             comarca: {
-                regex: /(Comarca: (.*))/,
+                regex: /^(Comarca: ([^0-9]).*)/,
                 replace: ["Comarca: "],
             },
             dataJulgamento: {

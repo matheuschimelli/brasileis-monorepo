@@ -1,4 +1,5 @@
 import elasticSearchClient from "@lib/elasticsearch-client"
+import { ESDocument } from "@modules/types"
 
 const esIndex = process.env.NODE_ENV !== 'production' ? 'development' : 'brasileis_prod'
 //const esIndex = 'brasileis_prod'
@@ -48,32 +49,7 @@ export const findAll = async (): Promise<any[] | null> => {
     return docsResult
 }
 
-type ESDocument = {
-    blockType: string | null
-    name?: string | null
-    title?: string | null
-    value?: string | null
-    originalText?: string | null
-    searchText?: string | null
-    searchString?: string | null
-    identifier?: string | null
-    source?: string | null
-    slug?: string | null
 
-    tipoJudiciario?: string | null
-    instancia?: string | null
-    tribunal?: string | null
-    estado?: string | null
-    comarca?: string | null
-    dataJulgamento?: Date | null
-    dataPublicacao?: Date | null
-    ementa?: string | null
-    numeroProcesso?: string | null
-    orgaoJulgador?: string | null
-    relator?: string | null
-    segredoDeJustica?: string | null
-
-}
 export const upsert = async ({ docId, document }: { docId: string, document: ESDocument }) => {
     try {
         const doc = await elasticSearchClient.update({

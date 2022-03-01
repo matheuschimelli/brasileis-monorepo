@@ -1,25 +1,7 @@
 import { processOnWorker } from '@lib/bull';
 import prisma from '@lib/prisma'
-import { BlockType } from '@prisma/client';
+import { CrawlerInput } from '@modules/types';
 
-type CrawlerInput = {
-    id?: string
-    cron: string,
-    description: string,
-    name: string,
-    lawBlockId: string,
-    source: string,
-    crawlerTypeId: string,
-    slug: string,
-    mainBlockTitle: string,
-    mainBlockDescription: string,
-    version: number
-    isUrlOnly?: boolean
-    notifyUpdates?: boolean
-    blockType: BlockType,
-    categories: string[]
-
-}
 export const index = async (page: number) => {
     const skipItems = Number(page) ? (Number(page) - 1) * 10 : 0;
 

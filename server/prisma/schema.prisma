@@ -125,6 +125,13 @@ model LawBlock {
   jurisprudencia Jurisprudencia[]
 }
 
+model Tribunal {
+  id              String           @id @default(cuid())
+  name            String           @unique
+  slug            String           @unique
+  jurisprudencias Jurisprudencia[]
+}
+
 model Jurisprudencia {
   id       String  @id @default(cuid())
   source   String
@@ -134,9 +141,11 @@ model Jurisprudencia {
   tipo      TipoJudiciario
   instancia Instancia
 
-  tribunal String
-  estado   String
-  comarca  String?
+  tribunal   Tribunal? @relation(fields: [tribunalId], references: [id])
+  tribunalId String?
+
+  estado  String
+  comarca String?
 
   dataJulgamento DateTime?
   dataPublicacao DateTime?
@@ -157,7 +166,6 @@ model Jurisprudencia {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
 }
 
 model Category {

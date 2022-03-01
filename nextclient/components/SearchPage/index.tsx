@@ -24,7 +24,7 @@ export default function SearchPage({ results, total, error }: Props) {
   }
   const generateLink = (result: any) => {
     if (result._source.blockType === "JURISPRUDENCIA") {
-      return `/finder/jurisprudencia/${result._id}`
+      return `/jurisprudencia/${result._id}`
     }
 
     return `/finder/${result._source.slug}/${result._id}`
