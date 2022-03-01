@@ -1,6 +1,6 @@
 import type { GetServerSideProps } from "next";
-import DefaultLayout from "../../../components/layout/DefaultLayout";
-import JurisprudenciaFinder from "../../../components/JurisprudenciaFinder";
+import DefaultLayout from "../../components/layout/DefaultLayout";
+import JurisprudenciaFinder from "../../components/JurisprudenciaFinder";
 
 type Props = {
     data: any

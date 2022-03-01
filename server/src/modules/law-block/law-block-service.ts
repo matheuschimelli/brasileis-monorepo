@@ -4,25 +4,9 @@ import { upsert as elasticSearchUpsert, remove as elasticSearchRemove } from '@m
 import slugify from 'slugify'
 import { createFeedItem } from '@modules/feed/feed-service'
 
-type CreateLawBlockFromArrayParams = {
-    data: any[]
-    masterParentId: string
-    name: string
-    codeName: string
-    masterLawBlock: any
-    version?: number
-}
+import { CreateLawBlockFromArrayParams, UpdateParams } from '@modules/types'
 
-type UpdateParams = {
-    oldData?: any[]
-    newData?: any[]
-    parentId?: string
-    name?: string
-    codeName?: string
-    masterLawBlock?: any,
-    masterBlockId?: string,
-    topicId: string
-}
+
 export const getTotalOfBlocks = async () => {
     return await prisma.lawBlock.count()
 }

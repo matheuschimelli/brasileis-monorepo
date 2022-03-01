@@ -1,8 +1,8 @@
-import { BlockType } from "@prisma/client";
-import { Job } from "bull";
 import { handleLawBlockCode } from '@modules/jobs/handle-job-results/handle-code-lawBlock'
 import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service";
-import { handleJurisprudencia } from "./handle-jurisprudencia";
+import handleJurisprudencia from "./handle-jurisprudencia/index";
+import { Job, JobResult, Juris } from "@modules/types";
+
 /**
  * Brasileis job result handler - How it Works (or how should it works)
  * 
@@ -17,48 +17,13 @@ import { handleJurisprudencia } from "./handle-jurisprudencia";
  * 
  */
 
-export type JobResult = {
-    queue: string,
-    data: {
-        id: string,
-        name: string,
-        description: string,
-        isUrlOnly: boolean,
-        source: string,
-        cron: string,
-        notifyUpdates: true,
-        slug: string,
-        mainBlockTitle: string,
-        mainBlockDescription: string,
-        version: 1,
-        createdAt: string,
-        updatedAt: string,
-        lawBlockId: string,
-        crawlerTypeId: string,
-        blockType: BlockType,
-        crawlerType: {
-            id: string,
-            name: string,
-            description: string,
-            customCode: null,
-            createdAt: string,
-            updatedAt: string
-        }
-    },
-    result: {
-        pageHtml: string,
-        pageText: string,
-        articles: any[]
-    }
-}
-
 export const handler = async (job: Job) => {
     const jobData: JobResult = job.data
     const crawlerParams = jobData.data
 
     try {
         if (crawlerParams.blockType == 'CODIGO') await handleLawBlockCode({ jobData, crawlerParams })
-        if (crawlerParams.blockType == 'JURISPRUDENCIA') await handleJurisprudencia({ jobData: jobData.result })
+        if (crawlerParams.blockType == 'JURISPRUDENCIA') await handleJurisprudencia({ jobData: jobData.result as unknown as Juris })
 
         return Promise.resolve()
 

@@ -4,41 +4,12 @@ import prisma from "@lib/prisma"
 import {
     createLawBlockFromArray,
     updateLawBlockFromArray,
-    generateTextType
 } from "@modules/law-block/law-block-service"
 import { sendAlertToTelegram } from "@modules/server-notifier/server-notifier-service"
-import { BlockType } from "@prisma/client"
 import { removeOldBlocksFromES } from "../jobs"
-import { JobResult } from "./handle-job-results-handler"
+import { CrawlerParams, JobResult } from "@modules/types"
 
-type CrawlerParams = {
-    id: string;
-    name: string;
-    description: string;
-    isUrlOnly: boolean;
-    source: string;
-    cron: string;
-    notifyUpdates: true;
-    slug: string;
-    mainBlockTitle: string;
-    mainBlockDescription: string;
-    version: 1;
-    createdAt: string;
-    updatedAt: string;
-    lawBlockId: string;
-    crawlerTypeId: string;
-    blockType: BlockType;
-    topicId?: string;
 
-    crawlerType: {
-        id: string;
-        name: string;
-        description: string;
-        customCode: null;
-        createdAt: string;
-        updatedAt: string;
-    };
-}
 export const handleLawBlockCode = async (
     {
         jobData,

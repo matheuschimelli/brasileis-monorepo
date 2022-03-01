@@ -1,11 +1,6 @@
 import prisma from '@lib/prisma'
+import { FeedItem } from '@modules/types'
 
-type FeedItem = {
-    title: string
-    content: string
-    topicId: string
-    lawBlockId: string
-}
 
 export const createFeed = async (name: string) => {
     await prisma.feed.create({

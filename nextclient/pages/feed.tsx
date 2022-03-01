@@ -30,7 +30,7 @@ const Busca = ({ feedData, token, followingTopics, jurisprudenciaFeed }: Props) 
                                 <Box mb="5">
                                     <Box display="flex" flexDir="row" justifyContent="space-between" w="100%">
                                         <Box overflow="hidden" maxW="82%">
-                                            <Link passHref href={`/finder/jurisprudencia/${juris.id}`}>
+                                            <Link passHref href={`/jurisprudencia/${juris.id}`}>
                                                 <Text as="a" isTruncated >
                                                     {juris.ementa}{"..."}
                                                 </Text>
@@ -47,6 +47,7 @@ const Busca = ({ feedData, token, followingTopics, jurisprudenciaFeed }: Props) 
                                 </Box>
                             )
                         })}
+                        <Text as="a" href={`/jurisprudencia/tjpr`}>Ver mais</Text>
 
                     </Box>
 
