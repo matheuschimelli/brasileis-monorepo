@@ -30,7 +30,7 @@ export default function FeedPage({ feedData, token, followingTopics, jurispruden
                                 <Box mb="5">
                                     <Box display="flex" flexDir="row" justifyContent="space-between" w="100%">
                                         <Box overflow="hidden" maxW="82%">
-                                            <Link passHref href={`/jurisprudencia/${juris.id}`}>
+                                            <Link passHref href={`/jurisprudencia/${juris.tribunal.slug}/${juris.id}`}>
                                                 <Text as="a" isTruncated >
                                                     {juris.ementa}{"..."}
                                                 </Text>
