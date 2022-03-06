@@ -1,8 +1,9 @@
 import { Box, Stack, Heading, Text, Flex, Link } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
-import SearchPagination from "./Pagination";
+import React from "react";
+import SearchPagination from "./SearchPagination";
 import SearchFilter from "./SearchFilter";
+import SearchResult from "./SearchResult";
 
 type Props = {
   results?: [];
@@ -22,13 +23,7 @@ export default function SearchPage({ results, total, error }: Props) {
       }
     })
   }
-  const generateLink = (result: any) => {
-    if (result._source.blockType === "JURISPRUDENCIA") {
-      return `/jurisprudencia/${result._id}`
-    }
 
-    return `/finder/${result._source.slug}/${result._id}`
-  }
 
   return (
     <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "8", md: "12" }}>
@@ -79,35 +74,9 @@ export default function SearchPage({ results, total, error }: Props) {
             </Text>
 
             <Stack spacing="2">
-              {results?.map((result: any) => {
+              {results?.map((result: any, index) => {
                 return (
-                  <Box
-                    padding="4"
-                    borderRadius="md"
-
-                    flexDirection="column"
-                    key={result._source.id}
-                  >
-                    <Link
-                      fontSize="xl"
-                      fontWeight="bold"
-                      href={generateLink(result)}
-                      pb="10"
-                      color="blue.600"
-                    >
-                      <Text>{result._source.title}</Text>
-                    </Link>
-                    <Text>
-                      <div
-                        dangerouslySetInnerHTML={{
-                          __html: `${result.highlight
-                            ? result.highlight.originalText[0]
-                            : ""
-                            }`,
-                        }}
-                      ></div>
-                    </Text>
-                  </Box>
+                  <SearchResult key={index} result={result} />
                 );
               })}
             </Stack>

@@ -28,6 +28,33 @@ export async function getJson(url: string, token?: string | null) {
     })
     return response.json()
 }
+
+/**
+ * Get data from server api
+ * You should add your api path starting from: /api/v1/
+ * @param url 
+ * @param token 
+ * @returns 
+ */
+export async function getDataFromApi(apiPath: string, token?: string | null) {
+    try {
+
+        const response = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/${apiPath}`, {
+            method: 'GET',
+
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+        })
+
+        return response.json()
+
+    } catch (error: any) {
+        throw new Error(error)
+    }
+}
+
 export function useData(url: string, token?: string | null) {
 
     const fetcher = (urlToFetch: string) => fetch(urlToFetch, {

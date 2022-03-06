@@ -8,14 +8,9 @@ import {
 import SidebarLawBlocks from "./SidebarLawBlocks";
 import { JurisprudenciaRender } from "./JurisprudenciaRender";
 import dayjs from "../lib/dayjs";
-import useEventListener from "../lib/copyhook";
-//import LawTabs from "./LawTabs";
 
 export default function JurisprudenciaFinder({ data }: { data: any }) {
-    // const alertCopy = () => {
-    //     alert("Pode copiar a ementa a vontade. É de graça!")
-    // }
-    // useEventListener("copy", alertCopy)
+
     return (
         <Box maxW={{ base: "3xl", lg: "7xl" }} py={{ base: "0", md: "1" }}>
             <Flex shadow={["none", "none", "base"]} flexDirection={["column-reverse", "column-reverse", "row"]}>
@@ -46,7 +41,7 @@ export default function JurisprudenciaFinder({ data }: { data: any }) {
                     <Text as="h3" fontSize="large" fontWeight="bold" mb="5" >Dados da jurisprudência</Text>
 
                     <Box as="li">
-                        <Box as="a" href={data.source}>Fonte original ({data.tribunal})</Box>
+                        <Box as="a" href={data.source}>Fonte original ({data.tribunal.name})</Box>
                     </Box>
                     <Box as="li">
                         Data julgamento:
@@ -55,7 +50,7 @@ export default function JurisprudenciaFinder({ data }: { data: any }) {
                         </Box>
                     </Box>
                     <Box as="li">
-                        Tribunal: {data.tribunal}
+                        Tribunal: {data.tribunal.name}
                     </Box>
                     <Box as="li">
                         Estado: {data.estado}

@@ -1,21 +1,27 @@
+import React from 'react'
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../../components/layout/DefaultLayout";
-import JurisprudenciaFinder from "../../components/JurisprudenciaFinder";
-import { Center, Text, Box, Divider } from "@chakra-ui/react";
+import { Center, Text, Box, Divider, Button, Link } from "@chakra-ui/react";
 import SearchForm from "../../components/layout/SearchForm";
+import { SimpleGrid } from '@chakra-ui/react'
+import { getDataFromApi } from "../../lib/hooks";
 
-type Props = {
-    data: any
+type JurisprudenciaIndexPageProps = {
+    data: any[]
 }
-const Busca = ({ data }: Props) => {
+
+export default function JurisprudenciaIndexPage({ data }: JurisprudenciaIndexPageProps) {
     return (
         <DefaultLayout title={`Jurisprudência`}>
-            <Box minH="50vh" display="flex" flexDir="column">
+            <Box minH="100vh" display="flex" flexDir="column">
                 <Box
                     mt="10"
                     display="flex"
                     flexDir="column"
                     gridGap="10"
+                    alignContent="center"
+                    justifyContent="center"
+                    alignItems="center"
                 >
                     <Center>
                         <Text as="h1" fontSize="3xl" fontWeight="bold">
@@ -35,33 +41,37 @@ const Busca = ({ data }: Props) => {
                 <Box mt="10">
                     <Center>
                         <Text as="h1" fontSize="xl" fontWeight="thin">
-                            Últimas jurisprudências por tribunal
+                            Tribunais
                         </Text>
                     </Center>
+
+                    <Box display="flex" flexDir="row" justifyContent="center">
+                        <SimpleGrid columns={4} spacing={10}>
+                            {data && data.map((tribunal) => {
+                                return (
+                                    <Link href={`/jurisprudencia/tribunal/${tribunal.slug}`}>
+                                        <Button variant="outline" size="lg" as="a">{tribunal.name}</Button>
+                                    </Link>
+                                )
+                            })}
+                        </SimpleGrid>
+                    </Box>
                 </Box>
             </Box>
 
         </DefaultLayout>
     );
 };
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//     try {
 
-//         const id = context.params!.id?.toString()
-
-//         const jurisprudencia = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL!}/api/v1/jurisprudencia/${id}`)
-//         const jurisprudenciaData = await jurisprudencia.json()
-
-//         if (!jurisprudenciaData) return { notFound: true };
-
-//         return {
-//             props: { data: jurisprudenciaData }, // will be passed to the page component as props
-//         };
-
-//     } catch (err) {
-//         return {
-//             notFound: true,
-//         };
-//     }
-// };
-export default Busca;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    try {
+        const data = await getDataFromApi('jurisprudencia/tribunais')
+        return {
+            props: { data: data },
+        };
+    } catch (err) {
+        return {
+            notFound: true,
+        };
+    }
+};

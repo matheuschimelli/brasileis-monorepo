@@ -92,7 +92,7 @@ export const handleJurisprudenciaTJPR = async (
                 document: {
                     blockType: 'JURISPRUDENCIA' as BlockType,
                     name: newJuris.numeroProcesso,
-                    title: `${newJuris.tribunal} jurisprudência ${newJuris.numeroProcesso}`,
+                    title: `${newJuris.tribunal?.name} jurisprudência ${newJuris.numeroProcesso}`,
                     value: newJuris.numeroProcesso,
                     originalText: newJuris.integra,
                     searchText: newJuris.integra,
@@ -158,7 +158,7 @@ export const handleJurisprudenciaTJPR = async (
                 document: {
                     blockType: 'JURISPRUDENCIA' as BlockType,
                     name: newJuris.numeroProcesso,
-                    title: `${newJuris.tribunal} jurisprudência ${newJuris.numeroProcesso}`,
+                    title: `${newJuris.tribunal!.name} jurisprudência ${newJuris.numeroProcesso}`,
                     value: newJuris.numeroProcesso,
                     originalText: newJuris.integra,
                     searchText: newJuris.integra,

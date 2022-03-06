@@ -1,7 +1,6 @@
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../components/layout/DefaultLayout";
-import FeedContent from "../components/Feed/FeedContent";
-import { getData, getJson } from "../lib/hooks";
+import { getDataFromApi } from "../lib/hooks";
 import { Box, Divider, SimpleGrid, Text } from '@chakra-ui/react'
 import Link from "next/link";
 import dayjs from "../lib/dayjs";
@@ -12,7 +11,8 @@ type Props = {
     followingTopics: any
     jurisprudenciaFeed: any[]
 }
-const Busca = ({ feedData, token, followingTopics, jurisprudenciaFeed }: Props) => {
+export default function FeedPage({ feedData, token, followingTopics, jurisprudenciaFeed }: Props) {
+
     return (
         <DefaultLayout title="Feed">
             {/* <FeedContent feedData={feedData} followingTopics={followingTopics} token={token} /> */}
@@ -47,7 +47,7 @@ const Busca = ({ feedData, token, followingTopics, jurisprudenciaFeed }: Props) 
                                 </Box>
                             )
                         })}
-                        <Text as="a" href={`/jurisprudencia/tjpr`}>Ver mais</Text>
+                        <Text as="a" href={`/jurisprudencia/`}>Ver mais</Text>
 
                     </Box>
 
@@ -57,18 +57,12 @@ const Busca = ({ feedData, token, followingTopics, jurisprudenciaFeed }: Props) 
         </DefaultLayout>
     );
 };
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    const token = req.cookies.token
 
-    const request = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/feed`, token)
-    const feedData = await request.json()
+export const getServerSideProps: GetServerSideProps = async ({ req: { cookies: { token } } }) => {
 
-    console.log(feedData)
-
-    const requestFollowingTopics = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/following-topics`, token)
-    const followingTopicsData = await requestFollowingTopics.json()
-
-    const jurisprudenciaFeed = await getJson(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/jurisprudencia/feed?p=1`, token)
+    const feedData = await getDataFromApi('user/feed', token)
+    const followingTopicsData = await getDataFromApi('user/following-topics', token)
+    const jurisprudenciaFeed = await getDataFromApi('jurisprudencia/feed?p=1', token)
 
     return {
         props: {
@@ -76,7 +70,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
             followingTopics: followingTopicsData.followingTopics,
             token,
             jurisprudenciaFeed
-        }, // will be passed to the page component as props
+        },
     };
 };
-export default Busca;

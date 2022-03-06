@@ -8,37 +8,19 @@ import {
   FormLabel,
   Input,
   Text,
-  Button,
-  Table,
-  TableCaption,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
-  Tfoot,
-  Badge
+  Button
 } from "@chakra-ui/react";
-import dayjs from '../../lib/dayjs'
 import SettingsBox from '../../components/UserSettings/SettingsBox';
 import DefaultLayout from "../../components/layout/DefaultLayout";
 import { useAuth } from '../../lib/auth';
-import { getData } from '../../lib/hooks';
+import { getData, getDataFromApi } from '../../lib/hooks';
 
-const RenderActive = ({ isActive }: { isActive: boolean }) => {
-  if (isActive) {
-    return (
-      <Badge colorScheme='green'>Ativo</Badge>
-    )
-  }
-  return (
-    <Badge colorScheme='red'>Inativo</Badge>
-  )
-}
-type Props = {
+
+type MinhaContaPageProps = {
   subscriptions: any[]
 }
-export default function Component({ subscriptions }: Props) {
+
+export default function MinhaContaPage({ subscriptions }: MinhaContaPageProps) {
   const { user, token } = useAuth()
   if (!user) {
     return (
@@ -54,6 +36,7 @@ export default function Component({ subscriptions }: Props) {
       return window.location.href = data.url
     }
   }
+
   return (
     <DefaultLayout title="Configurações da conta" >
 
@@ -76,50 +59,7 @@ export default function Component({ subscriptions }: Props) {
             </FormControl>
           </Box>
         </SettingsBox>
-        {/* <SettingsBox title="Assinaturas">
-                    <Box display="flex" flexDir={['column', 'column', 'row']} gridGap={['3', '3', '10']} alignItems='center' >
-                        {!subscriptions || subscriptions.length === 0 && (
-                            <Text>Você não possui um histórico de assinaturas</Text>
-                        )}
 
-                        <Table variant='striped' size="sm" colorScheme='gray'>
-                            <TableCaption>Histórico de assinaturas plano PRO Brasileis</TableCaption>
-                            <Thead>
-                                <Tr>
-                                    <Th>Situação</Th>
-                                    <Th>Início</Th>
-                                    <Th>Término</Th>
-                                    <Th>Início</Th>
-                                    <Th>Cancelamento</Th>
-                                </Tr>
-                            </Thead>
-                            <Tbody>
-                                {subscriptions && subscriptions.map((subscription) => {
-                                    return (
-                                        <Tr>
-                                            <Td><RenderActive isActive={subscription.isActive} /></Td>
-                                            <Td>{dayjs(subscription.startDate).format('DD/MM/YYYY')}</Td>
-                                            <Td>{dayjs(subscription.endDate).format('DD/MM/YYYY')}</Td>
-                                            <Td>{dayjs(subscription.created).format('DD/MM/YYYY')}</Td>
-                                            <Td>{dayjs(subscription.endedAt).format('DD/MM/YYYY')}</Td>
-
-                                        </Tr>
-                                    )
-                                })
-                                }
-                            </Tbody>
-
-                             <Tfoot>
-                                <Tr>
-                                    <Th>To convert</Th>
-                                    <Th>into</Th>
-                                    <Th isNumeric>multiply by</Th>
-                                </Tr>
-                            </Tfoot> 
-                        </Table>
-
-                    </Box>
-                </SettingsBox> */}
         <SettingsBox title="Assinatura">
           <Box display="flex" flexDir={['column', 'column', 'row']} gridGap={['3', '3', '10']} alignItems='center' >
             <Box display="flex" flexDir="column" >
@@ -136,25 +76,13 @@ export default function Component({ subscriptions }: Props) {
           </Box>
         </SettingsBox>
 
-
-        {/* <SettingsBox title="Avançado">
-              <Box display="flex" flexDir={['column', 'column', 'row']} gridGap={['3', '3', '10']} alignItems='center' >
-                  <Text w={{ lg: 4 / 12 }}>Apagar minha conta</Text>
-                  <Box display="flex" flexDir="column" >
-                      <Text>Remove sua conta de usuário e apaga todos os dados relacionados a ela cancelando assinaturas ativas se existirem.</Text>
-                      <Button colorScheme="red">Apagar minha conta</Button>
-
-                  </Box>
-              </Box>
-          </SettingsBox> */}
       </Box>
     </DefaultLayout>
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const token = req.cookies.token
-  const request = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/user/subscriptions`, token)
+export const getServerSideProps: GetServerSideProps = async ({ req: { cookies: { token } } }) => {
+  const request = await getDataFromApi('user/subscriptions', token)
   const data: any = await request.json()
 
   if (!token || !data) {

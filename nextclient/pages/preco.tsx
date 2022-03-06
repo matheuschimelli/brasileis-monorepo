@@ -25,13 +25,12 @@ function PricingIcon() {
   );
 }
 
-export default function Preco() {
+export default function PrecoPage() {
   const { user, logout, showAuthPropmpt, token } = useAuth();
   const checkout = useMutate();
 
   const startCheckout = async () => {
     const authToken = token;
-
 
     const response = await checkout.mutate(
       1,
