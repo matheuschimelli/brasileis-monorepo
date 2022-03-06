@@ -9,7 +9,7 @@ export default function SearchResults({ key, result }: SearchResultsProps) {
 
     const generateLink = (result: any) => {
         if (result._source.blockType === "JURISPRUDENCIA") {
-            return `/jurisprudencia/${result._id}`
+            return `/jurisprudencia/${result._source.tribunal}/${result._id}`
         }
 
         return `/finder/${result._source.slug}/${result._id}`

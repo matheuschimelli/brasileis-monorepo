@@ -103,7 +103,7 @@ export const handleJurisprudenciaTJPR = async (
 
                     tipoJudiciario: newJuris.tipo,
                     instancia: newJuris.instancia,
-                    tribunal: newJuris.tribunal?.name,
+                    tribunal: newJuris.tribunal?.slug,
                     estado: newJuris.estado,
                     comarca: newJuris.comarca,
                     dataJulgamento: newJuris.dataJulgamento,
@@ -169,7 +169,7 @@ export const handleJurisprudenciaTJPR = async (
 
                     tipoJudiciario: newJuris.tipo,
                     instancia: newJuris.instancia,
-                    tribunal: newJuris.tribunal?.name,
+                    tribunal: newJuris.tribunal?.slug,
                     estado: newJuris.estado,
                     comarca: newJuris.comarca,
                     dataJulgamento: newJuris.dataJulgamento,
