@@ -1,34 +1,34 @@
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../../../components/layout/DefaultLayout";
 import LawRender from "../../../components/LawRender/LawRender";
+import { getDataFromApi } from "../../../lib/hooks";
 
-type Props = {
+type LegislacaoPageProps = {
     data: any
     slug: string,
     id: string
 }
-const Busca = ({ data, slug, id }: Props) => {
+
+export default function LegislacaoPage({ data, slug, id }: LegislacaoPageProps) {
     return (
         <DefaultLayout title={data.details.title}>
             <LawRender data={data} slug={slug} id={id} />
         </DefaultLayout>
     );
 };
-export const getServerSideProps: GetServerSideProps = async (context) => {
 
-    const { slug, id } = context.query
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+    const { slug, id } = query
 
-    const req = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/law-block/${slug}/${id}?skip=0`)
-    const data = await req.json()
+    const data = await getDataFromApi(`law-block/${slug}/${id}?skip=0`)
 
-    if (!data) {
-        return {
-            notFound: true,
-        };
-    }
+    if (!data) return { notFound: true };
 
     return {
-        props: { data, slug, id }, // will be passed to the page component as props
+        props: {
+            data,
+            slug,
+            id
+        },
     };
 };
-export default Busca;

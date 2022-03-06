@@ -1,7 +1,8 @@
 import TelegramBot from 'node-telegram-bot-api';
 
 const token = process.env.TELEGRAM_API_KEY;
-const adminId = 878446753;
+
+const adminId = 878446753; // my telegram id 
 
 const bot = new TelegramBot(token!, { polling: true });
 

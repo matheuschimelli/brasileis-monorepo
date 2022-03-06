@@ -1,12 +1,11 @@
 import React from "react";
 import { Box, Text, SimpleGrid, Button } from '@chakra-ui/react'
-
 import type { GetServerSideProps } from "next";
 import DefaultLayout from "../components/layout/DefaultLayout";
-import { getData } from "../lib/hooks";
+import { getDataFromApi } from "../lib/hooks";
 
 
-export default function Home({ indexData }: { indexData: any }) {
+export default function IndicePage({ indexData }: { indexData: any }) {
     return (
         <DefaultLayout title="Índice de leis">
             <Box p="4" w="100%">
@@ -89,17 +88,11 @@ export default function Home({ indexData }: { indexData: any }) {
     );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-    const token = req.cookies.token
-
-    const request = await getData(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1/law-block/index`, token)
-    const indexData = await request.json()
-
-    console.log(indexData)
-
+export const getServerSideProps: GetServerSideProps = async ({ req: { cookies: { token } } }) => {
+    const data = await getDataFromApi('law-block/index', token)
     return {
         props: {
-            indexData: indexData.codigo
+            indexData: data.codigo
         }
     }
 };

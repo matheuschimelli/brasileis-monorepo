@@ -11,11 +11,10 @@ type Props = {
   total?: any;
 };
 
-export default function Busca({ results, error, total, searchQuery }: Props) {
+export default function BuscaPage({ results, error, total, searchQuery }: Props) {
   return (
     <DefaultLayout title="Feed e biblioteca de Leis" searchQuery={searchQuery}>
       <SearchPage results={results} error={error} total={total} />
-
     </DefaultLayout>
   );
 };
@@ -50,7 +49,6 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     .toLowerCase()
     .normalize();
 
-  //...(getFilters().lenght !==0 && { filters: getFilters() })
 
   if (!!sanitizedQuery) {
     try {

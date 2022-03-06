@@ -1,3 +1,10 @@
+
+/**
+ * Transforms a string without any paragraph into paragraphs for a better reading experience.
+ * 
+ * @param str 
+ * @returns 
+ */
 export const stringToParagraph = (str: string) => {
     const regLei = /(lei (.*)?.*(art\.|art|artigo|artigo\.)?( )?([0-9]{1,}))/gi
     const regexConstituicao = /((art\.|art|artigo\.|artigo)( ).*( da | do | de )(CRFB\/88|CF|carta magna|constituicao|constituicao federal|constituição federal))/gi;

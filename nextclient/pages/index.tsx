@@ -5,7 +5,7 @@ import Hero from "../components/layout/Hero";
 import Features from "../components/layout/Features";
 import React from "react";
 
-export default function Home() {
+export default function IndexPage() {
   return (
     <DefaultLayout title="Feed e biblioteca de Leis">
       <Hero />
@@ -14,14 +14,14 @@ export default function Home() {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const token = req.cookies.token
+export const getServerSideProps: GetServerSideProps = async ({ req: { cookies: { token } } }) => {
 
   if (token) return {
     redirect: {
       permanent: false,
       destination: "/feed",
     }, props: { none: true }
+
   }
 
   return {

@@ -4,9 +4,61 @@ import { createSlug } from '@modules/law-block/law-block-service'
 import { Jurisprudencia } from '@modules/types'
 import { stringToParagraph } from '@modules/utils/render'
 
-export const findAll = async () => {
-    const data = await prisma.jurisprudencia.findMany({})
-    return data
+const ITEMS_PER_PAGE = 10
+
+export const findAll = async (tribunal: string, page: number) => {
+
+    const skipItems = Number(page) ? (Number(page) - 1) * ITEMS_PER_PAGE : 0;
+
+    const data = await prisma.jurisprudencia.findMany({
+        where: {
+            tribunal: {
+                slug: tribunal
+            }
+        },
+        orderBy: {
+            dataJulgamento: "desc"
+        },
+        take: ITEMS_PER_PAGE,
+        skip: skipItems,
+        select: {
+            id: true,
+            tribunal: {
+                select: {
+                    name: true,
+                    slug: true
+                }
+            },
+            numeroProcesso: true,
+            ementa: true,
+            dataJulgamento: true,
+            dataPublicacao: true,
+            relator: true
+
+        },
+
+    })
+
+    const foundTribunal = await prisma.tribunal.findUnique({
+        where: {
+            slug: tribunal,
+        },
+        select: {
+            _count: true,
+            name: true,
+            slug: true
+        }
+    })
+
+    const count = await prisma.jurisprudencia.count({
+        where: {
+            tribunal: {
+                slug: tribunal
+            }
+        }
+    })
+
+    return { tribunal: foundTribunal, jurisprudencias: data, count, itemsPerPage: ITEMS_PER_PAGE }
 }
 
 export const findOneById = async (id: string) => {
@@ -97,8 +149,7 @@ export const remove = async (id: string) => {
 }
 
 export const feed = async ({ page }: { page: Number }) => {
-    const itemPerPage = 8
-    const skipItems = Number(page) ? (Number(page) - 1) * itemPerPage : 0;
+    const skipItems = Number(page) ? (Number(page) - 1) * ITEMS_PER_PAGE : 0;
 
     const today = dayjs().toISOString()
     const fiveDaysAgo = dayjs().subtract(5, 'day').toISOString()
@@ -113,7 +164,7 @@ export const feed = async ({ page }: { page: Number }) => {
         orderBy: {
             dataPublicacao: 'desc'
         },
-        take: itemPerPage,
+        take: ITEMS_PER_PAGE,
         skip: skipItems,
         select: {
             id: true,
@@ -127,4 +178,14 @@ export const feed = async ({ page }: { page: Number }) => {
         }
     })
     return latest
+}
+
+export const findAllTribunais = async () => {
+    const tribunais = await prisma.tribunal.findMany({
+        select: {
+            name: true,
+            slug: true
+        }
+    })
+    return tribunais
 }

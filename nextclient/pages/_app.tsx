@@ -5,7 +5,11 @@ import { DefaultSeo } from "next-seo";
 import { useRouter } from 'next/router'
 import * as ga from '../lib/ga'
 
-function MyApp({ Component, pageProps }: { Component: any, pageProps: any }) {
+type MyAppProps = {
+  Component: any, pageProps: any
+}
+
+export default function MyApp({ Component, pageProps }: MyAppProps) {
   const router = useRouter()
 
   useEffect(() => {
@@ -60,4 +64,3 @@ function MyApp({ Component, pageProps }: { Component: any, pageProps: any }) {
     </>
   );
 }
-export default MyApp;

@@ -7,10 +7,10 @@ import {
   Flex,
   Button,
   HStack,
-  Text
+
 } from "@chakra-ui/react";
 
-export default function Success() {
+export default function ErrorPage() {
   return (
     <DefaultLayout title="Assinatura">
 

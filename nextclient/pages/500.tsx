@@ -1,11 +1,8 @@
-import type { NextPage } from "next";
+import React from "react";
 import { Text, Center } from "@chakra-ui/react";
-
 import DefaultLayout from "../components/layout/DefaultLayout";
 
-import React from "react";
-
-const Home: NextPage = () => {
+export default function Errror500Page() {
     return (
         <DefaultLayout title="500 - Algo deu errado">
             <Center display="flex" flexDir="column">
@@ -22,4 +19,3 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;

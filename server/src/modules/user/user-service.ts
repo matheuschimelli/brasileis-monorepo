@@ -51,6 +51,7 @@ export const getUser = async (req: Request, res: Response) => {
     return res.status(400).send({ msg: 'You must be authenticated to perform this action.' })
   }
 }
+
 export const subscriptions = async (req: Request, res: Response) => {
   const { id } = req.user!
   const user = await prisma.user.findUnique({
