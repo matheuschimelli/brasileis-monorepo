@@ -10,8 +10,11 @@ const handler = async (job: Job) => {
         const existLaw = await prisma.lawBlock.findUnique({
             where: { id: doc._id }
         })
+        const existJurisprudencia = await prisma.jurisprudencia.findUnique({
+            where: { id: doc._id }
+        })
 
-        if (!existLaw) return await remove({ documentId: doc._id })
+        if (!existLaw && !existJurisprudencia) return await remove({ documentId: doc._id })
 
         return Promise.resolve()
     } catch (error) {

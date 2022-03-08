@@ -180,6 +180,11 @@ export const feed = async ({ page }: { page: Number }) => {
     return latest
 }
 
+export const findAllWithoutPagination = async () => {
+    const allJurisprudencias = await prisma.jurisprudencia.findMany({})
+    return allJurisprudencias
+}
+
 export const findAllTribunais = async () => {
     const tribunais = await prisma.tribunal.findMany({
         select: {

@@ -87,7 +87,10 @@ const generateESQueryWithFilter = (searchTerm: string, filters: any[]) => {
             "source",
             "type",
             "identifier",
-            "blockType"
+            "blockType",
+            "tribunal",
+            "comarca",
+            "estado"
         ],
         highlight: {
             order: 'score',
@@ -151,7 +154,10 @@ const generateESQueryWithFilter = (searchTerm: string, filters: any[]) => {
             "originalText",
             "source",
             "identifier",
-            "blockType"
+            "blockType",
+            "tribunal",
+            "comarca",
+            "estado"
         ],
         "highlight": {
             "order": "score",

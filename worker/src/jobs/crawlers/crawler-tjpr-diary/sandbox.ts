@@ -1,7 +1,6 @@
 import { Job } from "bull";
 import { crawlerTJPRJurisprudenciaWorker } from "../../";
 import { playwrightCrawler } from "../../../lib/crawler-base";
-import { getLinksWithDateFromTJPR } from "../../../lib/crawling-utils";
 import dayjs from "../../../lib/dayjs";
 
 
@@ -22,8 +21,8 @@ export default async function (job: Job) {
 
         function filterLinks(linksAndDates: any[]) {
 
-            const isYesterday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").isYesterday()
-            const isToday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").isToday()
+            const isYesterday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").tz("America/Sao_Paulo").isYesterday()
+            const isToday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").tz("America/Sao_Paulo").isToday()
 
             const finalDates = linksAndDates.map((item) => {
                 if (item.date) {

@@ -16,6 +16,7 @@ routes.use('/api/v1/checkout', stripeRoutes)
 routes.use('/api/v1/law-block', lawBlockRoutes)
 routes.use('/api/v1/jurisprudencia', jurisprudenciaRoutes)
 
+
 routes.use('/api/v1/search', elasticSearchRoutes)
 routes.use('/api/v1/crawlers', crawlerRoutes)
 routes.use('/api/v1/crawler-types', crawlerTypesRoutes)

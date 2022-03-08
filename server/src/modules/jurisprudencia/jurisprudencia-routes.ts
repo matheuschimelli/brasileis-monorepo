@@ -5,8 +5,14 @@ import {
     getFeed,
     getTribunais
 } from '@modules/jurisprudencia/jurisprudencia-controller'
+import { reIndexPostgresDataToElasticSearch } from '@modules/jobs/jobs'
 
 const jurisprudenciaRoutes = express.Router()
+
+jurisprudenciaRoutes.get('/reindex', async (req: express.Request, res: express.Response) => {
+    await reIndexPostgresDataToElasticSearch.add({})
+    return res.send("Job added")
+})
 
 jurisprudenciaRoutes.get('/tribunais', getTribunais)
 
