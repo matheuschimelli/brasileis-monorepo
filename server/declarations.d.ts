@@ -9,3 +9,4 @@ declare module 'redis'
 declare module 'mongoose'
 declare module 'errorhandler'
 declare module 'compression'
+declare module 'node-nlp';
