@@ -20,17 +20,25 @@ export default async function (job: Job) {
 
 
         function filterLinks(linksAndDates: any[]) {
+            console.log("LINKS AND DATES", linksAndDates)
 
-            const isYesterday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").tz("America/Sao_Paulo").isYesterday()
-            const isToday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").tz("America/Sao_Paulo").isToday()
+            const isYesterday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").isYesterday()
+            const isToday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").isToday()
+
 
             const finalDates = linksAndDates.map((item) => {
+                console.log(item)
+                console.log("IS TODAY", isToday(item.date))
+                console.log("IS yesterday", isYesterday(item.date))
+
+
                 if (item.date) {
                     if (isToday(item.date) || isYesterday(item.date)) {
                         return item
                     }
                 }
             })
+            console.log("FINAL DATES DONE", finalDates)
             return finalDates
         }
 
