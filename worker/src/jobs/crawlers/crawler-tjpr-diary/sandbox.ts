@@ -75,7 +75,17 @@ export default async function (job: Job) {
                     return getLinksWithDateFromTJPR()
                 });
 
+                const pageHtml = await page.innerHTML("body")
+                console.log("PAGE HTML", pageHtml)
+
+
+                console.log("DATA TO BE FORMATED", dataToBeFormated)
+
+
+
                 const data = filterLinks(dataToBeFormated).filter(e => !!e)
+                console.log("DATA", data)
+
 
                 if (data.length === 0) {
                     console.log("Sem mais datas")
