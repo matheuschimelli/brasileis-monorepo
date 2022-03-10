@@ -20,17 +20,12 @@ export default async function (job: Job) {
 
 
         function filterLinks(linksAndDates: any[]) {
-            console.log("LINKS AND DATES", linksAndDates)
 
             const isYesterday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").isYesterday()
             const isToday = (date: string | Date) => dayjs(date, "DD/MM/YYYY").isToday()
 
 
             const finalDates = linksAndDates.map((item) => {
-                console.log(item)
-                console.log("IS TODAY", isToday(item.date))
-                console.log("IS yesterday", isYesterday(item.date))
-
 
                 if (item.date) {
                     if (isToday(item.date) || isYesterday(item.date)) {
@@ -38,7 +33,6 @@ export default async function (job: Job) {
                     }
                 }
             })
-            console.log("FINAL DATES DONE", finalDates)
             return finalDates
         }
 
@@ -83,17 +77,7 @@ export default async function (job: Job) {
                     return getLinksWithDateFromTJPR()
                 });
 
-                const pageHtml = await page.innerHTML("body")
-                console.log("PAGE HTML", pageHtml)
-
-
-                console.log("DATA TO BE FORMATED", dataToBeFormated)
-
-
-
                 const data = filterLinks(dataToBeFormated).filter(e => !!e)
-                console.log("DATA", data)
-
 
                 if (data.length === 0) {
                     console.log("Sem mais datas")
