@@ -42,7 +42,7 @@ export const runQueues = () => {
     checkIfESIsRunning.add({}, { repeat: { cron: '* * * * *' } })
     autoEsIndexUpdater.add({}, { repeat: { cron: '0 1 * * *' } })
     reIndexPostgresDataToElasticSearch.add({}, { repeat: { cron: '0 1 * * 0' } })
-    clearQueues.add({}, { repeat: { cron: '5 22 * * *' } })
+    clearQueues.add({}, { repeat: { cron: '0 1 * * *' } })
 }
 
 export const queues = [

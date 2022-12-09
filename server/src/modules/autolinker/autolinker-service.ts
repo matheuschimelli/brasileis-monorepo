@@ -1,7 +1,6 @@
-// @ts-check
 import prisma from "@lib/prisma";
+import { generateInternalSearch } from "@modules/elasticsearch/elasticsearch-service";
 import { findAllWithoutPagination, findOneById } from '@modules/jurisprudencia/jurisprudencia-service'
-import { } from 'node-nlp'
 
 /**
  * Autolinker
@@ -51,5 +50,72 @@ export const processJurisprudencia = async (id: string) => {
         .filter(e => !!e)
         .filter(e => e !== "")
 
+
+}
+
+export const extractLeiFromJurisprudencia = (jurisprudencia: string) => {
+
+    jurisprudencia = jurisprudencia.toLocaleLowerCase()
+
+    const regexes = [{
+        1: `((CPP|CPC15|CPC15|CPC|LCP|CC|CP)(\.)? (art)(\.)?( )?([0-9.]{1,7})(?:[^§]{1,20})?(§\s?\d{1,3})?.{1,20}?)`
+    }, {
+        2: `((SUMULA|SÚMULA)(\.)?( )?([0-9.]{1,7})( )?(do|da|de|dos|das)( )?(superior tribunal de justiça|supremo tribunal federal|conselho nacioanl de justiça|stf|stj|cnj))`
+    }, {
+        3: `(art\.?|artigos?|arts\.?) ([0-9.]{1,7})(?:[^§]{1,20})?(§\s?\d{1,3})?.{1,20}?(CPC|CPP|C[oOÓó]digo de Processo Penal|C[oOÓó]digo de Processo Civil|C[oOÓó]digo Penal|CP(?!C)|CPC|CTB|C[oOÓó]digo de Tr[âa]nsito Brasileiro|Lei de Execuções Penais|Constituição da República|[0-9]{1,3}.[0-9]{3}(\/[0-9]{2,4})?)`
+    }]
+
+
+    const matches = regexes.map((reg) => {
+        const objectKey = Object.keys(reg)[0]
+
+        //@ts-ignore 😎
+        const regex = new RegExp(reg[objectKey], "gmi")
+
+        const matches = jurisprudencia.match(regex)
+
+        if (matches && matches.length !== 0) {
+            return matches.map(e => e.toLowerCase().replace("’", "").replace("‘", ""))
+        }
+    })
+
+    const filteredArrays = matches.filter(e => !!e && e.length !== 0)
+
+    //@ts-ignore
+    return [].concat.apply([], filteredArrays);
+
+}
+
+export const getBlocks = async (lawReferecences: string[]) => {
+    try {
+        console.log("lawReferecences", lawReferecences)
+
+        const result = lawReferecences.map(async (lawReferece) => {
+            const { results } = await generateInternalSearch(lawReferece, 1, null)
+            console.log("results", results)
+
+            if (results && results.length !== 0) {
+
+                const firstResult = results[0]
+                console.log("FIRST RESULT", firstResult)
+
+                const lawBlock = await prisma.lawBlock.findUnique({
+                    where: {
+                        id: firstResult._id
+                    }
+                })
+                if (lawBlock) return { id: lawBlock.id, data: lawReferece }
+            }
+        })
+
+        const resultsPromised = await Promise.all(result)
+        console.log("resultsPromised", resultsPromised)
+
+        return resultsPromised
+
+    } catch (error) {
+        console.log("ERRRORRR")
+        console.log(error)
+    }
 
 }
