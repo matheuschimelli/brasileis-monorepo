@@ -1,5 +1,7 @@
-# Brasileis
+# Brasileis - Sistema de busca jurisprudencial (TJPR)
+![image](https://github.com/matheuschimelli/brasileis-monorepo/assets/10470074/277814e0-9f6a-4e85-b4b2-42b099cbee69)
 
+Sistema de busca desenvolvido para encontrar e atualizar de forma automática jurisprudência dos tribunais brasileiros. Suporta múltiplos crawlers e crawlers customizados.
 Deplyment follows this: [StackOverflow: Automated heroku deploy from subfolder](https://stackoverflow.com/questions/39197334/automated-heroku-deploy-from-subfolder)
 ## Folder structure
 ```shell
